@@ -43,7 +43,7 @@ if(isset($_POST['register_user_button'])){
     }
     
 }
-//UPDATE USER
+//UPDATE USER ( SUPER ADMIN PRIVILAGE)
 if(isset($_POST['update_user_button'])){
 
     $displayName = $_POST["full_name"];

@@ -33,11 +33,17 @@ if(isset($_POST['edit_inventory']))
     $sku_number = $_POST['sku_number'];
     $sku_qty = $_POST['sku_qty'];
 
+    $barcode_data = $sku_number . "-" . $sku_qty;
+ 
+   
+    $barcode = new \Picqer\Barcode\BarcodeGeneratorHTML();
+    $barcode_img = $barcode->getBarcode($barcode_data, $barcode::TYPE_CODE_128);
 
     $updateData = [
         'eId' => $_SESSION['verified_user_id'],
         'skuId' => $sku_number,
         'skuQtyId' => $sku_qty,
+        'barcode' => $barcode_img,
         'currentDate' => date('Y-m-d'),
         'currentTime' => date('H:i:s')
     ];
@@ -67,6 +73,8 @@ if(isset($_POST['add_inventory']))
     $sku_number = $_POST['sku_number'];
     $sku_qty = $_POST['sku_qty'];
     $redColor = [255, 0, 0];
+
+    $barcode_data = $sku_number . "-" . $sku_qty;
  
    
     $barcode = new \Picqer\Barcode\BarcodeGeneratorHTML();
