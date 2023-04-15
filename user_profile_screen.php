@@ -117,8 +117,6 @@ include("dbcon.php");
             <input type="submit" name = "user_profile_submit_button" value="Save">
         </form>
               <?php
-              
-              
 
             } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
                 echo $e->getMessage();
