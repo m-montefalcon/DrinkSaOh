@@ -10,7 +10,7 @@ include('dbcon.php');
 
 
 
-//REGISTER USER
+//REGISTER USER 
 
 if(isset($_POST['register_user_button'])){
     $fullName = $_POST["full_name"];
@@ -22,7 +22,7 @@ if(isset($_POST['register_user_button'])){
         'email' => $emailAddress,
         'displayName' => $fullName ,
         'emailVerified' => false,
-        'phoneNumber' => "+63".$phoneNumber,
+        'phoneNumber' => '+63'.$phoneNumber,
         'password' => $password,
         
         
@@ -78,7 +78,7 @@ if(isset($_POST['update_user_button'])){
 
 
 
-//DELETE
+//DELETE ( SUPER ADMIN PRIVILAGE)
 
 
 if(isset($_POST['user_delete_button'])){
@@ -119,7 +119,7 @@ if(isset($_POST['user_delete_button'])){
 }
 
 
-//EDIT ACCOUNT SETTINGS
+//EDIT ACCOUNT SETTINGS ( SUPER ADMIN PRIVILAGE)
 
 if (isset($_POST['enable_disable_user_button'])) {
 
@@ -159,7 +159,7 @@ if (isset($_POST['enable_disable_user_button'])) {
 }
 
 
-//CHANGE PASSWORD
+//CHANGE PASSWORD (SUPER ADMIN PRIVILAGE)
 
 if(isset($_POST['change_password_button'])){
 
@@ -188,6 +188,81 @@ if(isset($_POST['change_password_button'])){
 
 }
 
+//ROLES ( SUPER ADMIN PRIVILAGE)
 
+
+if(isset($_POST['roles_user_button'])){
+
+    
+    $uid = $_POST['roles-user-id'];
+    $roles = $_POST['select_roles_user'];
+
+    if($roles =='Superadmin'){
+
+        $auth->setCustomUserClaims($uid, ['Superadmin' => true]);
+        $msg = "Roles updated into SuperAdmin";
+    }
+    elseif($roles =='Admin'){
+        $auth->setCustomUserClaims($uid, ['Admin' => true]);
+        $msg = "Roles updated into Admin";
+    } 
+    elseif($roles =='Norole'){
+        $auth->setCustomUserClaims($uid, null);
+        $msg = "Roles updated into No roles";
+    } 
+
+
+
+    if ($msg) {
+        $_SESSION['status'] = $msg;
+        header("Location: profiles.php");
+        exit();
+    } else if (!$msg) {
+        $_SESSION['status'] = "Unable to change roles";
+        header("Location: profiles.php");
+        exit();
+    }
+    
+  
+  
+
+}
+
+
+
+//EDIT PROFILE (ANY ROLES PRIVILAGE)
+
+
+if(isset($_POST['user_profile_submit_button'])){
+
+    $displayName = $_POST["full_name"];
+    $email = $_POST["email_address"];
+    $phone = $_POST["phone_number"];
+
+    $uid = $_POST['user_profile_key'];
+
+    $properties = [
+        'displayName' => $displayName,
+        'email' =>  $email,
+        'phoneNumber' =>  $phone
+
+    ];
+    
+    $updatedUser = $auth->updateUser($uid, $properties);
+
+    if($updatedUser)
+    {
+        $_SESSION['status'] = "User Successfully Updated!";
+        header('Location: user_profile.php');
+        exit();
+
+    }else
+    {
+        $_SESSION['status'] = "Error!";
+        header('Location: user_profile.php');
+        exit();
+    }
+    
+}
 
 ?>

@@ -100,8 +100,6 @@ include('dbcon.php');
 										$user = $auth->getUser($uid);
 										?>
 
-										
-									
 								<input type="hidden" name="ena-dis-user" value="<?=$uid?>">
 								<label for="">Account Status:</label>
 
@@ -113,33 +111,82 @@ include('dbcon.php');
 								<input type="submit" name = "enable_disable_user_button" value="Save">
 
 								</select>
+								<td></td>
+								<h2></h2>
+								<h2>
+
+								<br>
+
+								</h2>
+								
                             </div>
 							<h2>Privacy Settings</h2>
 
-							<form action="userCred.php" method="POST">
-							<input type="hidden" name="change_password_id_value" value="<?=$uid?>">
-							<div class="form-group">
-                                    <label for="password">Password:</label>
-                                    <input type="password" id="password" name="password" placeholder="Enter your password">
-                                </div>
+								<form action="userCred.php" method="POST">
+								<input type="hidden" name="change_password_id_value" value="<?=$uid?>">
 								<div class="form-group">
-                                    <label for="password">Confirm Password:</label>
-                                    <input type="password" id="password" name="confirm_password" placeholder="Re Enter your password">
-                                </div>
+										<label for="password">Password:</label>
+										<input type="password" id="password" name="password" placeholder="Enter your password">
+									</div>
+									<div class="form-group">
+										<label for="password">Confirm Password:</label>
+										<input type="password" id="password" name="confirm_password" placeholder="Re Enter your password">
+									</div>
 
-								<input type="submit" name = "change_password_button" value="Change Password">
+									<input type="submit" name = "change_password_button" value="Change Password">
+
+									
+
+							<form action="userCred.php" method="POST">
+							
+							<h2>Roles</h2>
+									<label for="">Currently as : </label>
+	
+									<?php 
+									$claims = $auth -> getUser($uid)-> customClaims;
+									if(isset($claims['Superadmin']) == true){
+	
+										echo "SuperAdmin";
+									}
+									if(isset($claims['Admin']) == true){
+										
+										echo "Admin";
+									} 
+									elseif($claims == null){
+										echo "No roles";
+
+								
+								
+									}
+									
+									
+									?>
+									<br>
+									<input type="hidden" name="roles-user-id" value="<?=$uid?>">
+									<label for="">Account Status:</label>
+	
+									<select name="select_roles_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+									<option value="Select">Select</option>
+									<option value="Norole">Noroles</option>
+									<option value="Superadmin">Superadmin</option>
+									<option value="Admin">Admin</option>
+									
+	
+									<input type="submit" name = "roles_user_button" value="Save">
+	
+									</select>
+								</form>
 
 							</form>
-                                
-                    </form>
-					<?php
-									} catch(Exception $e){
-										
 
-									}
-								} else{
-									echo "No user id found";
-								}
+								<?php
+												} catch(Exception $e){
+													
+
+												}
+											} else{
+												echo "No user id found";
+											}
 
 								
 								
@@ -149,3 +196,4 @@ include('dbcon.php');
     </div>
 </body>
 </html>
+

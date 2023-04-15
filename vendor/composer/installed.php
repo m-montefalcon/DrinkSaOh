@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '89fc579148c26c3d45a49c953f0923b20c1b99a5',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '89fc579148c26c3d45a49c953f0923b20c1b99a5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -160,6 +160,15 @@
             'reference' => '9b87907a81b87bc76d19a7fb2d61e61486ee9edb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mtdowling/jmespath.php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'picqer/php-barcode-generator' => array(
+            'pretty_version' => 'v2.2.4',
+            'version' => '2.2.4.0',
+            'reference' => 'b98f110cc5a79f723688fb17fd90b9325300d844',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../picqer/php-barcode-generator',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

@@ -2,10 +2,9 @@
 <?php
 
 use Kreait\Firebase\Value\Uid;
-
-session_start();
+include('admin_auth.php');
 include('includes/header.php');
-include('authentication.php');
+
 
 
 ?>
@@ -36,6 +35,7 @@ include('authentication.php');
                       <th>EmpID</th>
                       <th>SKU</th>
                       <th>QTY</th>
+                      <th>BARCODE</th>
                       <th>DATE</th>
                       <th>TIME</th>
                       <th>Edit</th>
@@ -59,6 +59,7 @@ include('authentication.php');
                          <td><?=$row['eId']?></td>
                          <td><?=$row['skuId']?></td>
                          <td><?=$row['skuQtyId']?></td>
+                         <td><?=$row['barcode']?></td>
                          <td><?=$row['currentDate']?></td>
                          <td><?=$row['currentTime']?></td>
                          <td>

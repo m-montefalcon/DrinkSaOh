@@ -35,6 +35,31 @@ if(isset($_POST['login_user_button'])){
             $verifiedIdToken = $auth->verifyIdToken($idTokenString);
             $uid = $signInResult->firebaseUserId(); 
 
+
+            $claims = $auth->getUser($uid)->customClaims;
+            if(isset($claims['Superadmin']) == true){
+
+
+                $_SESSION['verified_Superadmin'] = true;
+                $_SESSION['verified_user_id'] = $uid;
+                $_SESSION['idTokenString'] = $idTokenString; echo "SuperAdmin";
+            }
+            
+            if(isset($claims['Admin']) == true){
+
+
+                $_SESSION['verified_admin'] = true;
+                $_SESSION['verified_user_id'] = $uid;
+                $_SESSION['idTokenString'] = $idTokenString;
+            } 
+            elseif($claims == null){
+                $_SESSION['verified_user_id'] = $uid;
+                $_SESSION['idTokenString'] = $idTokenString;
+            }
+
+
+
+
             $_SESSION['verified_user_id'] = $uid;
             $_SESSION['idTokenString'] = $idTokenString;
 

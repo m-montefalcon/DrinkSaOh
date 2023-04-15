@@ -1,8 +1,9 @@
 
 <?php
-session_start();
+
+include('admin_auth.php');
 include('includes/header.php');
-include('authentication.php');
+
 
 
 ?>
@@ -30,6 +31,7 @@ include('authentication.php');
                     <tr>
                       <th>#</th>
                       <th>EMPLOYEE ID</th>
+                      <th>ROLES</th>
                       <th>FULL NAME</th>
                       <th>EMAIL</th>
                       <th>PHONE NUMBER</th>
@@ -54,6 +56,29 @@ include('authentication.php');
                       <tr>
                         <td><?=$i++;?></td>
                         <td><?=$user -> uid?></td>
+
+                        <td>
+
+                        <?php 
+
+                            $claims = $auth -> getUser($user->uid)-> customClaims;
+                            if(isset($claims['Superadmin']) == true){
+            
+                              echo "SuperAdmin";
+                            }
+                            if(isset($claims['Admin']) == true){
+                              
+                              echo "Admin";
+                            } 
+                            elseif($claims == null){
+                              echo "No roles";
+
+                          
+                          
+                            }
+                            ?>
+                            
+                        </td>
                         <td><?=$user -> displayName ?></td>
                         
                         <td><?=$user -> email ?></td>

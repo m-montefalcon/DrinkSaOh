@@ -1,6 +1,9 @@
 <?php
 
 require __DIR__.'/vendor/autoload.php';
+use Picqer\Barcode\BarcodeGeneratorPNG;
+
+
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Contract\Auth;
 use Firebase\Auth\Token\Exception\InvalidToken;
@@ -15,7 +18,6 @@ $database = $factory->createDatabase();
 
 
 $auth = $factory->createAuth();
-
 
 
 ?>

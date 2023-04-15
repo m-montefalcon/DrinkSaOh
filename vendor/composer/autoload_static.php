@@ -39,6 +39,7 @@ class ComposerStaticInit856e523e05e93f37206bc81edc320819
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Clock\\' => 10,
             'Psr\\Cache\\' => 10,
+            'Picqer\\Barcode\\' => 15,
         ),
         'M' => 
         array (
@@ -112,8 +113,8 @@ class ComposerStaticInit856e523e05e93f37206bc81edc320819
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -126,6 +127,10 @@ class ComposerStaticInit856e523e05e93f37206bc81edc320819
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'Monolog\\' => 
         array (

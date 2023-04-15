@@ -1,6 +1,8 @@
 
 <?php
+session_start();
 include('includes/header.php');
+include('authentication.php');
 
 
 ?>
@@ -70,11 +72,11 @@ include('includes/header.php');
                         
                             <div class="col-md-4 form-group mb-3">
                             <label for="">SKU</label>
-                            <input type="text" name="sku_number" class="form-control">
+                            <input type="text" name="sku_number" class="form-control" maxlength="6" required>
                             </div>
                             <div class="col-md-4 form-group mb-3">
                             <label for="">QTY</label>
-                            <input type="number" name="sku_qty" class="form-control">
+                            <input type="number" name="sku_qty" class="form-control" required>
                             </div>
                     </div>
                     <button type = "submit" name = "add_inventory" class = "btn btn-primary">Save</button>
