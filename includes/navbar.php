@@ -16,6 +16,9 @@
         <?php else : ?>
           <?php if(isset($_SESSION['verified_Superadmin'])) : ?>
             <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="transaction_log.php">TRANSACTION LOG</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="profiles.php">USERS</a>
             </li>
             <li class="nav-item">
@@ -33,6 +36,7 @@
             </li>
 
           <?php elseif (isset($_SESSION['verified_admin'])) : ?>
+            
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="index.php">INVENTORY</a>
             </li>
