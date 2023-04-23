@@ -1,6 +1,6 @@
 <?php
-
-include('admin_auth.php');
+session_start();
+include('authentication.php');
 include('includes/header.php');
 include('dbcon.php');
 

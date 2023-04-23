@@ -1,8 +1,13 @@
 <?php 
 session_start();
+
 include('authentication.php');
 include('includes/header.php');
 include('dbcon.php');
+require_once __DIR__.'/vendor/autoload.php';
+
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 ?>
 
 <div class="container-fluid bg-primary">
@@ -29,35 +34,101 @@ include('dbcon.php');
       <h1>Dashboard</h1>
     </header>
     <main>
+
       <div class="container">
-        <a href="#">
+        <a href="profiles.php">
           <div class="box admin">
             <h2>Admins</h2>
-            <p>View and manage admins</p>
+            <p>View and manage admins  </p>
+              <span> Admin Count:
+            <?php 
+                $adminCount = 0;
+
+               $users = $auth->listUsers();
+               foreach ($users as $user) {
+                   $claims = $user->customClaims;
+                   if(isset($claims['Admin']) == true){
+                       $adminCount++;
+                   }
+               }
+           
+               echo $adminCount;
+                
+                ?>
+          
+            </span>
           </div>
         </a>
-        <a href="#">
-          <div class="box superadmin">
-            <h2>SuperAdmins</h2>
-            <p>View and manage superadmins</p>
-          </div>
-        </a>
-        <a href="#">
+        <a href="profiles.php">
+            <div class="box superadmin">
+                <h2>SuperAdmins</h2>
+                <p>View and manage superadmins</p>
+                <span>Superadmin Count: <?php 
+                $superadminCount = 0;
+
+               $users = $auth->listUsers();
+               foreach ($users as $user) {
+                   $claims = $user->customClaims;
+                   if(isset($claims['Superadmin']) == true){
+                       $superadminCount++;
+                   }
+               }
+           
+               echo $superadminCount;
+                
+                ?></span>
+            </div>
+          <a href="#">
           <div class="box products">
-            <h2>Products</h2>
-            <p>View and manage products</p>
+          <h2>Items</h2>
+            <p>View and manage items</p>
+            <span>
+            <?php 
+              $ref_table = "inventory";
+
+
+              $totalQtySnapshot = $database->getReference($ref_table)
+              ->orderByChild('skuId')
+              ->getSnapshot();
+          
+              $totalQty = 0;
+              if ($totalQtySnapshot->hasChildren()) {
+                  foreach ($totalQtySnapshot->getValue() as $inventory) {
+                      $totalQty += $inventory['skuQtyId'];
+                  }
+              }
+              echo "Total quantity: " . $totalQty;
+            ?>
+            </span>
           </div>
         </a>
+
+
         <a href="#">
           <div class="box transactions">
-            <h2>Last Transaction Made</h2>
-            <p>View last transaction made</p>
+          <h2>Transactions</h2>
+            <p>Transactions</p>
+            
           </div>
         </a>
         <a href="#">
           <div class="box items">
-            <h2>Number of Items</h2>
-            <p>View and manage items</p>
+          <h2>Products</h2>
+            <p>View and manage products</p>
+           
+            <span>
+              <?php 
+              $ref_table = "inventory";
+
+              $inventorySnapshot = $database->getReference($ref_table)->getSnapshot();
+              
+              $numDatasets = $inventorySnapshot->numChildren();
+              
+              echo "Number of products in inventory: " . $numDatasets;
+              
+              
+              ?>
+            </span>
           </div>
         </a>
       </div>
