@@ -17,7 +17,7 @@ include('includes/header.php');
                 echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
                 unset($_SESSION['status']);
               }
-            
+              
             ?>
             <div class="card">
               <div class="card-header">
@@ -30,7 +30,7 @@ include('includes/header.php');
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>EMPLOYEE ID</th>
+                      <th>ID</th>
                       <th>ROLES</th>
                       <th>FULL NAME</th>
                       <th>EMAIL</th>

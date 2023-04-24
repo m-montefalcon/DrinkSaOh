@@ -1,6 +1,9 @@
 
 <?php
+include('admin_auth.php');
 include('includes/header.php');
+
+
 
 
 ?>
@@ -59,7 +62,7 @@ include('includes/header.php');
                 <div class="card-header">
                     <h4>
                     EDIT INVENTORY
-                    <a href="index.php" class="btn btn-danger float-end"> Add User</a>
+                    <a href="index.php" class="btn btn-danger float-end"> Back</a>
                     </h4>
                     </div>
                     <div class="card-body">
@@ -79,10 +82,16 @@ include('includes/header.php');
     
                         <div class="row">
                         <input type="hidden" name="key" value="<?=$key_child;?>">
- 
+
+                        
+                        <div class="col-md-4 form-group mb-3">
+                            <label for=""> Name</label>
+                            <input type="text" name="product_name" value = "<?=$getData['productName'];?>" class="form-control" maxlength="3">
+                            </div>
+                            
                             <div class="col-md-4 form-group mb-3">
                             <label for="">SKU</label>
-                            <input type="text" name="sku_number" value = "<?=$getData['skuId'];?>" class="form-control">
+                            <input type="text" name="sku_number" value = "<?=$getData['skuId'];?>" class="form-control" maxlength="6">
                             </div>
                             <div class="col-md-4 form-group mb-3">
                             <label for="">QTY</label>

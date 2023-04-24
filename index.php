@@ -5,6 +5,14 @@ use Kreait\Firebase\Value\Uid;
 include('admin_auth.php');
 include('includes/header.php');
 
+function formatTime($time) {
+  $timestamp = strtotime($time);
+  return date("h:i A", $timestamp);
+}
+
+function formatDate($date) {
+  return date("M j, Y", strtotime($date));
+}
 
 
 ?>
@@ -24,7 +32,7 @@ include('includes/header.php');
               <div class="card-header">
                 <h4>
                   INVENTORY
-                  <a href="add-inventory.php" class="btn btn-primary float-end"> Add User</a>
+                  <a href="add-inventory.php" class="btn btn-primary float-end"> Add</a>
                 </h4>
               </div>
               <div class="card-body">
@@ -32,7 +40,7 @@ include('includes/header.php');
                   <thead>
                     <tr>
                       <th>Number</th>
-                      <th>EmpID</th>
+                      <th>Product Name</th>
                       <th>SKU</th>
                       <th>QTY</th>
                       <th>BARCODE</th>
@@ -56,18 +64,18 @@ include('includes/header.php');
                         ?>
                         <tr>
                          <td><?=$i++;?></td>
-                         <td><?=$row['eId']?></td>
+                         <td><?=$row['productName']?></td>
                          <td><?=$row['skuId']?></td>
                          <td><?=$row['skuQtyId']?></td>
                          <td><?=$row['barcode']?></td>
-                         <td><?=$row['currentDate']?></td>
-                         <td><?=$row['currentTime']?></td>
+                         <td><?= formatDate($row['currentDate']) ?></td>
+                         <td><?= formatTime($row['currentTime']) ?></td>
+
                          <td>
                           <a href="edit-inventory.php?id=<?=$key?>" class="btn btn-primary btn-sm">Edit</a>
 
                          </td>
                          <td>
-                          <!-- <a href="delete-inventory.php" class="btn btn-danger btn-sm">Delete</a> -->
                           <form action="code.php" method = "POST">
                             <button type="submit" name = "delete_button" class = "btn btn-danger btn-sm" value = "<?=$key?>">Delete</button>
                           </form>

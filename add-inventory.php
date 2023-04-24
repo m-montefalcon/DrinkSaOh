@@ -61,7 +61,7 @@ include('authentication.php');
                 <div class="card-header">
                     <h4>
                     ADD INVENTORY
-                    <a href="index.php" class="btn btn-danger float-end"> Add User</a>
+                    <a href="index.php" class="btn btn-danger float-end"> Back</a>
                     </h4>
                     </div>
                           
@@ -69,7 +69,10 @@ include('authentication.php');
                         <form action="code.php" method="POST">
                         <div class="row">
                            
-                        
+                            <div class="col-md-4 form-group mb-3">
+                            <label for=""> Name</label>
+                            <input type="text" name="product_name" class="form-control" maxlength="3" required>     
+                            </div>
                             <div class="col-md-4 form-group mb-3">
                             <label for="">SKU</label>
                             <input type="text" name="sku_number" class="form-control" maxlength="6" required>
