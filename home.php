@@ -78,11 +78,12 @@ use Kreait\Firebase\ServiceAccount;
                 
                 ?></span>
             </div>
-          <a href="#">
+          <a href="index.php">
           <div class="box products">
           <h2>Items</h2>
             <p>View and manage items</p>
             <span>
+
             <?php 
               $ref_table = "inventory";
 
@@ -99,6 +100,7 @@ use Kreait\Firebase\ServiceAccount;
               }
               echo "Total quantity: " . $totalQty;
             ?>
+            
             </span>
           </div>
         </a>
@@ -111,7 +113,7 @@ use Kreait\Firebase\ServiceAccount;
             
           </div>
         </a>
-        <a href="#">
+        <a href="index.php">
           <div class="box items">
           <h2>Products</h2>
             <p>View and manage products</p>
