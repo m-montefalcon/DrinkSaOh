@@ -188,6 +188,34 @@ if(isset($_POST['change_password_button'])){
 
 }
 
+
+if(isset($_POST['change_password_button_user'])){
+
+    $new_password = $_POST['password'];
+    $re_password = $_POST['confirm_password'];
+    $uid = $_POST['change_password_id_value'];
+
+    if($new_password == $re_password){
+        $updatedUser = $auth->changeUserPassword($uid, $new_password );
+
+        if($updatedUser){
+            $_SESSION['status'] = "Password changed successfully!";
+            header('location: user_profile_screen.php');
+            exit();
+
+        }
+
+
+    }
+    else{ 
+            $_SESSION['status'] = "Unable to change password";
+            header("Location: user_profile_screen.php?uid=$uid");
+            exit();
+        
+    }
+
+}
+
 //ROLES ( SUPER ADMIN PRIVILAGE)
 
 

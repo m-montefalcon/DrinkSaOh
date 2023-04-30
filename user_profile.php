@@ -28,10 +28,7 @@ include('dbcon.php');
 			<div class="card-body">
 				<form method="POST" action="user_profile_screen.php">
 					<table>
-						<tr>
-							<th>UID:</th>
-							<td><?php echo $user->uid ?></td>
-						</tr>
+						
 						<tr>
 							<th>Display Name:</th>
 							<td><?php echo $user->displayName ?></td>

@@ -94,11 +94,11 @@ include('dbcon.php');
                             <div class="form-group">
 
                                 <label for="email">Email Address:</label>
-                                <input type="email" id="email" name="email" placeholder="Enter your email address">
+                                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
                             </div>
                                 <div class="form-group">
                                     <label for="password">Password:</label>
-                                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
                                 </div>
                             <input type="submit" name = "login_user_button" value="Login">
                     </form>

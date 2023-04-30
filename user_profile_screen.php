@@ -98,10 +98,7 @@ include("dbcon.php");
 
               ?>
               <h2>EDIT USER</h2>
-				
 
-
-                
                 <input type="hidden" name="user_profile_key" value="<?=$uid;?>">
                 <label for="full_name">Full Name</label>
             
@@ -116,7 +113,23 @@ include("dbcon.php");
             
             <input type="submit" name = "user_profile_submit_button" value="Save">
         </form>
+		<h2>Privacy Settings</h2>
+
+								<form action="userCred.php" method="POST">
+								<input type="hidden" name="change_password_id_value" value="<?=$uid?>">
+								<div class="form-group">
+										<label for="password">Password:</label>
+										<input type="password" id="password" name="password" placeholder="Enter your password">
+									</div>
+									<div class="form-group">
+										<label for="password">Confirm Password:</label>
+										<input type="password" id="password" name="confirm_password" placeholder="Re Enter your password">
+									</div>
+
+									<input type="submit" name = "change_password_button_user" value="Change Password">
+								</form>			
               <?php
+			  
 
             } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
                 echo $e->getMessage();

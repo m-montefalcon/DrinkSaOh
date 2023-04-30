@@ -106,7 +106,7 @@ use Kreait\Firebase\ServiceAccount;
         </a>
 
 
-        <a href="#">
+        <a href="transaction_log.php">
           <div class="box transactions">
           <h2>Transactions</h2>
             <p>Transactions</p>
