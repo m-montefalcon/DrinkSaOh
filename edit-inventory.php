@@ -86,12 +86,12 @@ include('includes/header.php');
                         
                         <div class="col-md-4 form-group mb-3">
                             <label for=""> Name</label>
-                            <input type="text" name="product_name" value = "<?=$getData['productName'];?>" class="form-control" maxlength="3">
+                            <input type="text" name="product_name" value = "<?=$getData['productName'];?>" class="form-control" maxlength="4">
                             </div>
                             
                             <div class="col-md-4 form-group mb-3">
                             <label for="">SKU</label>
-                            <input type="text" name="sku_number" value = "<?=$getData['skuId'];?>" class="form-control" maxlength="6">
+                            <input type="text" name="sku_number" value = "<?=$getData['skuId'];?>" class="form-control" maxlength="12">
                             </div>
                             <div class="col-md-4 form-group mb-3">
                             <label for="">QTY</label>

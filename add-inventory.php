@@ -71,11 +71,11 @@ include('authentication.php');
                            
                             <div class="col-md-4 form-group mb-3">
                             <label for=""> Name</label>
-                            <input type="text" name="product_name" class="form-control" maxlength="3" required>     
+                            <input type="text" name="product_name" class="form-control" maxlength="4" required>     
                             </div>
                             <div class="col-md-4 form-group mb-3">
                             <label for="">SKU</label>
-                            <input type="text" name="sku_number" class="form-control" maxlength="6" required>
+                            <input type="text" name="sku_number" class="form-control" maxlength="12" required>
                             </div>
                             <div class="col-md-4 form-group mb-3">
                             <label for="">QTY</label>
