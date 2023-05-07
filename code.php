@@ -4,45 +4,59 @@
 
 session_start();
 include ('dbcon.php');
-use Picqer\Barcode\BarcodeGeneratorHTML;
+use \Picqer\Barcode\BarcodeGeneratorHTML as BG;
+
 require __DIR__.'/vendor/autoload.php';
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
-
-//DELET
-
-
-if(isset($_POST['delete_button'])){
+//DELETE
+if (isset($_POST['delete_button'])) {
     $delete_id = $_POST['delete_button'];
     $ref_table = 'inventory/'.$delete_id;
-    $deleteInventory =  $database->getReference($ref_table)->remove();
-    
 
-    if($deleteInventory)
-    {
-        $transactionLogRef = $database->getReference('transaction_log');
-        $transactionData = [
-            'eId' => $_SESSION['verified_user_id'],
-            'action' => 'Delete',
-            'skuId' => $sku_number,
-            'skuQtyId' => $sku_qty,
-            'barcode' => $barcode_img,
+    // Create a reference to the transaction log node
+    $transactionLogRef = $database->getReference('transaction_log');
 
-            'currentDate' => date('Y-m-d'),
-            'currentTime' => date('H:i:s')
-        ];
-        $transactionLogRef->push($transactionData);
-        
-        $_SESSION['status'] = "Deleted!";
-        header('location: index.php');
+    // Get the inventory item data
+    $inventoryItemRef = $database->getReference($ref_table);
+    $inventoryItemData = $inventoryItemRef->getValue();
+    $uid = $_SESSION['verified_user_id'];
+    $user = $auth->getUser($uid);
+    // Construct the transaction data array
+    $transactionData = [
+        'eId' => $user -> displayName,
+        'action' => 'Deleted',
+        'supplier_name' => $inventoryItemData['supplier_name'],
+        'priceQuantity' => $inventoryItemData['priceQuantity'],
+        'productName' => $inventoryItemData['productName'],
+        'skuId' => $inventoryItemData['skuId'],
+        'skuQtyId' => $inventoryItemData['skuQtyId'],
+        'barcode' => $inventoryItemData['barcode'],
+        'currentDate' => date('Y-m-d'),
+        'currentTime' => date('H:i:s')
+    ];
 
-    }else
-    {
-        $_SESSION['status'] = "Error!";
+    $transactionLogResult = $transactionLogRef->push($transactionData);
+
+    if ($transactionLogResult) {
+
+        $deleteInventory = $inventoryItemRef->remove();
+
+        if ($deleteInventory) {
+            $_SESSION['status'] = "Deleted!";
+            header('location: index.php');
+        } else {
+            $_SESSION['status'] = "Error deleting inventory item!";
+            header('location: index.php');
+        }
+    } else {
+        $_SESSION['status'] = "Error recording transaction log!";
         header('location: index.php');
     }
 }
+
+
 
 
 //EDIT
@@ -53,22 +67,30 @@ if(isset($_POST['edit_inventory']))
     $sku_qty = $_POST['sku_qty'];
     $product_name = $_POST['product_name'];
 
-    $barcode_data = $product_name . "-" . $sku_number. "-" . $sku_qty;
+    $bd = $sku_number;
+    $bg = new BG();
+    $bi = $bg->getBarcode($bd, BG::TYPE_CODE_128);
 
 
- 
-   
-    $barcode = new \Picqer\Barcode\BarcodeGeneratorHTML();
-    $barcode_img = $barcode->getBarcode($barcode_data, $barcode::TYPE_CODE_128);
+    $style = 'style="font-size: 0.8em; padding: 0 2px;"';
+    $bi = str_replace('height: 50px', $style, $bi);
 
+    $uid = $_SESSION['verified_user_id'];
+    $user = $auth->getUser($uid);
 
+    $supplier_name = $_POST['supplier_name'];
+    $price_per_quantity = $_POST['price_qty'];
+    $total_price = $price_per_quantity * $sku_qty;
+
+    
     $updateData = [
-        'eId' => $_SESSION['verified_user_id'],
+        'supplier_name' => $supplier_name,
+        'priceQuantity' => $price_per_quantity,
         'productName' => $product_name,
-        'skuId' => $sku_number,
+        'totalPrice' => $total_price, 
         'skuId' => $sku_number,
         'skuQtyId' => $sku_qty,
-        'barcode' => $barcode_img,
+        'barcode' => $bi,
         'currentDate' => date('Y-m-d'),
         'currentTime' => date('H:i:s')
     ];
@@ -80,12 +102,15 @@ if(isset($_POST['edit_inventory']))
     {
         $transactionLogRef = $database->getReference('transaction_log');
         $transactionData = [
-            'eId' => $_SESSION['verified_user_id'],
+            'eId' => $user->displayName,
             'action' => 'Edited',
+            'supplier_name' => $supplier_name,
+            'priceQuantity' => $price_per_quantity,
+            'totalPrice' => $total_price, 
             'productName' => $product_name,
             'skuId' => $sku_number,
             'skuQtyId' => $sku_qty,
-            'barcode' => $barcode_img,
+            'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
         ];
@@ -103,22 +128,24 @@ if(isset($_POST['edit_inventory']))
     }       
 }
 
-
+//ADD
 if(isset($_POST['add_inventory']))
 {
     $sku_number = $_POST['sku_number'];
     $sku_qty = $_POST['sku_qty'];
     $product_name = $_POST['product_name'];
+    $supplier_name = $_POST['supplier_name'];
+    $price_per_quantity = $_POST['price_qty'];
     
-    $barcode_data = $product_name . "-" . $sku_number. "-" . $sku_qty;
+    $bd = $sku_number;
+    $bg = new BG();
+    $bi = $bg->getBarcode($bd, BG::TYPE_CODE_128);
 
+    // Set font size and padding
+    $style = 'style="font-size: 0.8em; padding: 0 2px;"';
 
- 
-   
-    $barcode = new \Picqer\Barcode\BarcodeGeneratorHTML();
-    $barcode_img = $barcode->getBarcode($barcode_data, $barcode::TYPE_CODE_128);// bar height of 50mm
-
-
+    // Replace the default style for the bars with the new style
+    $bi = str_replace('height: 50px', $style, $bi);
 
     $ref_table = "inventory";
    
@@ -127,16 +154,21 @@ if(isset($_POST['add_inventory']))
     ->equalTo($sku_number)
     ->getValue();
 
+    $uid = $_SESSION['verified_user_id'];
+    $user = $auth->getUser($uid);
+    $total_price = $price_per_quantity * $sku_qty;
 
     if($inventoryQuery) {
         // SKU already exists, update quantity instead of creating a new entry
         foreach($inventoryQuery as $key => $inventory) {
             $newQty = $inventory['skuQtyId'] + $sku_qty;
             $updateData = [
-                'eId' => $_SESSION['verified_user_id'],
+                'totalPrice' => $total_price, 
+                'supplier_name' => $supplier_name,
+                'priceQuantity' => $price_per_quantity,
                 'productName' => $product_name,
                 'skuQtyId' => $newQty,
-                'barcode' => $barcode_img,
+                'barcode' => $bi,
                 'currentDate' => date('Y-m-d'),
                 'currentTime' => date('H:i:s')
             ];
@@ -148,7 +180,10 @@ if(isset($_POST['add_inventory']))
 
             $transactionLogRef = $database->getReference('transaction_log');
             $transactionData = [
-                'eId' => $_SESSION['verified_user_id'],
+                'eId' => $user->displayName,
+                'supplier_name' => $supplier_name,
+                'priceQuantity' => $price_per_quantity,
+                'totalPrice' => $total_price, 
                 'action' => 'Added',
                 'productName' => $product_name,
                 'skuId' => $sku_number,
@@ -171,23 +206,28 @@ if(isset($_POST['add_inventory']))
 
         $transactionLogRef = $database->getReference('transaction_log');
         $transactionData = [
-            'eId' => $_SESSION['verified_user_id'],
+            'eId' => $user->displayName,
+            'totalPrice' => $total_price, 
+            'supplier_name' => $supplier_name,
+            'priceQuantity' => $price_per_quantity,
             'productName' => $product_name,
             'action' => 'Created',
             'skuId' => $sku_number,
             'skuQtyId' => $sku_qty,
-            'barcode' => $barcode_img,
+            'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
         ];
         $transactionLogRef->push($transactionData);
         // SKU does not exist, create a new entry
         $postData = [
-            'eId' => $_SESSION['verified_user_id'],
+            'supplier_name' => $supplier_name,
+            'priceQuantity' => $price_per_quantity,
+            'totalPrice' => $total_price, 
             'productName' => $product_name,
             'skuId' => $sku_number,
             'skuQtyId' => $sku_qty,
-            'barcode' => $barcode_img,
+            'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
         ];

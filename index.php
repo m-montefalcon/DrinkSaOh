@@ -45,7 +45,8 @@ function formatDate($date) {
                       <th>QTY</th>
                       <th>BARCODE</th>
                       <th>DATE</th>
-                      <th>TIME</th>
+                      <th>PRICE PER QTY</th>
+                      <th>TOTAL PRICE</th>
                       <th>Edit</th>
                       <th>Delete</th>
                     </tr>
@@ -67,9 +68,12 @@ function formatDate($date) {
                          <td><?=$row['productName']?></td>
                          <td><?=$row['skuId']?></td>
                          <td><?=$row['skuQtyId']?></td>
-                         <td><?=$row['barcode']?></td>
-                         <td><?= formatDate($row['currentDate']) ?></td>
-                         <td><?= formatTime($row['currentTime']) ?></td>
+                         <td><?=$row['barcode']?> </td>
+                         <td><?= formatDate($row['currentDate']) ?> 
+                        <br> <?= formatTime($row['currentTime']) ?> 
+                      </td>
+                         <td>₱<?=$row['priceQuantity']?></td>
+                         <td>₱<?=$row['totalPrice']?></td>
 
                          <td>
                           <a href="edit-inventory.php?id=<?=$key?>" class="btn btn-primary btn-sm">Edit</a>

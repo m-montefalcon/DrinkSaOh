@@ -24,12 +24,15 @@
 			<tr>
 				<th>eId</th>
 				<th>Product Name</th>
+				<th>Suppler Name</th>
 				<th>SKU</th>
 				<th>SKU Quantity</th>
 				<th>Action</th>
 				<th>Barcode</th>
 				<th>Date</th>
 				<th>Time</th>
+				<th>PRICE PER QUANTITY</th>
+				<th>TOTAL AMOUNT</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -48,12 +51,15 @@
 			<tr>
 				<td><?=$row['eId']?></td>
 				<td><?=$row['productName']?></td>
+				<td><?=$row['supplier_name']?></td>
 				<td><?=$row['skuId']?></td>
 				<td><?=$row['skuQtyId']?></td>
 				<td><?=$row['action']?></td>
 				<td><?=$row['barcode']?></td>
 				<td><?=date("M j, Y", strtotime($row['currentDate']))?></td>
 				<td><?=date("h:i:s A", strtotime($row['currentTime']))?></td>
+				<td>₱<?=$row['priceQuantity']?></td>
+				<td>₱<?=$row['totalPrice']?></td>
 			</tr>
 			<?php
 					}

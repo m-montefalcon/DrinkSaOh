@@ -108,8 +108,25 @@ use Kreait\Firebase\ServiceAccount;
 
         <a href="transaction_log.php">
           <div class="box transactions">
-          <h2>Transactions</h2>
-            <p>Transactions</p>
+    
+          <?php
+          $transactionsRef = $database->getReference('transaction_log');
+          $transactions = $transactionsRef->getValue();
+          
+          $totalPriceSum = 0;
+          if ($transactions) {
+              foreach ($transactions as $transaction) {
+                  $totalPriceSum += $transaction['totalPrice'];
+              }
+          }
+          
+       
+          echo '<h2>Transactions</h2>';
+          echo '<p>Total Transactions: ' . count($transactions) . '</p>';
+          echo '<p>Total Revenue: ₱' . $totalPriceSum . '</p>';
+  
+            ?>          
+            
             
           </div>
         </a>
