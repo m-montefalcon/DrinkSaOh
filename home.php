@@ -110,7 +110,7 @@ use Kreait\Firebase\ServiceAccount;
           <div class="box transactions">
     
           <?php
-          $transactionsRef = $database->getReference('transaction_log');
+          $transactionsRef = $database->getReference('inventory');
           $transactions = $transactionsRef->getValue();
           
           $totalPriceSum = 0;
@@ -130,6 +130,8 @@ use Kreait\Firebase\ServiceAccount;
             
           </div>
         </a>
+
+        
         <a href="index.php">
           <div class="box items">
           <h2>Products</h2>
