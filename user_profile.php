@@ -3,6 +3,7 @@ session_start();
 include('authentication.php');
 include('includes/side-navbar.php');
 include('dbcon.php');
+include('config.php');
 ?>
 
 <?php 
@@ -136,89 +137,90 @@ include('dbcon.php');
 		cursor: pointer;
 	}
 </style>
+					
 </head>
 
-<body>
-	<div class="home-section">
-		<div class="employee-profile py-4">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-4">
-						<div class="card shadow-sm">
-							<div class="card-header bg-transparent text-center">
-								<div class="user-profile">
-									<img src="img/user-profile.jpg"/> 
-									<input type="file"/>
-								</div>
-								<h3>
-									<?php echo $user->displayName ?>
-								</h3>
-							</div>
-							<!-- <div class="card-body">
-								<p class="mb-0"><strong class="pr-1">Employee ID:</strong> <?php echo $user-> uid ?> </p>
-								<p class="mb-0"><strong class="pr-1">Role:</strong> 
-								<?php 
-									$claims = $auth -> getUser($user->uid)-> customClaims;
-									if(isset($claims['Superadmin']) == true) {
-										echo "SuperAdmin";
-									}
-									if(isset($claims['Admin']) == true) {                           
-										echo "Admin";
-									} elseif($claims == null){
-										echo "No roles";
-									}
-								?>
-							</p>
-							</div> -->
-        				</div>
-      				</div>
-					<div class="col-lg-8">
-						<div class="card shadow-sm">
-							<div class="card-header bg-transparent border-0">
-								<h4 class="mb-0"> 
-									<i class="far fa-clone pr-1"> </i> 
-									General Information 
-								</h4>
-							</div>
-							<div class="card-body pt-0">
-								<table class="table table-bordered">
-									<tr>
-										<th width="30%"> Employee ID </th>
-										<td width="2%"> : </td>
-										<td> <?php echo $user-> uid ?> </td>
-									</tr>
-									<tr>
-										<th width="30%"> Role </th>
-										<td width="2%"> : </td>
-										<td>
-											<?php 
-												$claims = $auth -> getUser($user->uid)-> customClaims;
-												if(isset($claims['Superadmin']) == true) {
-													echo "SuperAdmin";
-												}
-												if(isset($claims['Admin']) == true) {                           
-													echo "Admin";
-												} elseif($claims == null){
-													echo "No roles";
-												}
-											?>
-										</td>
-									</tr>
-									<tr>
-										<th width="30%"> Email Address </th>
-										<td width="2%"> : </td>
-										<td> <?=$user -> email ?> </td>
-									</tr>
-									<tr>
-										<th width="30%"> Contact Number </th>
-										<td width="2%"> : </td>
-										<td> <?=$user -> phoneNumber ?> </td>
-									</tr>
-									<tr>
-										<th width="30%"> Year Started </th>
-										<td width="2%"> : </td>
-										<td> 2023 </td>
-									</tr>
+<div class="home-section">
+  <div class="employee-profile py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card shadow-sm">
+            <form action="code.php" method="POST" enctype="multipart/form-data" name="ex_card" class="forms-sample">
+              <div class="card-header bg-transparent text-center">
+			  <div class="user-profile">
+				<?php
+				if (isset($_SESSION['verified_user_id'])) {
+					// Get the photo URL from the Firebase Storage
+					$photoUrl = $bucket->object("user-profile/{$_SESSION['verified_user_id']}/{$_SESSION['verified_user_id']}.jpg")->signedUrl(new \DateTime('+1 hour'));
+
+					// Display the user's profile image
+					echo '<img id="user-image" src="' . $photoUrl . '" alt="User Profile Image" />';
+				} else {
+					// Display a default profile image if the user is not logged in
+					echo '<img id="user-image" src="img/user-profile.jpg" alt="Default Profile Image" />';
+				}
+				?>
+				<input id="image-input" type="file" name="image-input" />
+				<br>
+				<button type="submit" name="add_photo" class="btn btn-primary me-2">Update</button>
+				</div>
+
+				<h3>
+             	 <?php echo $user->displayName ?>
+           		</h3>
+              </div>
+            </form>
+           
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card shadow-sm">
+            <div class="card-header bg-transparent border-0">
+              <h4 class="mb-0">
+                <i class="far fa-clone pr-1"> </i>
+                General Information
+              </h4>
+            </div>
+            <div class="card-body pt-0">
+              <table class="table table-bordered">
+                <tr>
+                  <th width="30%"> Employee ID </th>
+                  <td width="2%"> : </td>
+                  <td> <?php echo $user-> uid ?> </td>
+                </tr>
+                <tr>
+                  <th width="30%"> Role </th>
+                  <td width="2%"> : </td>
+                  <td>
+                    <?php 
+                      $claims = $auth -> getUser($user->uid)-> customClaims;
+                      if(isset($claims['Superadmin']) == true) {
+                        echo "SuperAdmin";
+                      }
+                      if(isset($claims['Admin']) == true) {                           
+                        echo "Admin";
+                      } elseif($claims == null){
+                        echo "No roles";
+                      }
+                    ?>
+                  </td>
+                </tr>
+                <tr>
+                  <th width="30%"> Email Address </th>
+                  <td width="2%"> : </td>
+                  <td> <?=$user -> email ?> </td>
+                </tr>
+                <tr>
+                  <th width="30%"> Contact Number </th>
+                  <td width="2%"> : </td>
+                  <td> <?=$user -> phoneNumber ?> </td>
+                </tr>
+                <tr>
+                  <th width="30%"> Year Started </th>
+                  <td width="2%"> : </td>
+                  <td> 2023 </td>
+				</tr>
 									<!-- <tr>
 										<th width="30%"> Gender </th>
 										<td width="2%">:</td>
@@ -300,13 +302,51 @@ include('dbcon.php');
       		</div>
     	</div>
   	</div>
-	<script>
-		const image = document.querySelector("img");
-		const input = document.querySelector('input');
+	    
+	  <script>
+	  var firebaseConfig = {
+	    apiKey: "AIzaSyDDJJulzEgxSoi7j1PM80DcS5qOn6e8j7Q",
+	    authDomain: "system-inventory-management.firebaseapp.com",
+	    projectId: "system-inventory-management",
+	    storageBucket: "gs://system-inventory-management.appspot.com",
+	    databaseURL: "https://system-inventory-management-default-rtdb.firebaseio.com/",
+	  };
+	  firebase.initializeApp(firebaseConfig);
 
-		input.addEventListener('change', () => {
-		image.src = URL.createObjectURL(input.files[0]);
-		});
+	  // Get references to the image input and user image
+	  var imageInput = document.getElementById("image-input");
+	  var userImage = document.getElementById("user-image");
+
+	  // Listen for changes in the input file
+	  imageInput.addEventListener("change", function (event) {
+	    var file = event.target.files[0];
+	    var storageRef = firebase.storage().ref("user-profiles/" + file.name);
+
+	    // Upload the file to Firebase Storage
+	    var uploadTask = storageRef.put(file);
+
+	    // Listen for upload completion
+	    uploadTask.on(
+	      "state_changed",
+	      null,
+	      function (error) {
+	        // Handle upload error
+	        console.error("Error uploading image:", error);
+	      },
+	      function () {
+	        // Upload completed successfully
+	        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+	          // Update the user image source and save the download URL in Firebase Realtime Database
+	          userImage.src = downloadURL;
+
+	          var databaseRef = firebase.database().ref("users/" + "<?php echo $user->userId ?>");
+	          databaseRef.update({
+	            photoUrl: downloadURL,
+	          });
+	        });
+	      }
+	    );
+	  });
 	</script>
 </body>
 </html>

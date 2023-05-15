@@ -453,7 +453,22 @@
       <div class="top-navbar">
         <div class="bx bx-menu" id="menu-icon"></div>
           <div class="profile">
-            <img src="img/profile.jpg" alt="">
+							
+								<?php
+                include('config.php');
+								if (isset($_SESSION['verified_user_id'])) {
+									// Get the photo URL from the Firebase Storage
+									$photoUrl = $bucket->object("user-profile/{$_SESSION['verified_user_id']}/{$_SESSION['verified_user_id']}.jpg")->signedUrl(new \DateTime('+1 hour'));
+
+									// Display the user's profile image
+									echo '<img id="user-image" src="' . $photoUrl . '" alt="User Profile Image" />';
+								} else {
+									// Display a default profile image if the user is not logged in
+									echo '<img id="user-image" src="img/user-profile.jpg" alt="Default Profile Image" />';
+								}
+								?>
+							
+						
           </div>
       </div>
       <main class="home-section"> </main>
