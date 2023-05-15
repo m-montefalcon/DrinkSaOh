@@ -1,5 +1,5 @@
 <?php
-include('admin_auth.php');
+include('super_admin_auth.php');
 include('includes/side-navbar.php');
 ?>
 
