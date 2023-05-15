@@ -280,9 +280,9 @@ if (isset($_FILES['image-input']) && $_FILES['image-input']['error'] === UPLOAD_
         'photo_url' => $fileUrl,
     ]);
 
-    echo 'File uploaded successfully!';
+    header('location: user_profile.php');
 } else {
-    echo 'No file selected or an error occurred during file upload.';
+    header('location: user_profile.php');
 }
 
 
