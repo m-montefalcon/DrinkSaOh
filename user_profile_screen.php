@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 session_start();
 include('authentication.php');
 include('includes/header.php');
@@ -137,4 +137,4 @@ include("dbcon.php");
             ?>
 	
 </body>
-</html>
+</html> -->

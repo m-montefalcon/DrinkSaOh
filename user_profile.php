@@ -1,97 +1,315 @@
 <?php
 session_start();
 include('authentication.php');
-include('includes/header.php');
+include('includes/side-navbar.php');
 include('dbcon.php');
-
-
 ?>
+
 <?php 
     $uid = $_SESSION['verified_user_id'];
     $user = $auth->getUser($uid);
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>User Profile</title>
 	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-	<div class="container">
-		<div class="card">
-			<div class="card-header">
-				<h2>User Profile</h2>
-			</div>
-			<div class="card-body">
-				<form method="POST" action="user_profile_screen.php">
-					<table>
-						
-						<tr>
-							<th>Display Name:</th>
-							<td><?php echo $user->displayName ?></td>
-						</tr>
-						<tr>
-							<th>Phone Number:</th>
-							<td><?php echo $user->phoneNumber ?></td>
-						</tr>
-						<tr>
-							<th>Email:</th>
-							<td><?php echo $user->email ?></td>
-						</tr>
-					</table>
-                    <br>
-                    <button type="submit" name = "user_edit_profile_button" value= "<?=$user -> uid?>" class="btn btn-primary" value = "<?=$key?>">EDIT PROFILE</button>
-
-				</form>
-			</div>
-		</div>
-	</div>
-</body>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>
 <style>
-    .container {
-	margin: 0 auto;
-	max-width: 800px;
-	padding: 20px;
-}
-
-.card {
-	background-color: #fff;
-	box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
-	margin-bottom: 20px;
-}
-
-.card-header {
-	background-color: #007bff;
-	color: #fff;
-	padding: 10px 20px;
-}
-
-.card-body {
-	padding: 20px;
-}
-
-table {
-	border-collapse: collapse;
-	width: 100%;
-}
-
-th, td {
-	padding: 10px;
-	text-align: left;
-	border-bottom: 1px solid #ddd;
-}
-
-th {
-	background-color: #f2f2f2;
-}
-
-tr:hover {
-	background-color: #f5f5f5;
-}
-
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		background-color: #f6f6f6;
+		overflow: hidden;
+	} 
+	.employee-profile .card {
+		border-radius: 10px;
+	}
+	.employee-profile .card .card-header .profile_img {
+		width: 150px;
+		height: 150px;
+		object-fit: cover;
+		margin: 10px auto;
+		border: 10px solid #ccc;
+		border-radius: 50%;
+	}
+	.employee-profile .card h3 {
+		font-size: 20px;
+		font-weight: 700;
+		margin-top: 10px;
+		text-align: center;
+	}
+	.employee-profile .card p {
+		font-size: 16px;
+		color: #000;
+	}
+	.employee-profile .table th,
+	.employee-profile .table td {
+		font-size: 14px;
+		padding: 5px 10px;
+		color: #000;
+	}
+	h4 {
+		font-size: 20px;
+		font-weight: 700;
+	}
+	h2 {
+		font-size: 24px;
+		font-weight: 700;
+		margin-top: 10px;
+		text-align: center;
+	}
+	label {
+		display: block;
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 10px;
+		color: #333333;
+	}
+	input[type="text"], 
+	input[type="tel"], 
+	input[type="email"], 
+	input[type="password"] {
+		background-color: #F2F2F2;
+		border: none;
+		border-radius: 5px;
+		box-shadow: inset 0px 0px 5px #9C27B0FF;
+		display: block;
+		font-size: 16px;
+		margin-bottom: 20px;
+		padding: 10px;
+		width: 100%;
+	}
+	input[type="submit"] {
+		background-color: #1A0046FF;
+		border: none;
+		border-radius: 5px;
+		color: #FFFFFF;
+		cursor: pointer;
+		font-size: 16px;
+		padding: 10px;
+	}
+	input[type="submit"]:hover {
+		background-color: #11101D;
+	}
+	.divider::before {
+		content: "";
+		display: block;
+		border-top: 5px solid #333333;
+		margin: 20px 0;
+	}
+	.btn-danger::before {
+		content: "\f0a8"; 
+		font-family: "Font Awesome 5 Free"; 
+		font-weight: bold;
+		font-size: 20px;
+		color: black;
+	}
+	.btn-danger {
+		background-color: transparent;      
+		border: none;
+		position: relative;
+		right: 10px;
+		bottom: 25px;
+	}
+	.btn-danger:hover {
+		background-color: transparent;      
+		border: none;
+	}
+	.error {
+		color: #FF0000;
+		font-size: 14px;
+		margin-top: 5px;
+	}
+	.user-profile img {
+		height: 150px;
+		width: 150px;
+		object-fit: contain;
+		object-position: center;
+		border-radius: 50%;
+		cursor: pointer;
+	}
 </style>
+</head>
+
+<body>
+	<div class="home-section">
+		<div class="employee-profile py-4">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="card shadow-sm">
+							<div class="card-header bg-transparent text-center">
+								<div class="user-profile">
+									<img src="img/user-profile.jpg"/> 
+									<input type="file"/>
+								</div>
+								<h3>
+									<?php echo $user->displayName ?>
+								</h3>
+							</div>
+							<!-- <div class="card-body">
+								<p class="mb-0"><strong class="pr-1">Employee ID:</strong> <?php echo $user-> uid ?> </p>
+								<p class="mb-0"><strong class="pr-1">Role:</strong> 
+								<?php 
+									$claims = $auth -> getUser($user->uid)-> customClaims;
+									if(isset($claims['Superadmin']) == true) {
+										echo "SuperAdmin";
+									}
+									if(isset($claims['Admin']) == true) {                           
+										echo "Admin";
+									} elseif($claims == null){
+										echo "No roles";
+									}
+								?>
+							</p>
+							</div> -->
+        				</div>
+      				</div>
+					<div class="col-lg-8">
+						<div class="card shadow-sm">
+							<div class="card-header bg-transparent border-0">
+								<h4 class="mb-0"> 
+									<i class="far fa-clone pr-1"> </i> 
+									General Information 
+								</h4>
+							</div>
+							<div class="card-body pt-0">
+								<table class="table table-bordered">
+									<tr>
+										<th width="30%"> Employee ID </th>
+										<td width="2%"> : </td>
+										<td> <?php echo $user-> uid ?> </td>
+									</tr>
+									<tr>
+										<th width="30%"> Role </th>
+										<td width="2%"> : </td>
+										<td>
+											<?php 
+												$claims = $auth -> getUser($user->uid)-> customClaims;
+												if(isset($claims['Superadmin']) == true) {
+													echo "SuperAdmin";
+												}
+												if(isset($claims['Admin']) == true) {                           
+													echo "Admin";
+												} elseif($claims == null){
+													echo "No roles";
+												}
+											?>
+										</td>
+									</tr>
+									<tr>
+										<th width="30%"> Email Address </th>
+										<td width="2%"> : </td>
+										<td> <?=$user -> email ?> </td>
+									</tr>
+									<tr>
+										<th width="30%"> Contact Number </th>
+										<td width="2%"> : </td>
+										<td> <?=$user -> phoneNumber ?> </td>
+									</tr>
+									<tr>
+										<th width="30%"> Year Started </th>
+										<td width="2%"> : </td>
+										<td> 2023 </td>
+									</tr>
+									<!-- <tr>
+										<th width="30%"> Gender </th>
+										<td width="2%">:</td>
+										<td>Male</td>
+									</tr> -->
+									<!-- <tr>
+										<th width="30%"> Religion </th>
+										<td width="2%"> : </td>
+										<td> Group </td>
+									</tr> -->
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="height: 26px"></div>
+				<div class="card shadow-sm">
+					<div class="card-header bg-transparent border-0">
+						<h2 class="mb-0"> Edit Profile </h2>
+					</div>
+					<div class="card-body pt-0">
+						<form action="userCred.php" method="POST">
+							<?php
+								if (isset($_SESSION['status'])) {
+									echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
+									unset($_SESSION['status']);
+								}
+							?>
+							<?php 
+								include('dbcon.php');
+								if(isset($_GET['id'])) {
+									$uid = $_GET['id'];
+								}
+								try {
+									$user = $auth->getUser($uid);
+							?>
+							
+							<input type="hidden" name="user_profile_key" value="<?=$uid;?>">
+
+							<label for="full_name"> Full Name </label>
+							<input type="text" id="full_name" value =  "<?=$user -> displayName ?>" name="full_name" required>
+
+							<label for="phone_number"> Phone Number </label>
+							<input type="text" id="phone_number" value = "<?=$user -> phoneNumber ?>" name="phone_number" pattern="{10}">
+							
+							<label for="email_address"> Email Address </label>
+							<input type="email" id="email_address" value = "<?=$user -> email ?>" name="email_address" required>
+						
+							<input type="submit" name = "user_profile_submit_button" value="Save">
+
+							<td></td>
+							<div class="divider"></div> 
+							<h2></h2>
+
+							<br>
+							<h2> Privacy Settings </h2>
+							
+							<form action="userCred.php" method="POST">
+								<input type="hidden" name="change_password_id_value" value="<?=$uid?>">
+									<div class="form-group">
+										<label for="password">Password:</label>
+										<input type="password" id="password" name="password" placeholder="Enter new password">
+									</div>
+									<div class="form-group">
+										<label for="password">Confirm Password:</label>
+										<input type="password" id="password" name="confirm_password" placeholder="Re-enter new password">
+									</div>
+									
+									<input type="submit" name = "change_password_button_user" value="Change Password">
+							</form>
+						</form>
+						<?php
+							} catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+								echo $e->getMessage();
+							}
+						?> 
+          			</div>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
+	<script>
+		const image = document.querySelector("img");
+		const input = document.querySelector('input');
+
+		input.addEventListener('change', () => {
+		image.src = URL.createObjectURL(input.files[0]);
+		});
+	</script>
+</body>
 </html>
-?> 
+
+
+

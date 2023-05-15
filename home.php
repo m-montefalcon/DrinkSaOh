@@ -1,234 +1,243 @@
 <?php 
 session_start();
-
 include('authentication.php');
-include('includes/header.php');
+include('includes/side-navbar.php');
 include('dbcon.php');
+
 require_once __DIR__.'/vendor/autoload.php';
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 ?>
 
-<div class="container-fluid bg-primary">
-  <div class="row">
-    <div class="col-md-12">
-      <?php
-        if (isset($_SESSION['status'])) {
-          echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-          unset($_SESSION['status']);
-        }
-      ?>
-    </div>
-  </div>
-</div>
-
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <header>
-      <h1>Dashboard</h1>
-    </header>
-    <main>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #f6f6f6;
+    overflow-x: hidden;
+  }
+  h1 {
+    margin: 0;
+  }
+  h3 {
+    font-size: 28px;
+		font-weight: 600;
+		
+  }
+  section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    flex-wrap: wrap;
+  }
+  .box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #f4f4f4;
+    color: #333;
+    border-radius: 25px;
+    padding: 10px;
+    margin: 20px;
+    width: 260px;
+    height: 220px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 8px solid black;
+    border-bottom: none;
+    text-decoration: underline;
+    text-decoration-color: black;
+  }
+  .box:hover {
+    transform: scale(1.1);
+  }
+  .admin {
+    background-image: linear-gradient(to bottom, #ffce3a, #ba8b00);
+    color: black;   
+    box-shadow: 0px 0px 20px #ba8b00;
+    text-align: center;
+  }
+  .superadmin {
+    background-image: linear-gradient(to bottom, #007bff, #0056b3);
+    color: black;   
+    box-shadow: 0px 0px 20px #0056b3;
+    text-align: center;
+  }
+  .products {
+    background-image: linear-gradient(to bottom, #28a745, #19692c);
+    color: black;    
+    box-shadow: 0px 0px 20px #19692c;
+    text-align: center;
+  }
+  .transactions {
+    background-image: linear-gradient(to bottom, #dc3545, #a71d2a);
+    color: black;  
+    box-shadow: 0px 0px 20px #a71d2a;
+    text-align: center;
+  }
+  .items {
+    background-image: linear-gradient(to bottom, #008080, #003434);
+    color: black;
+    box-shadow: 0px 0px 20px #003434;
+    text-align: center;
+  }
+  .home-section .icon ion-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+  }
+  .home-section::-webkit-scrollbar {
+    width: 5px; 
+  }
+  .content::-webkit-scrollbar-track {
+    background-color: #f6f6f6; 
+  }
+  .home-section::-webkit-scrollbar-thumb {
+      background-color: #ccc; 
+  }
+  .home-section::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa; 
+  }  
+</style>
+</head>
 
-      <div class="container">
-        <a href="profiles.php">
-          <div class="box admin">
-            <h2>Admins</h2>
-            <p>View and manage admins  </p>
-              <span> Admin Count:
-            <?php 
-                $adminCount = 0;
+  <!-- <div class="container-fluid bg-primary">
+    <div class="row">
+      <div class="col-md-12">
+        <?php
+          if (isset($_SESSION['status'])) {
+            echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
+            unset($_SESSION['status']);
+          }
+        ?>
+      </div>
+    </div>
+  </div> -->
 
-               $users = $auth->listUsers();
-               foreach ($users as $user) {
-                   $claims = $user->customClaims;
-                   if(isset($claims['Admin']) == true){
-                       $adminCount++;
-                   }
-               }
-           
-               echo $adminCount;
-                
-                ?>
-          
-            </span>
-          </div>
-        </a>
-        <a href="profiles.php">
-            <div class="box superadmin">
-                <h2>SuperAdmins</h2>
-                <p>View and manage superadmins</p>
-                <span>Superadmin Count: <?php 
-                $superadminCount = 0;
+<body>
+  <section class="home-section">
+    <a href="profiles.php">
+      <div class="box admin">
+        <span class="icon"> <ion-icon name="person-sharp"></ion-icon> </span>
+        <h3> Admins </h3>
+        <!-- <p>View and manage admins</p> -->
+        <span> Admin Count:
+          <?php 
+              $adminCount = 0;
 
-               $users = $auth->listUsers();
-               foreach ($users as $user) {
-                   $claims = $user->customClaims;
-                   if(isset($claims['Superadmin']) == true){
-                       $superadminCount++;
-                   }
-               }
-           
-               echo $superadminCount;
-                
-                ?></span>
-            </div>
-          <a href="index.php">
-          <div class="box products">
-          <h2>Items</h2>
-            <p>View and manage items</p>
-            <span>
-
-            <?php 
-              $ref_table = "inventory";
-
-
-              $totalQtySnapshot = $database->getReference($ref_table)
-              ->orderByChild('skuId')
-              ->getSnapshot();
-          
-              $totalQty = 0;
-              if ($totalQtySnapshot->hasChildren()) {
-                  foreach ($totalQtySnapshot->getValue() as $inventory) {
-                      $totalQty += $inventory['skuQtyId'];
+              $users = $auth->listUsers();
+              foreach ($users as $user) {
+                  $claims = $user->customClaims;
+                  if(isset($claims['Admin']) == true){
+                      $adminCount++;
                   }
               }
-              echo "Total quantity: " . $totalQty;
-            ?>
-            
-            </span>
-          </div>
-        </a>
 
+              echo $adminCount;
 
-        <a href="transaction_log.php">
-          <div class="box transactions">
-    
-          <?php
-          $transactionsRef = $database->getReference('inventory');
-          $transactions = $transactionsRef->getValue();
-          
-          $totalPriceSum = 0;
-          if ($transactions) {
-              foreach ($transactions as $transaction) {
-                  $totalPriceSum += $transaction['totalPrice'];
-              }
-          }
-          
-       
-          echo '<h2>Transactions</h2>';
-          echo '<p>Total Transactions: ' . count($transactions) . '</p>';
-          echo '<p>Total Revenue: ₱' . $totalPriceSum . '</p>';
-  
-            ?>          
-            
-            
-          </div>
-        </a>
-
-        
-        <a href="index.php">
-          <div class="box items">
-          <h2>Products</h2>
-            <p>View and manage products</p>
-           
-            <span>
-              <?php 
-              $ref_table = "inventory";
-
-              $inventorySnapshot = $database->getReference($ref_table)->getSnapshot();
-              
-              $numDatasets = $inventorySnapshot->numChildren();
-              
-              echo "Number of products in inventory: " . $numDatasets;
-              
-              
-              ?>
-            </span>
-          </div>
-        </a>
+          ?>
+        </span>
       </div>
-      <style>
-        * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-        }
+    </a>
+    <a href="profiles.php">
+      <div class="box superadmin">
+        <span class="icon"> <ion-icon name="person-add-sharp"></ion-icon> </span>
+        <h3> SuperAdmins </h3>
+        <!-- <p>View and manage superadmins</p> -->
+        <span> Superadmin Count: 
+          <?php 
+            $superadminCount = 0;
+            $users = $auth->listUsers();
+            foreach ($users as $user) {
+              $claims = $user->customClaims;
+              if(isset($claims['Superadmin']) == true) {
+                $superadminCount++;
+              }
+            }
+            echo $superadminCount;
+          ?>
+        </span>
+      </div>
+    </a>
+    <a href="index.php">
+      <div class="box products">
+        <span class="icon"> <ion-icon name="pricetags-sharp"></ion-icon> </span>
+        <h3> Products </h3>
+        <!-- <p>View and manage products</p> -->
+        <span>
+          <?php 
+            $ref_table = "inventory";
+            $inventorySnapshot = $database->getReference($ref_table)->getSnapshot();
+            $numDatasets = $inventorySnapshot->numChildren();
+            echo "Products in Inventory: " . $numDatasets;
+          ?>
+        </span>
+      </div>
+    </a>
+    <a href="transaction_log.php">
+      <div class="box transactions">
+        <span class="icon"> <ion-icon name="cart-sharp"></ion-icon> </span>
+        <h3> Transactions </h3>
+        <!-- <p>View last transaction made</p> -->
+          <?php
+            $transactionsRef = $database->getReference('transaction_log');
+            $transactionsRef = $database->getReference('inventory');
+            $transactions = $transactionsRef->getValue();
 
-        body {
-          font-family: Arial, sans-serif;
-          font-size: 16px;
-        }
+            $totalPriceSum = 0;
+            if ($transactions) {
+              foreach ($transactions as $transaction) {
+                if (isset($transaction['totalPrice'])) {
+                  $totalPriceSum += $transaction['totalPrice'];
+                }
+              }
+            }
+            echo 'Total Transactions: ' . count($transactions) . '</p>';
+            echo 'Total Revenue: ₱' . $totalPriceSum . '</p>';
+          ?>       
+      </div>
+    </a>
+    <a href="index.php">
+      <div class="box items">
+        <span class="icon"> <ion-icon name="clipboard"></ion-icon> </span>
+        <h3> Items </h3>
+        <!-- <p>View and manage items</p> -->
+        <span>
+          <?php 
+            $ref_table = "inventory";
 
-        header {
-          background-color: #333;
-          color: #fff;
-          padding: 20px;
-          text-align: center;
-        }
+            $totalQtySnapshot = $database->getReference($ref_table)
+            ->orderByChild('skuId')
+            ->getSnapshot();
 
-        h1 {
-          margin: 0;
-        }
-
-        main {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-        }
-
-        .container {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .box {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          align-items: center;
-          background-color: #f4f4f4;
-          color: #333;
-          border-radius: 5px;
-          padding: 20px;
-          margin: 20px;
-          width: 250px;
-          height: 250px;
-          transition: all 0.3s ease;
-          cursor: pointer;
-        }
-
-        .box:hover {
-          transform: scale(1.1);
-        }
-
-        .admin {
-          background-color: #ffc107;
-          border-bottom: none;
-        }
-
-        .superadmin {
-          background-color: #007bff;
-          color: #fff;
-          border-bottom: none;
-        }
-
-        .products {
-          background-color: #28a745;
-          color: #fff;
-          border-bottom: none;
-        }
-
-        .transactions {
-          background-color: #dc3545;
-          color: #fff;
-          border-bottom: none;
-        }
+            $totalQty = 0;
+            if ($totalQtySnapshot->hasChildren()) {
+              foreach ($totalQtySnapshot->getValue() as $inventory) {
+                  $totalQty += $inventory['skuQtyId'];
+              }
+            }
+            echo "Total Quantity: " . $totalQty;
+          ?>
+        </span>
+      </div>
+    </a>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  </section>
+</body>
+</html>   

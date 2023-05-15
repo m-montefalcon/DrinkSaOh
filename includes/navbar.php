@@ -1,4 +1,32 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registration Form</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+  body {
+    background-color: #F2F2F2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+	</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="container">
+        <?php if(!isset($_SESSION['verified_user_id'])) : ?>        
+            <a class="nav-link " aria-current="page" href="login.php"></a>
+            <a class="nav-link " aria-current="page" href="register.php"></a>       
+        <?php endif; ?>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
     <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,9 +43,6 @@
           </li>
         <?php else : ?>
           <?php if(isset($_SESSION['verified_Superadmin'])) : ?>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="transaction_log.php">TRANSACTION LOG</a>
-            </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="profiles.php">USERS</a>
             </li>
@@ -36,7 +61,6 @@
             </li>
 
           <?php elseif (isset($_SESSION['verified_admin'])) : ?>
-            
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="index.php">INVENTORY</a>
             </li>
@@ -64,4 +88,4 @@
       </ul>
     </div>
   </div>
-</nav>
+</nav> -->
