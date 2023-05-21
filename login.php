@@ -161,13 +161,6 @@ include("dbcon.php");
 
 			<input type="submit" name = "login_user_button" value="Login">
 
-			<h1> OR </h1>
-
-			<div class="form-link">
-				<span> Don't have an account? 
-					<a href="register.php" class="link signup-link"> Signup </a> 
-				</span>
-			</div>
 		</form>
 	</div>
 	<script>
