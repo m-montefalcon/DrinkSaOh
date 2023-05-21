@@ -23,7 +23,7 @@ if(isset($_SESSION['verified_Superadmin'])){
 
     else{
         $_SESSION['status'] = "ACCESS DENIED ONLY SUPER ADMIN CAN ACCESS IT";
-        header("location: {$_SERVER['HTTP_REFERER']}");
+        header("location: home.php");
         exit();
     
     }
