@@ -1,48 +1,93 @@
 
 <?php
 session_start();
-use Firebase\Auth\Token\Exception\InvalidToken;
+use Kreait\Firebase\Factory;
 
+use Firebase\Auth\Token\Exception\InvalidToken;
+use Kreait\Firebase\ServiceAccount;
 
 
 include('dbcon.php');
 
 
 
+// Initialize Firebase Auth
+
+// Function to check if email exists in Firebase Auth
+function emailExists($email)
+{
+    global $auth;
+
+    try {
+        $user = $auth->getUserByEmail($email);
+        return true; // Email exists
+    } catch (\Kreait\Firebase\Exception\Auth\UserNotFound$e) {
+        return false; // Email does not exist
+    } catch (\Throwable $e) {
+        // Handle other exceptions
+        return false; // Return false or throw custom exception as per your requirements
+    }
+}
+function phoneNumberExists($phoneNumber)
+{
+    global $auth;
+
+    try {
+        $user = $auth->getUserByPhoneNumber($phoneNumber);
+        return true; // Phone number exists
+    } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+        return false; // Phone number does not exist
+    } catch (\Throwable $e) {
+        // Handle other exceptions
+        return false; // Return false or throw custom exception as per your requirements
+    }
+}
 
 //REGISTER USER 
-
-if(isset($_POST['register_user_button'])){
+if (isset($_POST['register_user_button'])) {
     $fullName = $_POST["full_name"];
     $emailAddress = $_POST["email_address"];
     $phoneNumber = $_POST["phone_number"];
     $password = $_POST["password"];
 
-    $userProperties = [
-        'email' => $emailAddress,
-        'displayName' => $fullName ,
-        'emailVerified' => false,
-        'phoneNumber' => '+63'.$phoneNumber,
-        'password' => $password,
-        
-        
-    ];
+    try {
+        // Check if email or phone number already exists
+        if (emailExists($emailAddress)) {
+            throw new Exception("Email address already exists.");
+        }
 
-    $createUserCred = $auth->createUser($userProperties);
-    if($createUserCred)
-    {
-        $_SESSION['status'] = "Successfully Created!";
-        header('Location: home.php');
-        exit();
+        if (phoneNumberExists($phoneNumber)) {
+            throw new Exception("Phone number already exists.");
+        }
 
-    }else
-    {
-        $_SESSION['status'] = "Error!";
-        header('Location: login.php');
+        // User properties for creating a new user
+        $userProperties = [
+            'email' => $emailAddress,
+            'displayName' => $fullName,
+            'emailVerified' => false,
+            'phoneNumber' => '+63' . $phoneNumber,
+            'password' => $password,
+        ];
+
+        // Assuming you have an instance of Firebase Authentication SDK assigned to $auth
+        $createUserCred = $auth->createUser($userProperties);
+        if ($createUserCred) {
+            $_SESSION['status'] = "Successfully Created!";
+            header('Location: profiles.php');
+            exit();
+        } else {
+            $_SESSION['status'] = "Error!";
+            header('Location: register.php');
+            exit();
+        }
+    } catch (Exception $e) {
+        // Handle the exception
+        $_SESSION['status'] = $e->getMessage();
+        header('Location: register.php');
         exit();
     }
-    
 }
+
 //UPDATE USER ( SUPER ADMIN PRIVILAGE)
 if(isset($_POST['update_user_button'])){
 

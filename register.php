@@ -1,6 +1,7 @@
 <?php
-session_start();
+include('super_admin_auth.php');
 include("dbcon.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -171,13 +172,8 @@ include("dbcon.php");
 
 			<input type="submit" name = "register_user_button" value="Register">
 
-			<h1> OR </h1>
 
-			<div class="form-link">
-				<span> Already have an account? 
-					<a href="login.php" class="link signup-link"> Login </a> 
-				</span>
-			</div>
+
 		</form>
 	</div>
 	<script>
