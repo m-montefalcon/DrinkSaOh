@@ -37,6 +37,9 @@ if (isset($_POST['delete_button'])) {
         'skuId' => $inventoryItemData['skuId'],
         'skuQtyId' => $inventoryItemData['skuQtyId'],
         'barcode' => $inventoryItemData['barcode'],
+        'productCategory' => $inventoryItemData['productCategory'],
+        'supplierPrice' => $inventoryItemData['supplierPrice'],
+        'criticalPoint' => $inventoryItemData['criticalPoint'],
         'currentDate' => date('Y-m-d'),
         'currentTime' => date('H:i:s')
     ];
@@ -70,6 +73,9 @@ if(isset($_POST['edit_inventory']))
     $sku_number = $_POST['sku_number'];
     $sku_qty = $_POST['sku_qty'];
     $product_name = $_POST['product_name'];
+    $supplier_price = $_POST['supplier_price'];
+    $critical_point = $_POST['critical_point'];
+    $product_category = $_POST['select_category_user'];
 
     $bd = $sku_number;
     $bg = new BG();
@@ -95,6 +101,9 @@ if(isset($_POST['edit_inventory']))
         'skuId' => $sku_number,
         'skuQtyId' => $sku_qty,
         'barcode' => $bi,
+        'productCategory' => $product_category,
+        'supplierPrice' => $supplier_price,
+        'criticalPoint' => $critical_point,
         'currentDate' => date('Y-m-d'),
         'currentTime' => date('H:i:s')
     ];
@@ -114,6 +123,9 @@ if(isset($_POST['edit_inventory']))
             'productName' => $product_name,
             'skuId' => $sku_number,
             'skuQtyId' => $sku_qty,
+            'productCategory' => $product_category,
+            'supplierPrice' => $supplier_price,
+            'criticalPoint' => $critical_point,
             'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
@@ -139,7 +151,13 @@ if(isset($_POST['add_inventory']))
     $sku_qty = $_POST['sku_qty'];
     $product_name = $_POST['product_name'];
     $supplier_name = $_POST['supplier_name'];
+    $supplier_price = $_POST['supplier_price'];
+    $critical_point = $_POST['critical_point'];
+    $product_category = $_POST['select_category_user'];
     $price_per_quantity = $_POST['price_qty'];
+    
+
+    
     
     $bd = $sku_number;
     $bg = new BG();
@@ -172,6 +190,9 @@ if(isset($_POST['add_inventory']))
                 'priceQuantity' => $price_per_quantity,
                 'productName' => $product_name,
                 'skuQtyId' => $newQty,
+                'productCategory' => $product_category,
+                'supplierPrice' => $supplier_price,
+                'criticalPoint' => $critical_point,
                 'barcode' => $bi,
                 'currentDate' => date('Y-m-d'),
                 'currentTime' => date('H:i:s')
@@ -192,6 +213,9 @@ if(isset($_POST['add_inventory']))
                 'productName' => $product_name,
                 'skuId' => $sku_number,
                 'skuQtyId' => $sku_qty,
+                'productCategory' => $product_category,
+                'supplierPrice' => $supplier_price,
+                'criticalPoint' => $critical_point,
                 'barcode' => $barcode_img,
                 'currentDate' => date('Y-m-d'),
                 'currentTime' => date('H:i:s')
@@ -218,6 +242,10 @@ if(isset($_POST['add_inventory']))
             'action' => 'Created',
             'skuId' => $sku_number,
             'skuQtyId' => $sku_qty,
+            'productCategory' => $product_category,
+            'supplierPrice' => $supplier_price,
+            'criticalPoint' => $critical_point,
+            'criticalPoint' => $critical_point,
             'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
@@ -231,6 +259,9 @@ if(isset($_POST['add_inventory']))
             'productName' => $product_name,
             'skuId' => $sku_number,
             'skuQtyId' => $sku_qty,
+            'productCategory' => $product_category,
+            'supplierPrice' => $supplier_price,
+            'criticalPoint' => $critical_point,
             'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
@@ -251,39 +282,39 @@ if(isset($_POST['add_inventory']))
     }
 }
 
-require_once 'config.php';
+// require_once 'config.php';
 
 
 
-if (isset($_FILES['image-input']) && $_FILES['image-input']['error'] === UPLOAD_ERR_OK) {
-    $fileData = file_get_contents($_FILES['image-input']['tmp_name']);
-    $fileName = $_SESSION['verified_user_id'] . '.jpg'; // Use the user's ID as the filename
+// if (isset($_FILES['image-input']) && $_FILES['image-input']['error'] === UPLOAD_ERR_OK) {
+//     $fileData = file_get_contents($_FILES['image-input']['tmp_name']);
+//     $fileName = $_SESSION['verified_user_id'] . '.jpg'; // Use the user's ID as the filename
 
-    // Specify the destination path in Firebase Storage
-    $destination = 'user-profile/' . $_SESSION['verified_user_id'] . '/' . $fileName;
+//     // Specify the destination path in Firebase Storage
+//     $destination = 'user-profile/' . $_SESSION['verified_user_id'] . '/' . $fileName;
 
-    // Upload the file to Firebase Storage
-    $bucket->upload($fileData, [
-        'name' => $destination,
-    ]);
+//     // Upload the file to Firebase Storage
+//     $bucket->upload($fileData, [
+//         'name' => $destination,
+//     ]);
 
-    // Get the URL of the uploaded file
-    $fileUrl = $bucket->object($destination)->signedUrl(new \DateTime('+1 hour')); // Generate a signed URL that is valid for 1 hour
+//     // Get the URL of the uploaded file
+//     $fileUrl = $bucket->object($destination)->signedUrl(new \DateTime('+1 hour')); // Generate a signed URL that is valid for 1 hour
 
-    // Store the photo URL in a session variable
-    $_SESSION['photo_url'] = $fileUrl;
+//     // Store the photo URL in a session variable
+//     $_SESSION['photo_url'] = $fileUrl;
 
-    // Store the photo URL in the database associated with the user
-    // Replace this with your Firebase Realtime Database code
-    $database = $factory->createDatabase();
-    $database->getReference('users/' . $_SESSION['verified_user_id'])->update([
-        'photo_url' => $fileUrl,
-    ]);
+//     // Store the photo URL in the database associated with the user
+//     // Replace this with your Firebase Realtime Database code
+//     $database = $factory->createDatabase();
+//     $database->getReference('users/' . $_SESSION['verified_user_id'])->update([
+//         'photo_url' => $fileUrl,
+//     ]);
 
-    header('location: user_profile.php');
-} else {
-    header('location: user_profile.php');
-}
+//     header('location: user_profile.php');
+// } else {
+//     header('location: user_profile.php');
+// }
 
 
 

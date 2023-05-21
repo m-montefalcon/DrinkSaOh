@@ -201,9 +201,24 @@ include('authentication.php');
                   <input type="text" name="supplier_name" value = "<?=$getData['supplier_name'];?>" class="form-control">
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                  <label for=""> Unit Price </label>
-                  <input type="number" name="price_qty" step=".01" value = "<?=$getData['priceQuantity'];?>" class="form-control">
+                    <label for=""> Critical Point</label>
+                    <input type="number" name="critical_point" value = "<?=$getData['criticalPoint'];?>" class="form-control" required>
                 </div>
+                <div class="col-md-4 form-group mb-3">
+                    <label for=""> Supplier Price </label>
+                    <input type="number" name="supplier_price" class="form-control" value = "<?=$getData['supplierPrice'];?>" step=".01" required>
+                </div>
+                <div class="col-md-4 form-group mb-3">
+                  <label for=""> Unit Price </label>
+                  <input type="number" name="price_qty" step=".01"  value = "<?=$getData['priceQuantity'];?>" class="form-control">
+                </div>
+                <div>
+                  <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+                      <option value="Bottled" <?php if ($getData['productCategory'] === 'Bottled') { echo 'selected'; } ?>>Bottled</option>
+                      <option value="Canned" <?php if ($getData['productCategory'] === 'Canned') { echo 'selected'; } ?>>Canned</option>
+                  </select>
+                </div>
+
               </div>
               <button type = "submit" name = "edit_inventory" class = "btn btn-primary"> Save </button>
               <a href="index.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>

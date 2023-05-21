@@ -192,8 +192,22 @@ include('authentication.php');
                     <input type="text" name="supplier_name" class="form-control" required>     
                 </div>
                 <div class="col-md-4 form-group mb-3">
+                    <label for=""> Critical Point</label>
+                    <input type="number" name="critical_point" class="form-control" required>
+                </div>
+                <div class="col-md-4 form-group mb-3">
+                    <label for=""> Supplier Price </label>
+                    <input type="number" name="supplier_price" class="form-control" step=".01" required>
+                </div>
+                <div class="col-md-4 form-group mb-3">
                     <label for=""> Unit Price </label>
-                    <input type="number" name="price_qty" class="form-control" step=".01" required>
+                    <input type="number" name="price_qty" class="form-control" step=".01"  required>
+                </div>
+                <div>
+                <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+								<option value="Bottled"> Bottled </option>
+								<option value="Canned"> Canned </option>				
+                </select>
                 </div>
               </div>
               <button type = "submit" name = "add_inventory" class = "btn btn-primary"> Add </button>

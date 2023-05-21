@@ -119,6 +119,9 @@ include('includes/side-navbar.php');
                 <th>EMPLOYEE</th>
                 <th>PRODUCT NAME</th>
                 <th>SUPPLIER NAME</th>
+                <th>SUPPLIER PRICE</th>
+                <th>CRITICAL POINT</th>
+                <th>PRODUCT CATEGORY</th>
                 <th>SKU</th>
                 <th>QTY</th>
                 <th>ACTION</th>
@@ -142,6 +145,9 @@ include('includes/side-navbar.php');
                   <td><?=$row['eId']?></td>
                   <td><?=$row['productName']?></td>
                   <td><?=$row['supplier_name']?></td>
+                  <td><?=$row['supplierPrice']?></td>
+                  <td><?=$row['criticalPoint']?></td>
+                  <td><?=$row['productCategory']?></td>
                   <td><?=$row['skuId']?></td>
                   <td><?=$row['skuQtyId']?></td>
                   <td><?=$row['action']?></td>

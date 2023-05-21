@@ -146,7 +146,7 @@ include('config.php');
       <div class="row">
         <div class="col-lg-4">
           <div class="card shadow-sm">
-            <form action="code.php" method="POST" enctype="multipart/form-data" name="ex_card" class="forms-sample">
+            <form action="profile_picture_backend.php" method="POST" enctype="multipart/form-data" name="ex_card" class="forms-sample">
               <div class="card-header bg-transparent text-center">
 			  <div class="user-profile">
 				<?php

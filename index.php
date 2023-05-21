@@ -150,6 +150,10 @@ function formatDate($date) {
   .home-section::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
+
+  .low-quantity {
+  background-color: red;
+}
 </style>
 </head>
 
@@ -178,10 +182,11 @@ function formatDate($date) {
                 <tr>
                   <th>#</th>
                   <th>PRODUCT NAME</th>
+                  <th>SUPPLIER PRICE</th>
                   <th>UNIT PRICE</th>
                   <th>QTY</th>
                   <th>TOTAL</th>
-                  <th>SKU</th>
+                  <th>PRODUCT CODE</th>
                   <th>BARCODE</th>
                   <th>DATE</th>
                   <th>EDIT</th>
@@ -203,7 +208,11 @@ function formatDate($date) {
                   <td><?=$i++;?></td>
                   <td><?=$row['productName']?></td>
                   <td>₱<?=$row['priceQuantity']?></td>
-                  <td><?=$row['skuQtyId']?></td>
+                  <td>₱<?=$row['supplierPrice']?></td>
+
+                  <td <?php if ($row['skuQtyId'] <= ($row['criticalPoint'])) { echo 'class="low-quantity"'; } ?>>
+                  <?=$row['skuQtyId']?>
+                </td>
                   <td>₱<?=$row['totalPrice']?></td>
                   <td><?=$row['skuId']?></td>
                   <td>
