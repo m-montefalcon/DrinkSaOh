@@ -171,9 +171,18 @@ function formatDate($date) {
             <h2>
               INVENTORY
             </h2>
+            
             <button>
               <a href="add-inventory.php" class="btn btn-primary float-end"> Add Item </a>
             </button>
+          </div>
+          <div style="margin-right: auto;">
+            <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+              <option value="All">All</option>
+              <option value="Canned">Canned</option>
+              <option value="Bottled">Bottled</option>
+            </select>
+            <button id="filter-button" type="button">FILTER</button>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-stripe">
@@ -186,6 +195,7 @@ function formatDate($date) {
                   <th>QTY</th>
                   <th>TOTAL</th>
                   <th>PRODUCT CODE</th>
+                  <th>CATEGORY</th>
                   <th>BARCODE</th>
                   <th>DATE</th>
                   <th>EDIT</th>
@@ -208,12 +218,13 @@ function formatDate($date) {
                   <td><?=$row['productName']?></td>
                   <td>₱<?=$row['priceQuantity']?></td>
                   <td>₱<?=$row['supplierPrice']?></td>
-
+                  
                   <td <?php if ($row['skuQtyId'] <= ($row['criticalPoint'])) { echo 'class="low-quantity"'; } ?>>
                   <?=$row['skuQtyId']?>
                 </td>
                   <td>₱<?=$row['totalPrice']?></td>
                   <td><?=$row['skuId']?></td>
+                  <td><?=$row['productCategory']?></td>
                   <td>
                     <?php
                       if(strpos($row['barcode'], "image/svg+xml;base64") !== false) {
@@ -263,6 +274,26 @@ function formatDate($date) {
       content.classList.toggle('active');
     }
   </script>
+  <script>
+    // Function to filter the table rows based on the selected category
+    function filterTableRows(category) {
+      const rows = document.querySelectorAll('tbody tr');
+
+      rows.forEach(row => {
+        const categoryCell = row.querySelector('td:nth-child(8)');
+        const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
+        row.style.display = display;
+      });
+    }
+
+    // Event listener for the filter button click
+    document.getElementById('filter-button').addEventListener('click', function() {
+      const selectElement = document.getElementById('category-select');
+      const selectedCategory = selectElement.value;
+      filterTableRows(selectedCategory);
+    });
+  </script>
+
 </body>
 </html>
     
