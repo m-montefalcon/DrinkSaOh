@@ -17,6 +17,7 @@ use Kreait\Firebase\ServiceAccount;
 </head>
 <style>
 * {
+  /* border: 1px solid red; */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -101,16 +102,16 @@ use Kreait\Firebase\ServiceAccount;
     font-size: 4em;
     margin-bottom: 20px;
   }
-  .home-section::-webkit-scrollbar {
+  .content::-webkit-scrollbar {
     width: 5px; 
   }
   .content::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .home-section::-webkit-scrollbar-thumb {
+  .content::-webkit-scrollbar-thumb {
       background-color: #ccc; 
   }
-  .home-section::-webkit-scrollbar-thumb:hover {
+  .content::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
 </style>

@@ -87,16 +87,16 @@ include('includes/side-navbar.php');
     text-transform: uppercase;
     text-align: center;
   }
-  .home-section::-webkit-scrollbar {
+  .content::-webkit-scrollbar {
     width: 5px; 
   }
   .content::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .home-section::-webkit-scrollbar-thumb {
+  .content::-webkit-scrollbar-thumb {
       background-color: #ccc; 
   }
-  .home-section::-webkit-scrollbar-thumb:hover {
+  .content::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
 </style>

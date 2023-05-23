@@ -160,7 +160,7 @@
     max-height: 100vh;
     transition: 0.5s ease;
     overflow: auto;
-    height: calc(100vh - 50px); 
+    
   }
   .top-navbar {
     width: 100%;
@@ -174,11 +174,15 @@
   .profile img {
     width: 44px;
     height: 44px;
+    margin-top: 7px;
     object-fit: contain;
     object-position: center;
     border-radius: 50%;
     cursor: pointer;
   }
+  /* .profile img:hover {
+    hover ang user name
+  } */
   #menu-icon {
     font-size: 34px;
     cursor: pointer;
@@ -461,14 +465,12 @@
 									$photoUrl = $bucket->object("user-profile/{$_SESSION['verified_user_id']}/{$_SESSION['verified_user_id']}.jpg")->signedUrl(new \DateTime('+1 hour'));
 
 									// Display the user's profile image
-									echo '<img id="user-image" src="' . $photoUrl . '" alt="User Profile Image" />';
+                  echo '<a class="user-image" href="user_profile.php"><img id="user-image" src="' . $photoUrl . '" alt="User Profile Image" /></a>';
 								} else {
 									// Display a default profile image if the user is not logged in
-									echo '<img id="user-image" src="img/user-profile.jpg" alt="Default Profile Image" />';
+									echo '<a class="user-image" href="user_profile.php"><img id="user-image" src="img/user-profile.jpg" alt="Default Profile Image" /></a>';
 								}
 								?>
-							
-						
           </div>
       </div>
       <main class="home-section"> </main>

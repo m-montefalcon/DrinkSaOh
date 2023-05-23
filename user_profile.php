@@ -136,6 +136,18 @@ include('config.php');
 		border-radius: 50%;
 		cursor: pointer;
 	}
+	button[type="submit"] {
+		margin-top: 5px;
+		background-color: #1A0046FF;
+		border: none;
+		border-radius: 5px;
+		color: #FFFFFF;
+		cursor: pointer;
+		font-size: 16px;
+	}
+	button[type="submit"]:hover {
+		background-color: #11101D;
+	}
 </style>
 					
 </head>

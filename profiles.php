@@ -119,20 +119,19 @@ include('includes/side-navbar.php');
     background-color: transparent;      
     border: none;
   }
-  .home-section::-webkit-scrollbar {
+  .content::-webkit-scrollbar {
     width: 5px; 
   }
   .content::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .home-section::-webkit-scrollbar-thumb {
+  .content::-webkit-scrollbar-thumb {
       background-color: #ccc; 
   }
-  .home-section::-webkit-scrollbar-thumb:hover {
+  .content::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
-
-  button .btn-primary {
+  button .btn {
     position: absolute;
     text-align: center;
     background-color: white;
@@ -147,7 +146,7 @@ include('includes/side-navbar.php');
     align-items: center;
     top: 10px;
   }
-  button .btn-primary:hover {
+  button .btn:hover {
     background-color: maroon;
     margin-left: 0%;
     border-radius: 6px;
@@ -173,7 +172,7 @@ include('includes/side-navbar.php');
               PROFILES
             </h2>
             <button>
-              <a href="register.php" class="btn btn-primary float-end"> Add User </a>
+              <a href="register.php" class="btn float-end"> Add User </a>
             </button>
           </div>
           <div class="card-body">
