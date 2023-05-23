@@ -398,6 +398,13 @@
                 <span class="tooltip"> Transactions </span>
             </li>
             <li>
+              <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "stock_card.php") echo "active"; ?>" href="stock_card.php">
+                <span class="icon"> <ion-icon name="bag-check-outline"></ion-icon> </span>
+                <span class="text">Stock Card</span>
+              </a>
+                <span class="tooltip"> Stock Card </span>
+            </li>
+            <li>
               <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "profiles.php") echo "active"; ?>" href="profiles.php">
                 <span class="icon"> <ion-icon name="people-outline"></ion-icon> </span>
                 <span class="text">Users</span>
@@ -433,6 +440,13 @@
                   <span class="text">Inventory</span>
                 </a>
                   <span class="tooltip"> Inventory </span>
+              </li>
+              <li>
+                <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "stock_card.php") echo "active"; ?>" href="stock_card.php">
+                  <span class="icon"> <ion-icon name="bag-check-outline"></ion-icon></ion-icon> </span>
+                  <span class="text">Stock Card</span>
+                </a>
+                  <span class="tooltip"> Stock Card </span>
               </li>
               <li>
                 <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "user_profile.php") echo "active"; ?>" href="user_profile.php">
