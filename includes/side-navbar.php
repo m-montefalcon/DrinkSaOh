@@ -81,7 +81,7 @@
     color: white;
   }
   .side-navbar .nav-list {
-    margin-top: 20px;
+    margin-top: -8px;
     height: 100%;
     width: 100%;
     align-self: start;
@@ -170,6 +170,9 @@
     padding: 5px 15px;
     box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
     background: #11101D;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
   }
   .profile img {
     width: 44px;

@@ -49,27 +49,6 @@ function formatDate($date) {
   tr {
     text-align: center;
   }
-  button .btn-primary {
-    position: absolute;
-    text-align: center;
-    background-color: white;
-    color: black;
-    border-radius: 6px;
-    width: 80px;
-    height: 30px;
-    margin-left: 0%;
-    right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 10px;
-  }
-  button .btn-primary:hover {
-    background-color: maroon;
-    margin-left: 0%;
-    border-radius: 6px;
-    color: white;
-  }
   .card .card-header {
     border-bottom-color: #f9f9f9;
     line-height: 30px;
@@ -153,6 +132,40 @@ function formatDate($date) {
   .low-quantity {
   background-color: red;
 }
+button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #1A0046FF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #11101D;
+}
+.add-btn {
+  position: absolute;
+  text-align: center;
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  width: 100px;
+  height: 30px;
+  margin-left: 0%;
+  right: 20px;
+  justify-content: center;
+  align-items: center;
+  top: 10px;
+  display: flex;
+  padding: 0 10px;
+}
+.add-btn:hover {
+  background-color: maroon;
+  margin-left: 0%;
+  border-radius: 6px;
+  color: white;
+}
 </style>
 </head>
 
@@ -171,9 +184,7 @@ function formatDate($date) {
             <h2>
               INVENTORY
             </h2>
-            <button>
-              <a href="add-inventory.php" class="btn btn-primary float-end"> Add Item </a>
-            </button>
+            <button class="add-btn" href="add-inventory.php" class="btn btn-primary float-end"> Add Item </button>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-stripe">

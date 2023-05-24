@@ -131,28 +131,27 @@ include('includes/side-navbar.php');
   .content::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
-  button .btn {
+  .add-btn {
     position: absolute;
     text-align: center;
     background-color: white;
     color: black;
     border-radius: 6px;
-    width: 80px;
+    width: 100px;
     height: 30px;
     margin-left: 0%;
     right: 20px;
-    display: flex;
     justify-content: center;
     align-items: center;
     top: 10px;
+    padding: 0 10px;
   }
-  button .btn:hover {
+  .add-btn:hover {
     background-color: maroon;
     margin-left: 0%;
     border-radius: 6px;
+    color: white;
   }
-
-
 </style>
 </head>
 
@@ -171,9 +170,7 @@ include('includes/side-navbar.php');
             <h2>
               PROFILES
             </h2>
-            <button>
-              <a href="register.php" class="btn float-end"> Add User </a>
-            </button>
+            <a class="add-btn" href="register.php" class="btn btn-primary float-end"> Add User </a>
           </div>
           <div class="card-body">
             <table class="table table-bordered table-stripe">

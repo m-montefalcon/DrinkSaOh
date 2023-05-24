@@ -49,22 +49,22 @@ function formatDate($date) {
   tr {
     text-align: center;
   }
-  button .btn-primary {
+  button.add-btn {
     position: absolute;
     text-align: center;
     background-color: white;
     color: black;
     border-radius: 6px;
-    width: 80px;
+    width: 100px;
     height: 30px;
     margin-left: 0%;
     right: 20px;
-    display: flex;
     justify-content: center;
     align-items: center;
     top: 10px;
+    padding: 0 10px;
   }
-  button .btn-primary:hover {
+  button.add-btn:hover {
     background-color: maroon;
     margin-left: 0%;
     border-radius: 6px;
@@ -138,21 +138,95 @@ function formatDate($date) {
     text-transform: uppercase;
     text-align: center;
   }
-  .content::-webkit-scrollbar {
+  .home-section::-webkit-scrollbar {
     width: 5px; 
   }
-  .content::-webkit-scrollbar-track {
+  .home-section::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .content::-webkit-scrollbar-thumb {
-      background-color: #ccc; 
+  .home-section::-webkit-scrollbar-thumb {
+    background-color: #ccc; 
   }
-  .content::-webkit-scrollbar-thumb:hover {
+  .home-section::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
-  }  
+  }   
   .low-quantity {
-  background-color: red;
+    background-color: red;
+  }
+  @media (max-width: 768px) {
+  .card-body table {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .card-body table thead {
+    display: none;
+  }
+  .card-body table tbody td {
+    display: block;
+    text-align: center;
+  }
+  .card-body table tbody td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  .card-body table tbody tr {
+    border-bottom: 1px solid #ddd;
+  }
 }
+.category-select {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0 20px;
+}
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  width: 115px;
+}
+button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #1A0046FF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #11101D;
+}
+.add-btn {
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: 100px;
+    height: 30px;
+    margin-left: 0%;
+    right: 20px;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    display: flex;
+    padding: 0 10px;
+  }
+  .add-btn:hover {
+    background-color: maroon;
+    margin-left: 0%;
+    border-radius: 6px;
+    color: white;
+  }
 </style>
 </head>
 
@@ -166,25 +240,24 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
+        <div>
+          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+            <option value="All">All</option>
+            <option value="Canned">Canned</option>
+            <option value="Bottled">Bottled</option>
+          </select>
+          <button id="filter-button" type="button">FILTER</button>
+        </div>
+          <br>
         <div class="card">
           <div class="card-header">
             <h2>
               INVENTORY
             </h2>
-            
-            <button>
-              <a href="add-inventory.php" class="btn btn-primary float-end"> Add Item </a>
-            </button>
-          </div>
-          <div style="margin-right: auto;">
-            <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-              <option value="All">All</option>
-              <option value="Canned">Canned</option>
-              <option value="Bottled">Bottled</option>
-            </select>
-            <button id="filter-button" type="button">FILTER</button>
+            <a class="add-btn" href="add-inventory.php" class="btn btn-primary float-end"> Add Item </a>
           </div>
           <div class="card-body">
+          <div class="table-responsive">
             <table class="table table-bordered table-stripe">
               <thead>
                 <tr>
@@ -260,20 +333,11 @@ function formatDate($date) {
               </tbody>
             </table>
           </div>
+          </div>
         </div>
       </div>
     </div> 
   </section>
-  <script>
-    let menu = document.querySelector('#menu-icon');
-    let sidenavbar = document.querySelector('.side-navbar');
-    let content = document.querySelector('.content');
-    
-    menu.onclick = () => {
-      sidenavbar.classList.toggle('active');
-      content.classList.toggle('active');
-    }
-  </script>
   <script>
     // Function to filter the table rows based on the selected category
     function filterTableRows(category) {

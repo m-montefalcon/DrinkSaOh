@@ -159,6 +159,16 @@ include('authentication.php');
   .home-section::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
+  select {
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-right: 8px;
+    width: 100%;
+    background-color: #F2F2F2;
+    box-shadow: inset 0px 0px 5px #BDBDBD;
+    font-size: 14px;
+  }
 </style>
 </head>
     
@@ -176,38 +186,39 @@ include('authentication.php');
             <form action="code.php" method="POST">
               <div class="form-grid">
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> Product Name </label>
-                    <input type="text" name="product_name" class="form-control" required>     
+                  <label for=""> Product Name </label>
+                  <input type="text" name="product_name" class="form-control" required>     
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> SKU </label>
-                    <input type="text" name="sku_number" class="form-control" maxlength="13" required>
+                  <label for=""> SKU </label>
+                  <input type="text" name="sku_number" class="form-control" maxlength="13" required>
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> Quantity </label>
-                    <input type="number" name="sku_qty" class="form-control" required>
+                  <label for=""> Quantity </label>
+                  <input type="number" name="sku_qty" class="form-control" required>
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> Supplier Name </label>
-                    <input type="text" name="supplier_name" class="form-control" required>     
+                  <label for=""> Supplier Name </label>
+                  <input type="text" name="supplier_name" class="form-control" required>     
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> Critical Point</label>
-                    <input type="number" name="critical_point" class="form-control" required>
+                  <label for=""> Critical Point</label>
+                  <input type="number" name="critical_point" class="form-control" required>
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> Supplier Price </label>
-                    <input type="number" name="supplier_price" class="form-control" step=".01" required>
+                  <label for=""> Supplier Price </label>
+                  <input type="number" name="supplier_price" class="form-control" step=".01" required>
                 </div>
                 <div class="col-md-4 form-group mb-3">
-                    <label for=""> Unit Price </label>
-                    <input type="number" name="price_qty" class="form-control" step=".01"  required>
+                  <label for=""> Unit Price </label>
+                  <input type="number" name="price_qty" class="form-control" step=".01"  required>
                 </div>
-                <div>
-                <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-								<option value="Bottled"> Bottled </option>
-								<option value="Canned"> Canned </option>				
-                </select>
+                <div class="col-md-4 form-group mb-3">
+                  <label for=""> Category </label>
+                  <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+                    <option value="Bottled"> Bottled </option>
+                    <option value="Canned"> Canned </option>				
+                  </select>
                 </div>
               </div>
               <button type = "submit" name = "add_inventory" class = "btn btn-primary"> Add </button>

@@ -158,6 +158,16 @@ include('authentication.php');
   }
   .home-section::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
+  }
+  select {
+    padding: 8px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-right: 8px;
+    width: 100%;
+    background-color: #F2F2F2;
+    box-shadow: inset 0px 0px 5px #BDBDBD;
+    font-size: 14px;
   } 
 </style>
 </head>
@@ -212,13 +222,13 @@ include('authentication.php');
                   <label for=""> Unit Price </label>
                   <input type="number" name="price_qty" step=".01"  value = "<?=$getData['priceQuantity'];?>" class="form-control">
                 </div>
-                <div>
+                <div class="col-md-4 form-group mb-3">
+                  <label for=""> Category </label>
                   <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-                      <option value="Bottled" <?php if ($getData['productCategory'] === 'Bottled') { echo 'selected'; } ?>>Bottled</option>
-                      <option value="Canned" <?php if ($getData['productCategory'] === 'Canned') { echo 'selected'; } ?>>Canned</option>
+                    <option value="Bottled" <?php if ($getData['productCategory'] === 'Bottled') { echo 'selected'; } ?>>Bottled</option>
+                    <option value="Canned" <?php if ($getData['productCategory'] === 'Canned') { echo 'selected'; } ?>>Canned</option>
                   </select>
                 </div>
-
               </div>
               <button type = "submit" name = "edit_inventory" class = "btn btn-primary"> Save </button>
               <a href="index.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
