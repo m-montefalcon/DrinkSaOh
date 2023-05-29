@@ -49,6 +49,27 @@ function formatDate($date) {
   tr {
     text-align: center;
   }
+  button.add-btn {
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: 100px;
+    height: 30px;
+    margin-left: 0%;
+    right: 20px;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    padding: 0 10px;
+  }
+  button.add-btn:hover {
+    background-color: maroon;
+    margin-left: 0%;
+    border-radius: 6px;
+    color: white;
+  }
   .card .card-header {
     border-bottom-color: #f9f9f9;
     line-height: 30px;
@@ -117,20 +138,60 @@ function formatDate($date) {
     text-transform: uppercase;
     text-align: center;
   }
-  .content::-webkit-scrollbar {
+  .home-section::-webkit-scrollbar {
     width: 5px; 
   }
-  .content::-webkit-scrollbar-track {
+  .home-section::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .content::-webkit-scrollbar-thumb {
-      background-color: #ccc; 
+  .home-section::-webkit-scrollbar-thumb {
+    background-color: #ccc; 
   }
-  .content::-webkit-scrollbar-thumb:hover {
+  .home-section::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
-  }  
+  }   
   .low-quantity {
-  background-color: red;
+    background-color: red;
+  }
+  @media (max-width: 768px) {
+  .card-body table {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .card-body table thead {
+    display: none;
+  }
+  .card-body table tbody td {
+    display: block;
+    text-align: center;
+  }
+  .card-body table tbody td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  .card-body table tbody tr {
+    border-bottom: 1px solid #ddd;
+  }
+}
+.category-select {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0 20px;
+}
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  width: 115px;
 }
 button {
   padding: 8px 16px;
@@ -145,27 +206,27 @@ button:hover {
   background-color: #11101D;
 }
 .add-btn {
-  position: absolute;
-  text-align: center;
-  background-color: white;
-  color: black;
-  border-radius: 6px;
-  width: 100px;
-  height: 30px;
-  margin-left: 0%;
-  right: 20px;
-  justify-content: center;
-  align-items: center;
-  top: 10px;
-  display: flex;
-  padding: 0 10px;
-}
-.add-btn:hover {
-  background-color: maroon;
-  margin-left: 0%;
-  border-radius: 6px;
-  color: white;
-}
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: 100px;
+    height: 30px;
+    margin-left: 0%;
+    right: 20px;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    display: flex;
+    padding: 0 10px;
+  }
+  .add-btn:hover {
+    background-color: maroon;
+    margin-left: 0%;
+    border-radius: 6px;
+    color: white;
+  }
 </style>
 </head>
 
@@ -179,105 +240,105 @@ button:hover {
             unset($_SESSION['status']);
           }
         ?>
+        <div>
+          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+            <option value="All">All</option>
+            <option value="Canned">Canned</option>
+            <option value="Bottled">Bottled</option>
+          </select>
+          <button id="filter-button" type="button">FILTER</button>
+        </div>
+          <br>
         <div class="card">
           <div class="card-header">
             <h2>
-              INVENTORY
+              STOCK CARD
             </h2>
-            <button class="add-btn" href="add-inventory.php" class="btn btn-primary float-end"> Add Item </button>
+          
           </div>
           <div class="card-body">
+          <div class="table-responsive">
             <table class="table table-bordered table-stripe">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>DATE</th>
-                  <th>PRODUCT NAME</th>
-                  <th>SKU</th>
-                  <th>SUPPLIER NAME</th>
-                  <th>SUPPLIER PRICE</th>
-                  <th>SALE PRICE</th>
-                  <th>IN</th>
-                  <th>AMOUNT</th>
-                  <th>OUT</th>
-                  <th>AMOUNT</th>
-                  
+ 
+                  <th>PRODUCT CODE</th>
+
+                  <th>VIEW</th>
                 </tr>
               </thead>
-              <!-- <tbody>
-                <?php
-                  include ('dbcon.php');
-                  $ref_inventory = 'inventory';
-                  $fetchInventory = $database->getReference($ref_inventory) -> getValue();
-                  $users = $auth->listUsers();
-
-                  if ($fetchInventory > 0) {
+              <tbody>
+              <?php
+                include('dbcon.php');
+                $stockcardref = 'stockcard';
+                $fetchInventory = $database->getReference($stockcardref)->getValue();
+                $users = $auth->listUsers();
+                
+                if ($fetchInventory) {
                     $i = 1;
-                    foreach($fetchInventory as $key => $row) {    
-                ?>
-                <tr>
-                  <td><?=$i++;?></td>
-                  <td><?=$row['productName']?></td>
-                  <td>₱<?=$row['priceQuantity']?></td>
-                  <td>₱<?=$row['supplierPrice']?></td>
-
-                  <td <?php if ($row['skuQtyId'] <= ($row['criticalPoint'])) { echo 'class="low-quantity"'; } ?>>
-                  <?=$row['skuQtyId']?>
-                </td>
-                  <td>₱<?=$row['totalPrice']?></td>
-                  <td><?=$row['skuId']?></td>
-                  <td>
-                    <?php
-                      if(strpos($row['barcode'], "image/svg+xml;base64") !== false) {
-                        echo "<img src='".$row['barcode']."' />";
-                      } else {
-                        echo $row['barcode'];
-                      }
-                    ?>
-                  </td>
-                  <td><?= formatDate($row['currentDate']) ?> 
-                    <br> <?= formatTime($row['currentTime']) ?> 
-                  </td>
-                  
-                  <td>
-                    <a href="edit-inventory.php?id=<?=$key?>" class="btn btn-primary btn-sm"> </a>
-                  </td>
-                  <td>
-                    <form action="code.php" method = "POST">
-                      <button type="submit" name = "delete_button" class = "btn btn-danger btn-sm" value = "<?=$key?>"></button>
-                    </form>
-                  </td>            
-                </tr>
-                <?php
-                  }
+                    foreach ($fetchInventory as $stockcardId => $row) {
+                        ?>
+                        <tr>
+                            <td><?= $i++; ?></td>
+                            <td><?= $stockcardId; ?></td>
+                            <td>
+                                <form action="stock_card_details.php" method="GET">
+                                    <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>">
+                                    <button type="submit" class="btn btn-success btn-sm">Open</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php
+                    }
                 } else {
-                ?>
-                <tr>
-                  <td colspan="3"> No record Found </td>
-                </tr>
-                <?php 
+                    ?>
+                    <tr>
+                        <td colspan="3">No data found.</td>
+                    </tr>
+                    <?php
                 }
                 ?>
-              </tbody> -->
+                
+                  <tr>
+                      <td colspan="3">No record Found</td>
+                  </tr>
+
+                <?php 
+                ?>
+              </tbody>
             </table>
+          </div>
           </div>
         </div>
       </div>
     </div> 
   </section>
   <script>
-    let menu = document.querySelector('#menu-icon');
-    let sidenavbar = document.querySelector('.side-navbar');
-    let content = document.querySelector('.content');
-    
-    menu.onclick = () => {
-      sidenavbar.classList.toggle('active');
-      content.classList.toggle('active');
+    // Function to filter the table rows based on the selected category
+    function filterTableRows(category) {
+      const rows = document.querySelectorAll('tbody tr');
+
+      rows.forEach(row => {
+        const categoryCell = row.querySelector('td:nth-child(8)');
+        const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
+        row.style.display = display;
+      });
     }
+
+    // Event listener for the filter button click
+    document.getElementById('filter-button').addEventListener('click', function() {
+      const selectElement = document.getElementById('category-select');
+      const selectedCategory = selectElement.value;
+      filterTableRows(selectedCategory);
+    });
   </script>
+
 </body>
 </html>
     
 <?php 
 include('includes/footer.php');
 ?>
+
+
