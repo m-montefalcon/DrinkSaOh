@@ -27,8 +27,17 @@ include('config.php');
 	}
 	body {
 		background-color: #f6f6f6;
-		overflow: hidden;
+		overflow-x: hidden;
 	} 
+	.card {
+		padding: 15px;
+		background-color: none;
+		border-color: none;
+		outline: none;
+	}
+	.employee-profile {
+		padding: 15px;
+	}
 	.employee-profile .card {
 		border-radius: 10px;
 	}
@@ -148,18 +157,29 @@ include('config.php');
 	button[type="submit"]:hover {
 		background-color: #11101D;
 	}
+	body::-webkit-scrollbar {
+		width: 5px; 
+	}
+	body::-webkit-scrollbar-track {
+		background-color: #f6f6f6; 
+	}
+	body::-webkit-scrollbar-thumb {
+		background-color: #ccc; 
+	}
+	body::-webkit-scrollbar-thumb:hover {
+		background-color: #aaa; 
+	}  
 </style>
 					
 </head>
-
-<div class="home-section">
+<!-- <div class="card"> -->
   <div class="employee-profile py-4">
-    <div class="container">
+    <!-- <div class="container"> -->
       <div class="row">
         <div class="col-lg-4">
           <div class="card shadow-sm">
             <form action="profile_picture_backend.php" method="POST" enctype="multipart/form-data" name="ex_card" class="forms-sample">
-              <div class="card-header bg-transparent text-center">
+              <div class="card-header text-center">
 			  <div class="user-profile">
 				<?php
 				if (isset($_SESSION['verified_user_id'])) {
@@ -311,9 +331,9 @@ include('config.php');
 						?> 
           			</div>
         		</div>
-      		</div>
+      		<!-- </div> -->
     	</div>
-  	</div>
+<!-- </div> -->
 	    
 	  <script>
 	  var firebaseConfig = {

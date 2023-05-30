@@ -26,6 +26,9 @@ include('dbcon.php');
 		padding: 60px;
 		width: 100%;
 	}
+	.card {
+		padding: 15px;
+	}
 	.card .card-header {
 		border-bottom-color: #f9f9f9;
 		line-height: 30px;
@@ -138,127 +141,121 @@ include('dbcon.php');
 		font-size: 16px;
 		padding: 10px;
 	}
-	.home-section::-webkit-scrollbar {
+	body::-webkit-scrollbar {
 		width: 5px; 
 	}
-	.home-section::-webkit-scrollbar-track {
+	body::-webkit-scrollbar-track {
 		background-color: #f6f6f6; 
 	}
-	.home-section::-webkit-scrollbar-thumb {
+	body::-webkit-scrollbar-thumb {
 		background-color: #ccc; 
 	}
-	.home-section::-webkit-scrollbar-thumb:hover {
+	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	} 
+	}  
 </style>
 </head>
 
 <body>
-	<div class="home-section">
-		<div class="row justify-content-center">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-						<h2>
-							EMPLOYEES ACCOUNT SETTINGS  
-						</h2>
-					</div>
-					<form action="userCred.php" method="POST">
-						<?php
-							if (isset($_SESSION['status'])) {
-								echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
-								unset($_SESSION['status']);
-							}
-						?>
-						<div>
-							<a href="profiles.php" class="btn btn-danger float-start" onclick="history.back()"> </a>
-						</div>
-
-						<h3> Account Settings </h3>
-						<div class="form-group">
-							<?php 
-								if(isset($_GET['uid'])){
-									$uid = $_GET['uid'];
-								try {
-									$user = $auth->getUser($uid);
-							?>
-							<input type="hidden" name="ena-dis-user" value="<?=$uid?>">
-
-							<label for=""> Account Status: </label>
-
-							<select name="select_enable_disable" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-								<option value="Enabled">Enabled</option>
-								<option value="Disabled">Disabled</option>
-							</select>
-							<br>
-							<input type="submit" name = "enable_disable_user_button" value="Save">
-
-							<td></td>
-							<div class="divider"></div> 
-							<h3></h3>			
-						</div>
-			
-						<br> <br>
-
-						<h3>Privacy Settings</h3>
-						<form action="userCred.php" method="POST">
-							<input type="hidden" name="change_password_id_value" value="<?=$uid?>">
-							<div class="form-group">
-								<label for="password">Password:</label>
-								<input type="password" id="password" name="password" placeholder="Enter new password">
-							</div>
-							<div class="form-group">
-								<label for="password">Confirm Password:</label>
-								<input type="password" id="password" name="confirm_password" placeholder="Re-enter new password">
-							</div>
-							<input type="submit" name = "change_password_button" value="Change Password">
-							
-							<td></td>
-							<div class="divider"></div> 
-							<h3></h3>
-
-							<br> <br>
-
-							<h3>Roles</h3>	
-							<form action="userCred.php" method="POST">
-								<label for=""> Currently as: </label>
-								<?php 
-									$claims = $auth -> getUser($uid)-> customClaims;
-									if(isset($claims['Superadmin']) == true) {
-										echo "SuperAdmin";
-									}
-									if(isset($claims['Admin']) == true) {
-										echo "Admin";
-									} 
-									elseif($claims == null) {
-										echo "No roles";
-									}
-								?>
-							<br>
-							<input type="hidden" name="roles-user-id" value="<?=$uid?>">
-							<br>
-							<label for=""> Account Status: </label>
-							<select name="select_roles_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-								<option value="Select"> Select </option>
-								<option value="Norole"> Noroles </option>
-								<option value="Superadmin"> Superadmin </option>
-								<option value="Admin"> Admin </option>						
-							</select>
-							<br>
-							<input type="submit" name = "roles_user_button" value="Save">
-							</form>
-						</form>
-						<?php
-						} catch(Exception $e) {					
-						}
-					} else{
-						echo "No user id found";
-					}
-					?>
-					</form>
-				</div>
-	  		</div>
+	<div class="card">
+		<div class="card-header">
+			<h2>
+				EMPLOYEES ACCOUNT SETTINGS  
+			</h2>
 		</div>
+		<form action="userCred.php" method="POST">
+			<?php
+				if (isset($_SESSION['status'])) {
+					echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
+					unset($_SESSION['status']);
+				}
+			?>
+			<div>
+				<a href="profiles.php" class="btn btn-danger float-start" onclick="history.back()"> </a>
+			</div>
+
+			<h3> Account Settings </h3>
+			<div class="form-group">
+				<?php 
+					if(isset($_GET['uid'])){
+						$uid = $_GET['uid'];
+					try {
+						$user = $auth->getUser($uid);
+				?>
+				<input type="hidden" name="ena-dis-user" value="<?=$uid?>">
+
+				<label for=""> Account Status: </label>
+
+				<select name="select_enable_disable" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+					<option value="Enabled">Enabled</option>
+					<option value="Disabled">Disabled</option>
+				</select>
+				<br>
+				<input type="submit" name = "enable_disable_user_button" value="Save">
+
+				<td></td>
+				<div class="divider"></div> 
+				<h3></h3>			
+			</div>
+
+			<br> <br>
+
+			<h3>Privacy Settings</h3>
+			<form action="userCred.php" method="POST">
+				<input type="hidden" name="change_password_id_value" value="<?=$uid?>">
+				<div class="form-group">
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password" placeholder="Enter new password">
+				</div>
+				<div class="form-group">
+					<label for="password">Confirm Password:</label>
+					<input type="password" id="password" name="confirm_password" placeholder="Re-enter new password">
+				</div>
+				<input type="submit" name = "change_password_button" value="Change Password">
+				
+				<td></td>
+				<div class="divider"></div> 
+				<h3></h3>
+
+				<br> <br>
+
+				<h3>Roles</h3>	
+				<form action="userCred.php" method="POST">
+					<label for=""> Currently as: </label>
+					<?php 
+						$claims = $auth -> getUser($uid)-> customClaims;
+						if(isset($claims['Superadmin']) == true) {
+							echo "SuperAdmin";
+						}
+						if(isset($claims['Admin']) == true) {
+							echo "Admin";
+						} 
+						elseif($claims == null) {
+							echo "No roles";
+						}
+					?>
+				<br>
+				<input type="hidden" name="roles-user-id" value="<?=$uid?>">
+				<br>
+				<label for=""> Account Status: </label>
+				<select name="select_roles_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+					<option value="Select"> Select </option>
+					<option value="Norole"> Noroles </option>
+					<option value="Superadmin"> Superadmin </option>
+					<option value="Admin"> Admin </option>						
+				</select>
+				<br>
+				<input type="submit" name = "roles_user_button" value="Save">
+				</form>
+			</form>
+			<?php
+			} catch(Exception $e) {					
+			}
+		} else{
+			echo "No user id found";
+		}
+		?>
+		</form>
 	</div>
 </body>
 </html>

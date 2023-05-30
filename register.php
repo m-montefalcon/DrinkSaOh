@@ -27,6 +27,9 @@ include("dbcon.php");
 		padding: 30px;
 		width: 100%;
 	}
+	.card {
+		padding: 15px;
+	}
 	.card .card-header {
 		border-bottom-color: #f9f9f9;
 		line-height: 30px;
@@ -127,6 +130,18 @@ include("dbcon.php");
 		background-color: #11101D;
 		color: white;
 	}
+	body::-webkit-scrollbar {
+		width: 5px; 
+	}
+	body::-webkit-scrollbar-track {
+		background-color: #f6f6f6; 
+	}
+	body::-webkit-scrollbar-thumb {
+		background-color: #ccc; 
+	}
+	body::-webkit-scrollbar-thumb:hover {
+		background-color: #aaa; 
+	}  
 	.error {
 		color: #FF0000;
 		font-size: 14px;
@@ -136,71 +151,68 @@ include("dbcon.php");
 </head>
 
 <body>
-	<div class="home-section">
-		<div class="card">
-
-			<div class="card-header">
-				<h2> Register </h2>
-			</div>
-			
-			<form action="userCred.php" method="POST">
-				<?php
-					if (isset($_SESSION['status'])) {
-						echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
-						unset($_SESSION['status']);
-					}
-				?>
-				
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"> <i class="fa-solid fa-user"></i> </span>
-					</div>
-					<label for="full_name"> Full Name </label>
-					<input type="text" id="full_name" class="form-control" name="full_name" placeholder="Enter full name" required>
-				</div>
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"> <i class="fa-solid fa-phone"></i> </span>
-					</div>
-					<label for="phone_number"> Phone Number </label>
-					<input type="tel" id="phone_number" class="form-control" name="phone_number" pattern="[0-9]{10}" placeholder="Enter phone number" required>
-				</div>
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"> <i class="fa-solid fa-at"></i> </span>
-					</div>
-					<label for="email_address"> Email Address </label>
-					<input type="email" id="email_address" class="form-control" name="email_address" placeholder="Enter email address" required>
-				</div>
-				<div class="form-group input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"> <i class="fa-solid fa-key"></i> </span>
-					</div>
-					<label for="password"> Password </label>
-					<input type="password" id="password" class="form-control" name="password" minlength="8" placeholder="Must be atleast 8 characters" required>
-					<span class="input-group-icon"> 
-						<i class="fa fa-eye-slash password-toggle" id="password-toggle"></i>
-					</span>
-				</div>
-
-				<input type="submit" name = "register_user_button" value="Register">
-				<a href="profiles.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
-
-			</form>
+	<div class="card">
+		<div class="card-header">
+			<h2> Register </h2>
 		</div>
-		<script>
-			const passwordInput = document.getElementById('password');
-			const passwordToggle = document.getElementById('password-toggle');
+		
+		<form action="userCred.php" method="POST">
+			<?php
+				if (isset($_SESSION['status'])) {
+					echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
+					unset($_SESSION['status']);
+				}
+			?>
+			
+			<div class="form-group input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"> <i class="fa-solid fa-user"></i> </span>
+				</div>
+				<label for="full_name"> Full Name </label>
+				<input type="text" id="full_name" class="form-control" name="full_name" placeholder="Enter full name" required>
+			</div>
+			<div class="form-group input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"> <i class="fa-solid fa-phone"></i> </span>
+				</div>
+				<label for="phone_number"> Phone Number </label>
+				<input type="tel" id="phone_number" class="form-control" name="phone_number" pattern="[0-9]{10}" placeholder="Enter phone number" required>
+			</div>
+			<div class="form-group input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"> <i class="fa-solid fa-at"></i> </span>
+				</div>
+				<label for="email_address"> Email Address </label>
+				<input type="email" id="email_address" class="form-control" name="email_address" placeholder="Enter email address" required>
+			</div>
+			<div class="form-group input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"> <i class="fa-solid fa-key"></i> </span>
+				</div>
+				<label for="password"> Password </label>
+				<input type="password" id="password" class="form-control" name="password" minlength="8" placeholder="Must be atleast 8 characters" required>
+				<span class="input-group-icon"> 
+					<i class="fa fa-eye-slash password-toggle" id="password-toggle"></i>
+				</span>
+			</div>
 
-			passwordToggle.addEventListener('click', function() {
-			const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-			passwordInput.setAttribute('type', type);
-			passwordToggle.classList.toggle('fa-eye');
-			passwordInput.focus();
-			});
-		</script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+			<input type="submit" name = "register_user_button" value="Register">
+			<a href="profiles.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
+
+		</form>
 	</div>
+	<script>
+		const passwordInput = document.getElementById('password');
+		const passwordToggle = document.getElementById('password-toggle');
+
+		passwordToggle.addEventListener('click', function() {
+		const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+		passwordInput.setAttribute('type', type);
+		passwordToggle.classList.toggle('fa-eye');
+		passwordInput.focus();
+		});
+	</script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>
 </html>

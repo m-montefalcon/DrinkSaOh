@@ -126,6 +126,9 @@ include('authentication.php');
     background-color: #11101D;
     color: white;
   }
+  .card {
+    padding: 15px;
+  }
   .card .card-header {
     border-bottom-color: #f9f9f9;
     line-height: 30px;
@@ -147,18 +150,6 @@ include('authentication.php');
   button[type="submit"]:hover {
     background-color: #11101D;
   }
-  .home-section::-webkit-scrollbar {
-    width: 5px; 
-  }
-  .home-section::-webkit-scrollbar-track {
-    background-color: #f6f6f6; 
-  }
-  .home-section::-webkit-scrollbar-thumb {
-    background-color: #ccc; 
-  }
-  .home-section::-webkit-scrollbar-thumb:hover {
-    background-color: #aaa; 
-  }
   select {
     padding: 8px;
     border: 2px solid #ccc;
@@ -169,87 +160,93 @@ include('authentication.php');
     box-shadow: inset 0px 0px 5px #BDBDBD;
     font-size: 14px;
   } 
+  body::-webkit-scrollbar {
+    width: 5px; 
+  }
+  body::-webkit-scrollbar-track {
+    background-color: #f6f6f6; 
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: #ccc; 
+  }
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa; 
+  }
 </style>
 </head>
 
 <body>
-  <div class="home-section">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h2>
-              EDIT INVENTORY  
-            </h2>
-          </div>
-          <div class="card-body">
-            <?php
-              include('dbcon.php');
-              if(isset($_GET['id'])) {
-                $key_child = $_GET['id'];
-                $ref_table = "inventory";
-                $getData = $database->getReference($ref_table) -> getChild($key_child) -> getValue();
-                if($getData > 0) {
-            ?>           
-            <form action="code.php" method="POST">
-              <div class="form-grid">
-                <input type="hidden" name="key" value="<?=$key_child;?>">
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Product Name </label>
-                  <input type="text" name="product_name" value = "<?=$getData['productName'];?>" class="form-control">
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> SKU </label>
-                  <input type="text" name="sku_number" value = "<?=$getData['skuId'];?>" class="form-control" maxlength="13">
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Quantity </label>
-                  <input type="number" name="sku_qty" value = "<?=$getData['skuQtyId'];?>" class="form-control">
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Supplier Name </label>
-                  <input type="text" name="supplier_name" value = "<?=$getData['supplier_name'];?>" class="form-control">
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                    <label for=""> Critical Point</label>
-                    <input type="number" name="critical_point" value = "<?=$getData['criticalPoint'];?>" class="form-control" required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                    <label for=""> Supplier Price </label>
-                    <input type="number" name="supplier_price" class="form-control" value = "<?=$getData['supplierPrice'];?>" step=".01" required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Unit Price </label>
-                  <input type="number" name="price_qty" step=".01"  value = "<?=$getData['priceQuantity'];?>" class="form-control">
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Category </label>
-                  <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-                    <option value="Bottled" <?php if ($getData['productCategory'] === 'Bottled') { echo 'selected'; } ?>>Bottled</option>
-                    <option value="Canned" <?php if ($getData['productCategory'] === 'Canned') { echo 'selected'; } ?>>Canned</option>
-                  </select>
-                </div>
-              </div>
-              <button type = "submit" name = "edit_inventory" class = "btn btn-primary"> Save </button>
-              <a href="index.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
-            </form>
-          </div>
-            <?php
-              }
-              else {
-                $_SESSION['status'] =  "Invalid";
-                header('Location: index.php');
-                exit();
-              }
-            } else {
-              $_SESSION['status'] =  "Not Found";
-              header('Location: index.php');
-              exit();
-            }            
-            ?>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>
+        EDIT INVENTORY  
+      </h2>
     </div>
+    <div class="card-body">
+      <?php
+        include('dbcon.php');
+        if(isset($_GET['id'])) {
+          $key_child = $_GET['id'];
+          $ref_table = "inventory";
+          $getData = $database->getReference($ref_table) -> getChild($key_child) -> getValue();
+          if($getData > 0) {
+      ?>           
+      <form action="code.php" method="POST">
+        <div class="form-grid">
+          <input type="hidden" name="key" value="<?=$key_child;?>">
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Product Name </label>
+            <input type="text" name="product_name" value = "<?=$getData['productName'];?>" class="form-control">
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> SKU </label>
+            <input type="text" name="sku_number" value = "<?=$getData['skuId'];?>" class="form-control" maxlength="13">
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Quantity </label>
+            <input type="number" name="sku_qty" value = "<?=$getData['skuQtyId'];?>" class="form-control">
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Supplier Name </label>
+            <input type="text" name="supplier_name" value = "<?=$getData['supplier_name'];?>" class="form-control">
+          </div>
+          <div class="col-md-4 form-group mb-3">
+              <label for=""> Critical Point</label>
+              <input type="number" name="critical_point" value = "<?=$getData['criticalPoint'];?>" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+              <label for=""> Supplier Price </label>
+              <input type="number" name="supplier_price" class="form-control" value = "<?=$getData['supplierPrice'];?>" step=".01" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Unit Price </label>
+            <input type="number" name="price_qty" step=".01"  value = "<?=$getData['priceQuantity'];?>" class="form-control">
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Category </label>
+            <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+              <option value="Bottled" <?php if ($getData['productCategory'] === 'Bottled') { echo 'selected'; } ?>>Bottled</option>
+              <option value="Canned" <?php if ($getData['productCategory'] === 'Canned') { echo 'selected'; } ?>>Canned</option>
+            </select>
+          </div>
+        </div>
+        <button type = "submit" name = "edit_inventory" class = "btn btn-primary"> Save </button>
+        <a href="index.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
+      </form>
+    </div>
+      <?php
+        }
+        else {
+          $_SESSION['status'] =  "Invalid";
+          header('Location: index.php');
+          exit();
+        }
+      } else {
+        $_SESSION['status'] =  "Not Found";
+        header('Location: index.php');
+        exit();
+      }            
+      ?>
   </div>
 </body>
 </html>

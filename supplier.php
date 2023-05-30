@@ -79,7 +79,7 @@ function formatDate($date) {
     padding: 20px 25px; 
   }
   .btn-sm::before {
-    content: "\f044"; 
+    content: "\f35d"; 
     font-family: "Font Awesome 5 Free"; 
     font-weight: bold;
     font-size: 20px;
@@ -101,7 +101,7 @@ function formatDate($date) {
     padding: 6px;
     border-radius: 6px;
     cursor: pointer;
-  } 
+  }
   .low-quantity {
     background-color: red;
   }
@@ -229,7 +229,7 @@ function formatDate($date) {
 	}
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	} 
+	}  
 </style>
 </head>
 
@@ -243,68 +243,54 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
-        <div>
-          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-            <option value="All">All</option>
-            <option value="Canned">Canned</option>
-            <option value="Bottled">Bottled</option>
-          </select>
-          <button id="filter-button" type="button">FILTER</button>
-        </div>
-          <br>
         <div class="card">
           <div class="card-header">
             <h2>
-              STOCK CARD DETAILS
+              SUPPLIER
             </h2>
           </div>
           <div class="card-body">
-            <div id="table">
+            <div class="table">
               <table class="table table-bordered table-stripe">
                 <tbody>
                   <tr>
-                    <th>ACTION</th>
-                    <th>EMPLOYEE NAME</th>
-                    <th>UNIT PRICE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>SKU</th>
-                    <th>QUANTITY</th>
+                    <th>#</th>
                     <th>SUPPLIER NAME</th>
-                    <th>TOTAL AMOUNT</th>
-                  </tr>         
+                    <th>VIEW</th>
+                  </tr>
                 <?php
                   include('dbcon.php');
-
-                  // Get the selected SKU ID from the query parameter
-                  $stockcardId = $_GET['stockcard_id'];
-
-                  // Retrieve the data under the selected SKU ID
-                  $stockcardref = 'stockcard/' . $stockcardId;
-                  $fetchData = $database->getReference($stockcardref)->getValue();
-
-                  if ($fetchData) {
-                      foreach ($fetchData as $key => $data) {
+                  $stockcardref = 'stockcard';
+                  $fetchInventory = $database->getReference($stockcardref)->getValue();
+                  $users = $auth->listUsers();
+                  
+                  if ($fetchInventory) {
+                      $i = 1;
+                      foreach ($fetchInventory as $stockcardId => $row) {
                           ?>
                           <tr>
-                              <td><?= $data['action']; ?></td>
-                              <td><?= $data['eId']; ?></td>
-                              <td>₱<?= $data['priceQuantity']; ?></td>
-                              <td><?= $data['productName']; ?></td>
-                              <td><?= $data['skuId']; ?></td>
-                              <td><?= $data['skuQtyId']; ?></td>
-                              <td><?= $data['supplier_name']; ?></td>
-                              <td><?= $data['totalPrice']; ?></td>
+                              <td><?= $i++; ?></td>
+                              <td><?= $stockcardId; ?></td>
+                              <td>
+                                  <!-- <form action="stock_card_details.php" method="GET">
+                                      <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>"> -->
+                                      <button type="submit" class="btn btn-success btn-sm"></button>
+                                  <!-- </form> -->
+                              </td>
                           </tr>
                           <?php
                       }
-                  } else {
+                    } else {
                       ?>
                       <tr>
-                          <td colspan="9">No data found for the selected SKU ID.</td>
+                        <td colspan="3">No data found.</td>
                       </tr>
                       <?php
-                  }
-                  ?>
+                    }
+                    ?>
+                    <tr>
+                      <td colspan="3">No record Found</td>
+                    </tr>
                   <?php 
                   ?>
                 </tbody>
@@ -314,27 +300,7 @@ function formatDate($date) {
         </div>
       </div>
     </div> 
-  </div> 
-  <script>
-    // Function to filter the table rows based on the selected category
-    function filterTableRows(category) {
-      const rows = document.querySelectorAll('tbody tr');
-
-      rows.forEach(row => {
-        const categoryCell = row.querySelector('td:nth-child(8)');
-        const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
-        row.style.display = display;
-      });
-    }
-
-    // Event listener for the filter button click
-    document.getElementById('filter-button').addEventListener('click', function() {
-      const selectElement = document.getElementById('category-select');
-      const selectedCategory = selectElement.value;
-      filterTableRows(selectedCategory);
-    });
-  </script>
-
+  </div>
 </body>
 </html>
     

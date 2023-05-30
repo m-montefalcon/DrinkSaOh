@@ -83,6 +83,9 @@ include('authentication.php');
     border-radius: 6px;
     cursor: pointer;
   }
+  .card {
+    padding: 15px;
+  }
   .card .card-header {
     border-bottom-color: #f9f9f9;
     line-height: 30px;
@@ -147,16 +150,16 @@ include('authentication.php');
   button[type="submit"]:hover {
     background-color: #11101D;
   }
-  .home-section::-webkit-scrollbar {
+  body::-webkit-scrollbar {
     width: 5px; 
   }
-  .home-section::-webkit-scrollbar-track {
+  body::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .home-section::-webkit-scrollbar-thumb {
+  body::-webkit-scrollbar-thumb {
     background-color: #ccc; 
   }
-  .home-section::-webkit-scrollbar-thumb:hover {
+  body::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
   select {
@@ -173,63 +176,57 @@ include('authentication.php');
 </head>
     
 <body>
-  <div class="home-section">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h2>
-              ADD INVENTORY
-            </h2>
-          </div>
-          <div class="card-body">
-            <form action="code.php" method="POST">
-              <div class="form-grid">
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Product Name </label>
-                  <input type="text" name="product_name" class="form-control" required>     
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> SKU </label>
-                  <input type="text" name="sku_number" class="form-control" maxlength="13" required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Quantity </label>
-                  <input type="number" name="sku_qty" class="form-control" required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Supplier Name </label>
-                  <input type="text" name="supplier_name" class="form-control" required>     
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Critical Point</label>
-                  <input type="number" name="critical_point" class="form-control" required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Supplier Price </label>
-                  <input type="number" name="supplier_price" class="form-control" step=".01" required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Unit Price </label>
-                  <input type="number" name="price_qty" class="form-control" step=".01"  required>
-                </div>
-                <div class="col-md-4 form-group mb-3">
-                  <label for=""> Category </label>
-                  <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-                    <option value="Bottled"> Bottled </option>
-                    <option value="Canned"> Canned </option>				
-                  </select>
-                </div>
-              </div>
-              <button type = "submit" name = "add_inventory" class = "btn btn-primary"> Add </button>
-              <a href="index.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
-            </form>
-                <?php                     
-                ?>
-          </div>    
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>
+        ADD INVENTORY
+      </h2>
     </div>
+    <div class="card-body">
+      <form action="code.php" method="POST">
+        <div class="form-grid">
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Product Name </label>
+            <input type="text" name="product_name" class="form-control" required>     
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> SKU </label>
+            <input type="text" name="sku_number" class="form-control" maxlength="13" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Quantity </label>
+            <input type="number" name="sku_qty" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Supplier Name </label>
+            <input type="text" name="supplier_name" class="form-control" required>     
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Critical Point</label>
+            <input type="number" name="critical_point" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Supplier Price </label>
+            <input type="number" name="supplier_price" class="form-control" step=".01" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Unit Price </label>
+            <input type="number" name="price_qty" class="form-control" step=".01"  required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
+            <label for=""> Category </label>
+            <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+              <option value="Bottled"> Bottled </option>
+              <option value="Canned"> Canned </option>				
+            </select>
+          </div>
+        </div>
+        <button type = "submit" name = "add_inventory" class = "btn btn-primary"> Add </button>
+        <a href="index.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
+      </form>
+          <?php                     
+          ?>
+    </div>    
   </div>
 </body>
 </html>

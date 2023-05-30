@@ -26,6 +26,9 @@ include("dbcon.php");
 		padding: 30px;
 		width: 100%;
 	}
+	.card {
+		padding: 15px;
+	}
 	.card .card-header {
 		border-bottom-color: #f9f9f9;
 		line-height: 30px;
@@ -101,6 +104,18 @@ include("dbcon.php");
 		background-color: #11101D;
 		color: white;
 	}
+	body::-webkit-scrollbar {
+		width: 5px; 
+	}
+	body::-webkit-scrollbar-track {
+		background-color: #f6f6f6; 
+	}
+	body::-webkit-scrollbar-thumb {
+		background-color: #ccc; 
+	}
+	body::-webkit-scrollbar-thumb:hover {
+		background-color: #aaa; 
+	}  
 	.error {
 		color: #FF0000;
 		font-size: 14px;
@@ -110,44 +125,42 @@ include("dbcon.php");
 </head>
 
 <body>
-	<div class="home-section">
-		<div class="card">
-          	<div class="card-header">
-				<h2>
-					EDIT USER  
-            	</h2>
-          	</div>
-			<form action="userCred.php" method="POST">
-				<?php
-					if (isset($_SESSION['status'])) {
-						echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
-						unset($_SESSION['status']);
-					}
-				?>
-				<?php 
-					include('dbcon.php');
-					if(isset($_GET['id'])) {
-						$uid = $_GET['id'];
-					}			
-					try {
-						$user = $auth->getUser($uid);
-				?>
-				
-				<input type="hidden" name="edit-user-key" value="<?=$uid;?>">
-
-				<label for="full_name"> Full Name </label>			
-				<input type="text" id="full_name" value =  "<?=$user -> displayName ?>" name="full_name" placeholder="Enter full name" required>
-
-				<label for="phone_number"> Phone Number </label>
-				<input type="text" id="phone_number" value = "<?=$user -> phoneNumber ?>"name="phone_number" pattern="{10}" placeholder="Enter phone number">
-				
-				<label for="email_address"> Email Address </label>
-				<input type="email" id="email_address" value = "<?=$user -> email ?>" name="email_address" placeholder="Enter email address" required>
-				
-				<input type="submit" name = "update_user_button" value="Edit">
-				<a href="profiles.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
-			</form>
+	<div class="card">
+		<div class="card-header">
+			<h2>
+				EDIT USER  
+			</h2>
 		</div>
+		<form action="userCred.php" method="POST">
+			<?php
+				if (isset($_SESSION['status'])) {
+					echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
+					unset($_SESSION['status']);
+				}
+			?>
+			<?php 
+				include('dbcon.php');
+				if(isset($_GET['id'])) {
+					$uid = $_GET['id'];
+				}			
+				try {
+					$user = $auth->getUser($uid);
+			?>
+			
+			<input type="hidden" name="edit-user-key" value="<?=$uid;?>">
+
+			<label for="full_name"> Full Name </label>			
+			<input type="text" id="full_name" value =  "<?=$user -> displayName ?>" name="full_name" placeholder="Enter full name" required>
+
+			<label for="phone_number"> Phone Number </label>
+			<input type="text" id="phone_number" value = "<?=$user -> phoneNumber ?>"name="phone_number" pattern="{10}" placeholder="Enter phone number">
+			
+			<label for="email_address"> Email Address </label>
+			<input type="email" id="email_address" value = "<?=$user -> email ?>" name="email_address" placeholder="Enter email address" required>
+			
+			<input type="submit" name = "update_user_button" value="Edit">
+			<a href="profiles.php" class="btn btn-danger float-end" onclick="history.back()"> Cancel </a>
+		</form>
 	</div>
 	<?php				
 		} catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {

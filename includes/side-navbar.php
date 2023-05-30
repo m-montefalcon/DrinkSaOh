@@ -159,8 +159,6 @@
     left: 230px;
     max-height: 100vh;
     transition: 0.5s ease;
-    overflow: auto;
-    
   }
   .top-navbar {
     width: 100%;
@@ -183,9 +181,6 @@
     border-radius: 50%;
     cursor: pointer;
   }
-  /* .profile img:hover {
-    hover ang user name
-  } */
   #menu-icon {
     font-size: 34px;
     cursor: pointer;
@@ -220,7 +215,6 @@
       left: 0;
     }
   }
-
   @media (max-width: 768px) {
     .home-section {
         width: 100%;
@@ -401,6 +395,13 @@
                 <span class="tooltip"> Transactions </span>
             </li>
             <li>
+              <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "supplier.php") echo "active"; ?>" href="supplier.php">
+                <span class="icon"> <ion-icon name="storefront-outline"></ion-icon> </span>
+                <span class="text">Supplier</span>
+              </a>
+                <span class="tooltip"> Supplier </span>
+            </li>
+            <li>
               <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "stock_card.php") echo "active"; ?>" href="stock_card.php">
                 <span class="icon"> <ion-icon name="bag-check-outline"></ion-icon> </span>
                 <span class="text">Stock Card</span>
@@ -465,8 +466,8 @@
                 </a>
                   <span class="tooltip"> Logout </span>
               </li>
-                <?php endif; ?>
-                <?php endif; ?>
+        <?php endif; ?>
+      <?php endif; ?>
       </ul>
     </aside>
   </div>

@@ -13,11 +13,11 @@ use Kreait\Firebase\ServiceAccount;
 <!DOCTYPE html>
 <html>
 <head>
+  <title> Home </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <style>
-* {
-  /* border: 1px solid red; */
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -37,13 +37,11 @@ use Kreait\Firebase\ServiceAccount;
   h3 {
     font-size: 28px;
 		font-weight: 600;
-		
   }
   section {
     display: flex;
     justify-content: center;
     align-items: center;
-    
     flex-wrap: wrap;
   }
   .box {
@@ -102,16 +100,16 @@ use Kreait\Firebase\ServiceAccount;
     font-size: 4em;
     margin-bottom: 20px;
   }
-  .content::-webkit-scrollbar {
+  body::-webkit-scrollbar {
     width: 5px; 
   }
-  .content::-webkit-scrollbar-track {
+  body::-webkit-scrollbar-track {
     background-color: #f6f6f6; 
   }
-  .content::-webkit-scrollbar-thumb {
-      background-color: #ccc; 
+  body::-webkit-scrollbar-thumb {
+    background-color: #ccc; 
   }
-  .content::-webkit-scrollbar-thumb:hover {
+  body::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; 
   }  
 </style>
@@ -139,18 +137,16 @@ use Kreait\Firebase\ServiceAccount;
         <!-- <p>View and manage admins</p> -->
         <span> Admin Count:
           <?php 
-              $adminCount = 0;
+            $adminCount = 0;
 
-              $users = $auth->listUsers();
-              foreach ($users as $user) {
-                  $claims = $user->customClaims;
-                  if(isset($claims['Admin']) == true){
-                      $adminCount++;
-                  }
-              }
-
-              echo $adminCount;
-
+            $users = $auth->listUsers();
+            foreach ($users as $user) {
+                $claims = $user->customClaims;
+                if(isset($claims['Admin']) == true){
+                    $adminCount++;
+                }
+            }
+            echo $adminCount;
           ?>
         </span>
       </div>
