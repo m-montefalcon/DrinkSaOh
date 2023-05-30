@@ -293,7 +293,7 @@ function formatDate($date) {
                               <td><?= $data['skuId']; ?></td>
                               <td><?= $data['skuQtyId']; ?></td>
                               <td><?= $data['supplier_name']; ?></td>
-                              <td><?= $data['totalPrice']; ?></td>
+                              <td>₱<?= $data['totalPrice']; ?></td>
                           </tr>
                           <?php
                       }

@@ -283,16 +283,11 @@ function formatDate($date) {
                     } else {
                       ?>
                       <tr>
-                        <td colspan="3">No data found.</td>
+                        <td colspan="3"> No Record Found </td>
                       </tr>
-                      <?php
-                    }
-                    ?>
-                    <tr>
-                      <td colspan="3">No record Found</td>
-                    </tr>
-                  <?php 
-                  ?>
+                      <?php 
+                      }
+                      ?>
                 </tbody>
               </table>
             </div>
