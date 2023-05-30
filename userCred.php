@@ -305,7 +305,6 @@ if(isset($_POST['roles_user_button'])){
 
 //EDIT PROFILE (ANY ROLES PRIVILAGE)
 
-
 if(isset($_POST['user_profile_submit_button'])){
 
     $displayName = $_POST["full_name"];
@@ -336,6 +335,92 @@ if(isset($_POST['user_profile_submit_button'])){
         exit();
     }
     
+}
+
+//REGISTER SUPPLIER (SUPER ADMIN PRIVILAGE)
+
+if(isset($_POST['register_supplier_user_button']))
+{
+    $supplier_full_name = $_POST['supplier_full_name'];
+    $supplier_phoneNumber = $_POST['supplier_phone_number'];
+    $supplier_emailAddress= $_POST['supplier_email_address'];
+    
+
+    $uid = $_SESSION['verified_user_id'];
+    $user = $auth->getUser($uid);
+
+    $supplierRef = $database->getReference('supplier');
+    $supplierData = [
+            'supplierFullName' => $supplier_full_name,
+            'supplierPhoneNumber' => $supplier_phoneNumber, 
+            'supplierEmailAddress' => $supplier_emailAddress,
+
+        ];
+       
+        $supplierRef_result = $supplierRef->push($supplierData);
+
+        if($supplierRef_result !== false && $supplierRef_result !== null)
+            {
+                $_SESSION['status'] = "Added!";
+                header('location: supplier.php');
+            }
+            else
+            {
+                $_SESSION['status'] = "Error!";
+                header('location: supplier.php');
+            }
+    
+}
+
+//EDIT SUPPLIER (SUPER ADMIN PRIVILAGE)
+
+if (isset($_POST['edit_supplier_user_button'])) {
+    $key = $_POST['key'];
+
+    $ref_table = 'supplier/'.$key;
+
+    $supplier_full_name = $_POST['supplier_full_name'];
+    $supplier_phoneNumber = $_POST['supplier_phone_number'];
+    $supplier_emailAddress = $_POST['supplier_email_address'];
+
+    $supplierData = [
+        'supplierFullName' => $supplier_full_name,
+        'supplierPhoneNumber' => $supplier_phoneNumber, 
+        'supplierEmailAddress' => $supplier_emailAddress,
+    ];
+
+    $supplierRef_result = $database->getReference($ref_table)
+        ->update($supplierData);
+
+    if ($supplierRef_result) {
+        $_SESSION['status'] = "Updated";
+        header('location: supplier.php');
+        exit();
+    } else {
+        $_SESSION['status'] = "Error";
+        header('location: supplier.php');
+        exit();
+    }
+}
+//DELETE SUPPLIER (SUPER ADMIN PRIVILAGE)
+
+
+if(isset($_POST['delete_supplier_button'])){
+
+    $delete_id = $_POST['delete_supplier_button'];
+    $ref_table = 'supplier/'.$delete_id;
+    $supplierRef = $database->getReference($ref_table);
+
+
+    $deleteSupplierCred = $supplierRef->remove();
+
+    if ($deleteSupplierCred) {
+        $_SESSION['status'] = "Deleted!";
+        header('location: supplier.php');
+    } else {
+        $_SESSION['status'] = "Error!";
+        header('location: supplier.php');
+    }
 }
 
 ?>

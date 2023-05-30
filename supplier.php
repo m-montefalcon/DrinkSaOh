@@ -16,6 +16,7 @@ function formatDate($date) {
 <!DOCTYPE html>
 <html>
 <head>
+  <title> Inventory </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 <style>
@@ -79,7 +80,7 @@ function formatDate($date) {
     padding: 20px 25px; 
   }
   .btn-sm::before {
-    content: "\f35d"; 
+    content: "\f044"; 
     font-family: "Font Awesome 5 Free"; 
     font-weight: bold;
     font-size: 20px;
@@ -101,7 +102,7 @@ function formatDate($date) {
     padding: 6px;
     border-radius: 6px;
     cursor: pointer;
-  }
+  } 
   .low-quantity {
     background-color: red;
   }
@@ -243,59 +244,89 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
+        
+          <br>
         <div class="card">
           <div class="card-header">
             <h2>
               SUPPLIER
             </h2>
+            <a class="add-btn" href="register_supplier.php" class="btn btn-primary float-end"> Add Supplier </a>
           </div>
           <div class="card-body">
-            <div class="table">
-              <table class="table table-bordered table-stripe">
-                <tbody>
-                  <tr>
-                    <th>#</th>
-                    <th>SUPPLIER NAME</th>
-                    <th>VIEW</th>
-                  </tr>
+          <div id="table">
+            <table class="table table-bordered table-stripe">
+              <tbody>
+                <tr>
+                  <th>#</th>
+                  <th>SUPPLIER NAME</th>
+                  <th>SUPPLIER PHONE NUMBER</th>
+                  <th>SUPPLER EMAIL ADDRESS</th>
+                  <th>EDIT</th>
+                  <th>DELETE</th>
+                </tr>
                 <?php
-                  include('dbcon.php');
-                  $stockcardref = 'stockcard';
-                  $fetchInventory = $database->getReference($stockcardref)->getValue();
+                  include ('dbcon.php');
+                  $ref_supplier = 'supplier';
+                  $fetchInventory = $database->getReference($ref_supplier) -> getValue();
                   $users = $auth->listUsers();
-                  
-                  if ($fetchInventory) {
-                      $i = 1;
-                      foreach ($fetchInventory as $stockcardId => $row) {
-                          ?>
-                          <tr>
-                              <td><?= $i++; ?></td>
-                              <td><?= $stockcardId; ?></td>
-                              <td>
-                                  <!-- <form action="stock_card_details.php" method="GET">
-                                      <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>"> -->
-                                      <button type="submit" class="btn btn-success btn-sm"></button>
-                                  <!-- </form> -->
-                              </td>
-                          </tr>
-                          <?php
-                      }
-                    } else {
-                        ?>
-                        <tr>
-                          <td colspan="3"> No Record Found </td>
-                        </tr>
-                        <?php 
-                        }
-                        ?>
-                </tbody>
-              </table>
-            </div>
+
+                  if ($fetchInventory > 0) {
+                    $i = 1;
+                    foreach($fetchInventory as $key => $row) {    
+                ?>
+                <tr>
+                  <td><?=$i++;?></td>
+                  <td><?=$row['supplierFullName']?></td>
+                  <td>+63<?=$row['supplierPhoneNumber']?></td>
+                  <td><?=$row['supplierEmailAddress']?></td>
+                  <td>
+                    <a href="edit_supplier_cred.php?id=<?=$key?>" class="btn btn-primary btn-sm"> </a>
+                  </td>
+                  <td>
+                    <form action="userCred.php" method = "POST">
+                      <button type="submit" name = "delete_supplier_button" class = "btn btn-danger btn-sm" value = "<?=$key?>"></button>
+                    </form>
+                  </td>            
+                </tr>
+                <?php
+                  }
+                } else {
+                ?>
+                <tr>
+                  <td colspan="3"> No record Found </td>
+                </tr>
+                <?php 
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
           </div>
         </div>
       </div>
     </div> 
   </div>
+
+  <script>
+    // Function to filter the table rows based on the selected category
+    function filterTableRows(category) {
+      const rows = document.querySelectorAll('tbody tr');
+
+      rows.forEach(row => {
+        const categoryCell = row.querySelector('td:nth-child(8)');
+        const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
+        row.style.display = display;
+      });
+    }
+    // Event listener for the filter button click
+    document.getElementById('filter-button').addEventListener('click', function() {
+      const selectElement = document.getElementById('category-select');
+      const selectedCategory = selectElement.value;
+      filterTableRows(selectedCategory);
+    });
+  </script>
+
 </body>
 </html>
     
@@ -304,3 +335,22 @@ include('includes/footer.php');
 ?>
 
 
+<!-- <td>
+  <form action="code.php" method = "POST">
+  <input type="checkbox" id="check">
+    <label type="submit" class = "btn btn-danger btn-sm" for="check"></label>
+    <div class="background"></div>
+    <div class="alert_box">
+      <div class="icon">
+        <i class="fas fa-exclamation"></i>
+      </div>
+      <header>Confirm</header>
+      <p>Are you sure want to permanently delete this Item?</p>
+      <div class="btns">
+        <label for="check" type="submit" name = "delete_button" value = "<?=$key?>"> Delete</label>
+        <label for="check">Cancel</label>
+      </div>
+    </div>
+  </form>
+</td>    -->
+ <!-- <a type="submit" name = "delete_button" class = "btn btn-danger btn-sm" value = "<?=$key?>"> </a> -->   
