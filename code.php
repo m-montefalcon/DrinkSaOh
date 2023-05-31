@@ -282,39 +282,65 @@ if(isset($_POST['add_inventory']))
     }
 }
 
-// require_once 'config.php';
 
+if (isset($_POST['stockAction']) && isset($_POST['quantity']) && isset($_POST['key'])) {
+    $stockAction = $_POST['stockAction'];
+    $quantity = $_POST['quantity'];
+    $key = $_POST['key'];
 
+    $inventoryRef = $database->getReference('inventory')
+        ->orderByChild('skuId')
+        ->equalTo($key)
+        ->getSnapshot()
+        ->getValue();
 
-// if (isset($_FILES['image-input']) && $_FILES['image-input']['error'] === UPLOAD_ERR_OK) {
-//     $fileData = file_get_contents($_FILES['image-input']['tmp_name']);
-//     $fileName = $_SESSION['verified_user_id'] . '.jpg'; // Use the user's ID as the filename
+    if ($inventoryRef) {
+        $inventoryKey = array_keys($inventoryRef)[0]; // Get the key of the inventory entry
 
-//     // Specify the destination path in Firebase Storage
-//     $destination = 'user-profile/' . $_SESSION['verified_user_id'] . '/' . $fileName;
+        $inventoryData = $inventoryRef[$inventoryKey]; // Get the data of the inventory entry
 
-//     // Upload the file to Firebase Storage
-//     $bucket->upload($fileData, [
-//         'name' => $destination,
-//     ]);
+        if ($stockAction === 'in') {
+            // Handle stock in action by adding the quantity to the existing quantity
+            $currentQuantity = isset($inventoryData['skuQtyId']) ? $inventoryData['skuQtyId'] : 0;
+            $newQuantity = $currentQuantity + $quantity;
 
-//     // Get the URL of the uploaded file
-//     $fileUrl = $bucket->object($destination)->signedUrl(new \DateTime('+1 hour')); // Generate a signed URL that is valid for 1 hour
+            $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['skuQtyId' => $newQuantity]);
+            $_SESSION['status'] = "Successfully Stocked In!";
+            header('location: index.php');
+            exit();
+        } elseif ($stockAction === 'out') {
+            // Handle stock out action by subtracting the quantity from the existing quantity
+            $currentQuantity = isset($inventoryData['skuQtyId']) ? $inventoryData['skuQtyId'] : 0;
 
-//     // Store the photo URL in a session variable
-//     $_SESSION['photo_url'] = $fileUrl;
+            if ($currentQuantity >= $quantity) {
+                $newQuantity = $currentQuantity - $quantity;
 
-//     // Store the photo URL in the database associated with the user
-//     // Replace this with your Firebase Realtime Database code
-//     $database = $factory->createDatabase();
-//     $database->getReference('users/' . $_SESSION['verified_user_id'])->update([
-//         'photo_url' => $fileUrl,
-//     ]);
+                $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['skuQtyId' => $newQuantity]);
 
-//     header('location: user_profile.php');
-// } else {
-//     header('location: user_profile.php');
-// }
+                $_SESSION['status'] = "Successfully Stocked Out!";
+                header('location: index.php');
+                exit();
+            } else {
+                $_SESSION['status'] = "Insufficient stock quantity!";
+                header('location: index.php');
+                exit();
+            }
+        } else {
+            $_SESSION['status'] = "Invalid stock action";
+            header('location: index.php');
+            exit();
+            // Invalid stock action
+        }
+    } else {
+        $_SESSION['status'] = "SKU ID not found in inventory";
+        header('location: index.php');
+        exit();
+    }
+} else {
+    $_SESSION['status'] = "Form fields are not set";
+    header('location: index.php');
+    exit();
+}
 
 
 

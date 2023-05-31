@@ -19,7 +19,7 @@ function formatDate($date) {
   <title> Inventory </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
-<style>
+  <style>
   * {
     box-sizing: border-box;
     margin: 0;
@@ -230,8 +230,56 @@ function formatDate($date) {
 	}
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	}  
+	}
+
+
+      .stock-in-btn {
+      background-color: blue;
+      color: white;
+    }
+
+    .stock-out-btn {
+      background-color: red;
+      color: white;
+    }
+
+    .modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -244,7 +292,7 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
-        <div>
+  <div>
           <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
             <option value="All">All</option>
             <option value="Canned">Canned</option>
@@ -264,20 +312,22 @@ function formatDate($date) {
           <div id="table">
             <table class="table table-bordered table-stripe">
               <tbody>
-                <tr>
-                  <th>#</th>
-                  <th>PRODUCT NAME</th>
-                  <th>SUPPLIER PRICE</th>
-                  <th>UNIT PRICE</th>
-                  <th>QTY</th>
-                  <th>TOTAL</th>
-                  <th>PRODUCT CODE</th>
-                  <th>CATEGORY</th>
-                  <th>BARCODE</th>
-                  <th>DATE</th>
-                  <th>EDIT</th>
-                  <th>DELETE</th>
-                </tr>
+              <tr>
+              <th>#</th>
+              <th>PRODUCT NAME</th>
+              <th>SUPPLIER PRICE</th>
+              <th>UNIT PRICE</th>
+              <th>QTY</th>
+              <th>TOTAL</th>
+              <th>PRODUCT CODE</th>
+              <th>CATEGORY</th> <!-- This line was missing -->
+              <th>BARCODE</th>
+              <th>ACTIONS</th>
+              <th>DATE</th>
+              <th>EDIT</th>
+              <th>DELETE</th>
+            </tr>
+
                 <?php
                   include ('dbcon.php');
                   $ref_inventory = 'inventory';
@@ -308,6 +358,11 @@ function formatDate($date) {
                       }
                     ?>
                   </td>
+                  <td>
+                  <button onclick="openModal('in', '<?php echo $row['skuId']; ?>', '<?php echo $row['skuQtyId']; ?>', '<?php echo $row['productName']; ?>')">Stock In</button>
+<button onclick="openModal('out', '<?php echo $row['skuId']; ?>', '<?php echo $row['skuQtyId']; ?>', '<?php echo $row['productName']; ?>')">Stock Out</button>
+</td>
+
                   <td><?= formatDate($row['currentDate']) ?> 
                     <br> <?= formatTime($row['currentTime']) ?> 
                   </td>
@@ -339,25 +394,107 @@ function formatDate($date) {
       </div>
     </div> 
   </div>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title"></h2>
+      <p>SKU ID: <span id="modal-skuid"></span></p>
+      <p>SKU Quantity ID: <span id="modal-skuqty"></span></p>
+      <p>Product Name: <span id="modal-productname"></span></p>
+      
+      <form id="modal-form" action="code.php" method="POST">
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" required>
+  <input type="hidden" id="modal-key" name="key">
+  <input type="hidden" id="modal-stockaction" name="stockAction"> 
+  <input type="submit" value="Submit">
+</form>
 
-  <script>
-    // Function to filter the table rows based on the selected category
-    function filterTableRows(category) {
-      const rows = document.querySelectorAll('tbody tr');
+      </div>
+    </div>
 
-      rows.forEach(row => {
-        const categoryCell = row.querySelector('td:nth-child(8)');
-        const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
-        row.style.display = display;
-      });
-    }
-    // Event listener for the filter button click
-    document.getElementById('filter-button').addEventListener('click', function() {
-      const selectElement = document.getElementById('category-select');
-      const selectedCategory = selectElement.value;
-      filterTableRows(selectedCategory);
+
+    <script>
+  // Function to filter the table rows based on the selected category
+  function filterTableRows(category) {
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const categoryCell = row.querySelector('td:nth-child(9)');
+      const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
+      row.style.display = display;
     });
+  }
+
+  // Event listener for the filter button click
+  document.getElementById('filter-button').addEventListener('click', function() {
+    const selectElement = document.getElementById('category-select');
+    const selectedCategory = selectElement.value;
+    filterTableRows(selectedCategory);
+  });
+</script>
+
+<script>
+    // Function to filter the table rows based on the selected category
+
+
+    function openModal(action, skuId, skuQtyId, productName) {
+  var modal = document.getElementById("modal");
+  var modalTitle = document.getElementById("modal-title");
+  var modalSkuQty = document.getElementById("modal-skuqty");
+var modalProductName = document.getElementById("modal-productname");
+var modalSkuId = document.getElementById("modal-skuid");
+
+  var form = document.getElementById("modal-form");
+
+  modalTitle.innerHTML = action + " Form";
+  modalSkuQty.innerHTML = skuQtyId;
+  modalProductName.innerHTML = productName;
+  modalSkuId.innerHTML = skuId;
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    var quantity = document.getElementById("quantity").value;
+    var keyInput = document.getElementById("modal-key");
+    var stockActionInput = document.getElementById("modal-stockaction"); // New line
+    keyInput.value = skuId;
+    stockActionInput.value = action; // New line
+    form.submit();
+  });
+
+  modal.style.display = "block";
+}
+
+    function closeModal() {
+      var modal = document.getElementById("modal");
+      modal.style.display = "none";
+    }
   </script>
+
+<script>
+// Function to filter the table rows based on the selected category
+function filterTableRows(category) {
+  const rows = document.querySelectorAll('tbody tr');
+
+  rows.forEach(row => {
+    const categoryCell = row.querySelector('td:nth-child(8)');
+    if (categoryCell) {
+      const categoryText = categoryCell.textContent.trim();
+      const display = category === 'All' || categoryText === category ? 'table-row' : 'none';
+      row.style.display = display;
+    }
+  });
+}
+// Event listener for the filter button click
+document.getElementById('filter-button').addEventListener('click', function() {
+  const selectElement = document.getElementById('category-select');
+  const selectedCategory = selectElement.value;
+  console.log('Selected Category:', selectedCategory);
+  filterTableRows(selectedCategory);
+});
+
+</script>
+
 
 </body>
 </html>
@@ -365,24 +502,3 @@ function formatDate($date) {
 <?php 
 include('includes/footer.php');
 ?>
-
-
-<!-- <td>
-  <form action="code.php" method = "POST">
-  <input type="checkbox" id="check">
-    <label type="submit" class = "btn btn-danger btn-sm" for="check"></label>
-    <div class="background"></div>
-    <div class="alert_box">
-      <div class="icon">
-        <i class="fas fa-exclamation"></i>
-      </div>
-      <header>Confirm</header>
-      <p>Are you sure want to permanently delete this Item?</p>
-      <div class="btns">
-        <label for="check" type="submit" name = "delete_button" value = "<?=$key?>"> Delete</label>
-        <label for="check">Cancel</label>
-      </div>
-    </div>
-  </form>
-</td>    -->
- <!-- <a type="submit" name = "delete_button" class = "btn btn-danger btn-sm" value = "<?=$key?>"> </a> -->   
