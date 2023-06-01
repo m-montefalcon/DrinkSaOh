@@ -232,51 +232,57 @@ function formatDate($date) {
 		background-color: #aaa; 
 	}
 
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 
-      .stock-in-btn {
-      background-color: blue;
-      color: white;
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+  }
+
+  .modal-content {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, auto);
+    grid-gap: 20px;
+  }
+  @media screen and (min-width: 768px) {
+    .modal-content {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    .stock-out-btn {
-      background-color: red;
-      color: white;
+  }
+  @media screen and (max-width: 767px) {
+    .modal-content {
+      grid-template-columns: repeat(1, 1fr);
     }
+  }
 
-    .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
 </style>
 
@@ -317,7 +323,7 @@ function formatDate($date) {
               <th>PRODUCT NAME</th>
               <th>SUPPLIER PRICE</th>
               <th>UNIT PRICE</th>
-              <th>QTY</th>
+              <th>QUANTITY</th>
               <th>TOTAL</th>
               <th>PRODUCT CODE</th>
               <th>CATEGORY</th> <!-- This line was missing -->
@@ -398,17 +404,17 @@ function formatDate($date) {
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <h2 id="modal-title"></h2>
-      <p>SKU ID: <span id="modal-skuid"></span></p>
-      <p>SKU Quantity ID: <span id="modal-skuqty"></span></p>
-      <p>Product Name: <span id="modal-productname"></span></p>
+      <p><strong>SKU ID: </strong><span id="modal-skuid"></span></strong></p>
+      <p><strong>Quantity: </strong><span id="modal-skuqty"></span></p>
+      <p><strong>Product Name: </strong><span id="modal-productname"></span></p>
       
-      <form id="modal-form" action="code.php" method="POST">
-  <label for="quantity">Quantity:</label>
-  <input type="number" id="quantity" name="quantity" required>
-  <input type="hidden" id="modal-key" name="key">
-  <input type="hidden" id="modal-stockaction" name="stockAction"> 
-  <input type="submit" value="Submit">
-</form>
+    <form id="modal-form" action="code.php" method="POST">
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity" required>
+      <input type="hidden" id="modal-key" name="key">
+      <input type="hidden" id="modal-stockaction" name="stockAction"> 
+      <input type="submit" value="Submit">
+    </form>
 
       </div>
     </div>
@@ -436,39 +442,37 @@ function formatDate($date) {
 
 <script>
     // Function to filter the table rows based on the selected category
+  function openModal(action, skuId, skuQtyId, productName) {
+    var modal = document.getElementById("modal");
+    var modalTitle = document.getElementById("modal-title");
+    var modalSkuQty = document.getElementById("modal-skuqty");
+    var modalProductName = document.getElementById("modal-productname");
+    var modalSkuId = document.getElementById("modal-skuid");
 
+    var form = document.getElementById("modal-form");
 
-    function openModal(action, skuId, skuQtyId, productName) {
-  var modal = document.getElementById("modal");
-  var modalTitle = document.getElementById("modal-title");
-  var modalSkuQty = document.getElementById("modal-skuqty");
-var modalProductName = document.getElementById("modal-productname");
-var modalSkuId = document.getElementById("modal-skuid");
+    modalTitle.innerHTML = action + " Form";
+    modalSkuQty.innerHTML = skuQtyId;
+    modalProductName.innerHTML = productName;
+    modalSkuId.innerHTML = skuId;
 
-  var form = document.getElementById("modal-form");
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      var quantity = document.getElementById("quantity").value;
+      var keyInput = document.getElementById("modal-key");
+      var stockActionInput = document.getElementById("modal-stockaction"); // New line
+      keyInput.value = skuId;
+      stockActionInput.value = action; // New line
+      form.submit();
+    });
 
-  modalTitle.innerHTML = action + " Form";
-  modalSkuQty.innerHTML = skuQtyId;
-  modalProductName.innerHTML = productName;
-  modalSkuId.innerHTML = skuId;
+    modal.style.display = "block";
+  }
 
-  form.addEventListener("submit", function(event) {
-    event.preventDefault();
-    var quantity = document.getElementById("quantity").value;
-    var keyInput = document.getElementById("modal-key");
-    var stockActionInput = document.getElementById("modal-stockaction"); // New line
-    keyInput.value = skuId;
-    stockActionInput.value = action; // New line
-    form.submit();
-  });
-
-  modal.style.display = "block";
-}
-
-    function closeModal() {
-      var modal = document.getElementById("modal");
-      modal.style.display = "none";
-    }
+  function closeModal() {
+    var modal = document.getElementById("modal");
+    modal.style.display = "none";
+  }
   </script>
 
 <script>

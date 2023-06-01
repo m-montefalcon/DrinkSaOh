@@ -47,7 +47,7 @@ function formatDate($date) {
     background-color: white;
     color: black;
     border-radius: 6px;
-    width: 100px;
+    width: 100%;
     height: 30px;
     margin-left: 0%;
     right: 20px;
@@ -141,7 +141,7 @@ function formatDate($date) {
     background-color: white;
     color: black;
     border-radius: 6px;
-    width: 100px;
+    width: 130px;
     height: 30px;
     margin-left: 0%;
     right: 20px;

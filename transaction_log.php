@@ -150,7 +150,7 @@ include('includes/side-navbar.php');
                   <th>CRITICAL POINT</th>
                   <th>PRODUCT CATEGORY</th>
                   <th>SKU</th>
-                  <th>QTY</th>
+                  <th>QUANTITY</th>
                   <th>ACTION</th>
                   <th>BARCODE</th>
                   <th>DATE</th>           

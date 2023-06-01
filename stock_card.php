@@ -166,10 +166,12 @@ function formatDate($date) {
     height: 300px;
     width: 100%; 
     overflow: scroll; 
+    
   }
   #table table {
     width: fit-content; 
     table-layout: fixed;
+    border-collapse: collapse;
   }
   .table:not(.table-sm) tbody th {
     border-bottom: none;
@@ -246,7 +248,7 @@ function formatDate($date) {
         <div class="card">
           <div class="card-header">
             <h2>
-              STOCK CARD
+              STOCK CARD LIST
             </h2>
           </div>
           <div class="card-body">

@@ -30,36 +30,20 @@ function formatDate($date) {
   }
   .card {
     background-color: #fff;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    border: none;
-    position: relative;
-    margin-bottom: 30px;
+    padding: 20px;
+    margin-bottom: 20px;
     box-shadow: 0px 0px 10px #BDBDBD;
+    position: relative;
     width: 100%;
   }
   tr {
     text-align: center;
   }
-  button.add-btn {
-    position: absolute;
+  .stock-card-table tr th {
     text-align: center;
-    background-color: white;
-    color: black;
-    border-radius: 6px;
-    width: 100px;
-    height: 30px;
-    margin-left: 0%;
-    right: 20px;
-    justify-content: center;
-    align-items: center;
-    top: 10px;
-    padding: 0 10px;
-  }
-  button.add-btn:hover {
-    background-color: maroon;
-    margin-left: 0%;
-    border-radius: 6px;
-    color: white;
+    text-transform:uppercase;
   }
   .card .card-header {
     border-bottom-color: #f9f9f9;
@@ -72,137 +56,32 @@ function formatDate($date) {
     align-items: center;
     border-radius: 10px;
     background: #11101D;
-    /* background-image: linear-gradient(to right, #9C27B0FF, #1A0046FF); */
   }
   .card-footer {
     background-color: transparent;
     padding: 20px 25px; 
   }
-  .btn-sm::before {
-    content: "\f044"; 
-    font-family: "Font Awesome 5 Free"; 
-    font-weight: bold;
-    font-size: 20px;
-    color: black;
-  }
-  .btn-danger::before {
-    content: "\f1f8"; 
-    font-family: "Font Awesome 5 Free"; 
-    font-weight: bold;
-    font-size: 20px;
-    color: black;
-  }
-  tbody .btn {
-    background-color: transparent;      
-    border: none;
-  }
-  tbody .btn:hover {
-    background-color: red;      
-    padding: 6px;
-    border-radius: 6px;
-    cursor: pointer;
-  } 
   .low-quantity {
     background-color: red;
-  }
-  .category-select {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    padding: 0 20px;
-  }
-  select {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 8px;
-    width: 115px;
-  }
-  button {
-    padding: 8px 16px;
-    font-size: 16px;
-    background-color: #1A0046FF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #11101D;
-  }
-  .add-btn {
-    position: absolute;
-    text-align: center;
-    background-color: white;
-    color: black;
-    border-radius: 6px;
-    width: 100px;
-    height: 30px;
-    margin-left: 0%;
-    right: 20px;
-    justify-content: center;
-    align-items: center;
-    top: 10px;
-    display: flex;
-    padding: 0 10px;
-  }
-  .add-btn:hover {
-    background-color: maroon;
-    margin-left: 0%;
-    border-radius: 6px;
-    color: white;
   }
   .container {
     display: flex;
     padding: 15px;
     overflow: auto; 
   }
-  #table {
-    position: relative;
-    height: 300px;
-    width: 100%; 
-    overflow: scroll; 
+  .stock-card-table {
+    width: 100%;
+    border-collapse: collapse;
   }
-  #table table {
-    width: fit-content; 
-    table-layout: fixed;
+  .stock-card-table th,
+  .stock-card-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
   }
-  .table:not(.table-sm) tbody th {
-    border-bottom: none;
-    background-color: #e9e9eb;
-    color: black;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
-    position: sticky;
-    top: 0px;
-  }
-  tr:hover {
-    background-color: #f5f5f5;
-  } 
-  table tr {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd!important;
-    margin-bottom: 10px;
-  }
-  table th,
-  table td {
-    padding: .5em;
+  .stock-card-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
     text-align: left;
-  }
-  table td {
-    font-size: .85em;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    text-align: center;
-  }
-  #table tbody {
-    white-space: nowrap; 
-    display: block;
   }
   #table::-webkit-scrollbar {
     width: 4px;
@@ -235,43 +114,78 @@ function formatDate($date) {
 
 <body>
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
+    <!-- <div class="row">
+      <div class="col-md-12"> -->
         <?php
           if (isset($_SESSION['status'])) {
             echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
             unset($_SESSION['status']);
           }
         ?>
-        <div>
-          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-            <option value="All">All</option>
-            <option value="Canned">Canned</option>
-            <option value="Bottled">Bottled</option>
-          </select>
-          <button id="filter-button" type="button">FILTER</button>
-        </div>
-          <br>
         <div class="card">
           <div class="card-header">
             <h2>
-              STOCK CARD DETAILS
+              STOCK CARD
             </h2>
           </div>
           <div class="card-body">
-            <div id="table">
-              <table class="table table-bordered table-stripe">
-                <tbody>
-                  <tr>
-                    <th>ACTION</th>
-                    <th>EMPLOYEE NAME</th>
-                    <th>UNIT PRICE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>SKU</th>
-                    <th>QUANTITY</th>
-                    <th>SUPPLIER NAME</th>
-                    <th>TOTAL AMOUNT</th>
-                  </tr>         
+          <?php
+            include('dbcon.php');
+
+            // Get the selected SKU ID from the query parameter
+            $stockcardId = $_GET['stockcard_id'];
+
+            // Retrieve the data under the selected SKU ID
+            $stockcardref = 'stockcard/' . $stockcardId;
+            $fetchData = $database->getReference($stockcardref)->getValue();
+
+            if ($fetchData) {
+              foreach ($fetchData as $key => $data) {
+          ?>
+          <br>
+          <tr>
+            <td><strong>Product Code:</strong></td>
+            <td><?= $data['skuId']; ?></td>
+          </tr>
+          <br>
+          <tr>
+            <td><strong>Product Name:</strong></td>
+            <td><?= $data['productName']; ?></td>
+          </tr>
+          <br>
+          <tr>
+            <td><strong>Unit Price:</strong></td>
+            <td>₱<?= $data['priceQuantity']; ?></td>
+          </tr>
+          <br>
+          <tr>
+            <td><strong>Stock on-hand:</strong></td>
+            <td><?=$data['skuQtyId']?></td>
+          </tr>
+          
+          <?php
+        }
+      } else {
+        ?>
+        <tr>
+          <td colspan="2">No data found for the selected SKU ID.</td>
+        </tr>
+        <?php
+      }
+      ?>
+            <!-- <div id="table"> -->
+            <table class="stock-card-table">
+            <br>
+            <br>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Action</th>
+                  <th>Supplier Name</th>
+                  <th>Quantity Added</th>
+                  <th>New Quantity</th>
+                </tr>
+              </thead>
                 <?php
                   include('dbcon.php');
 
@@ -286,21 +200,21 @@ function formatDate($date) {
                       foreach ($fetchData as $key => $data) {
                           ?>
                           <tr>
-                              <td><?= $data['action']; ?></td>
-                              <td><?= $data['eId']; ?></td>
-                              <td>₱<?= $data['priceQuantity']; ?></td>
-                              <td><?= $data['productName']; ?></td>
-                              <td><?= $data['skuId']; ?></td>
-                              <td><?= $data['skuQtyId']; ?></td>
-                              <td><?= $data['supplier_name']; ?></td>
-                              <td>₱<?= $data['totalPrice']; ?></td>
+                            <td><?= formatDate($data['currentDate']) ?> 
+                              <br> <?= formatTime($data['currentTime']) ?> 
+                            </td>
+                            <td><?= $data['action']; ?></td>
+                            <td><?= $data['supplier_name']; ?></td>
+                            <td><?= $data['skuQtyId']; ?></td>
+                            <td><?= $data['skuQtyId']; ?></td>
+                            <!-- // wa ko kibaw unsa data kwaon // -->
                           </tr>
                           <?php
                       }
                   } else {
                       ?>
                       <tr>
-                          <td colspan="9">No data found for the selected SKU ID.</td>
+                        <td colspan="9">No data found for the selected SKU ID.</td>
                       </tr>
                       <?php
                   }
@@ -309,11 +223,11 @@ function formatDate($date) {
                   ?>
                 </tbody>
               </table>
-            </div>
+            <!-- </div> -->
           </div>
         </div>
-      </div>
-    </div> 
+      <!-- </div>
+    </div>  -->
   </div> 
   <script>
     // Function to filter the table rows based on the selected category
