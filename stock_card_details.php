@@ -132,6 +132,9 @@ function formatDate($date) {
           <?php
             include('dbcon.php');
 
+            $ref_inventory = 'inventory';
+            $fetchInventoryData = $database->getReference($ref_inventory) -> getValue();
+
             // Get the selected SKU ID from the query parameter
             $stockcardId = $_GET['stockcard_id'];
 
@@ -139,32 +142,39 @@ function formatDate($date) {
             $stockcardref = 'stockcard/' . $stockcardId;
             $fetchData = $database->getReference($stockcardref)->getValue();
 
-            if ($fetchData) {
-              foreach ($fetchData as $key => $data) {
+            $matchingData = null;
+            foreach ($fetchInventoryData as $item) {
+                if ($item['skuId'] == $stockcardId) {
+                    $matchingData = $item;
+                    break;
+                }
+            }
+
+            if ($matchingData) {
           ?>
           <br>
           <tr>
             <td><strong>Product Code:</strong></td>
-            <td><?= $data['skuId']; ?></td>
+            <td><?= $matchingData['skuId']; ?></td>
           </tr>
           <br>
           <tr>
             <td><strong>Product Name:</strong></td>
-            <td><?= $data['productName']; ?></td>
+            <td><?= $matchingData['productName']; ?></td>
           </tr>
           <br>
           <tr>
             <td><strong>Unit Price:</strong></td>
-            <td>₱<?= $data['priceQuantity']; ?></td>
+            <td>₱<?= $matchingData['priceQuantity']; ?></td>
           </tr>
           <br>
           <tr>
             <td><strong>Stock on-hand:</strong></td>
-            <td><?=$data['skuQtyId']?></td>
+            <td><?=$matchingData['skuQtyId']?></td>
           </tr>
           
           <?php
-        }
+        
       } else {
         ?>
         <tr>
