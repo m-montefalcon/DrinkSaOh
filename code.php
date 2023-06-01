@@ -310,39 +310,93 @@ if (isset($_POST['stockAction']) && isset($_POST['quantity']) && isset($_POST['k
                 }
             }
             // Handle stock in action by adding the quantity to the existing quantity
+            $amount = $matchingData['priceQuantity'] * $quantity;
+            $inventoryAmount = $matchingData['totalPrice'] + $amount;
+            $inventoryQuantity = $quantity + $matchingData['skuQtyId'];
+            $inventoryAmount = $matchingData['totalPrice'] + $amount;
+            
+
             $currentQuantity = isset($inventoryData['skuQtyId']) ? $inventoryData['skuQtyId'] : 0;
             $newQuantity = $currentQuantity + $quantity;
-
             $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['skuQtyId' => $newQuantity]);
+
+
+            $currentTotalPrice = isset($inventoryData['totalPrice']) ? $inventoryData['totalPrice'] : 0;
+            $newTotalPrice = $currentTotalPrice + $amount;
+            $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['totalPrice' => $newTotalPrice]);
+
+
             
             $stockCardRef = $database->getReference('stockcard')
             ->getChild($key);
             $action = "IN";
 
             $stockCardPushRef = $stockCardRef->push();
-            $inventoryAmount = $matchingData['priceQuantity'] * $quantity;
-            $inventoryQuantity = $quantity + $matchingData['skuQtyId'];
+  
             $stockCardData = $stockCardPushRef->set([
-                'skuQtyId' => $quantity,
                 'currentDate' => date('Y-m-d'),
                 'currentTime' => date('H:i:s'),
                 'action' => $action,
-                'InventoryAmount' => $inventoryAmount,
-                'InventoryQuantity' => $inventoryQuantity,
+                'skuQtyId' => $quantity,
+                'amount' => $amount,
+                'inventoryQuantity' => $inventoryQuantity,
+                'inventoryAmount' => $newTotalPrice,
+
             ]);
 
 
             $_SESSION['status'] = "Successfully Stocked In!";
             header('location: index.php');
             exit();
+
+
+
         } elseif ($stockAction === 'out') {
+            $fetchInventoryData = $database->getReference('inventory') -> getValue();
+            $matchingData = null;
+            foreach ($fetchInventoryData as $item) {
+                if ($item['skuId'] == $key) {
+                    $matchingData = $item;
+                    break;
+                }
+            }
+            
+            if ($matchingData['skuQtyId'] >= $quantity) {
+               
+           
+            $amount = $matchingData['priceQuantity'] * $quantity;
+            $inventoryAmount = $matchingData['totalPrice'] + $amount;
+            $inventoryQuantity =  $matchingData['skuQtyId'] - $quantity;
+            $inventoryAmount = $matchingData['totalPrice'] - $amount;
+            
             // Handle stock out action by subtracting the quantity from the existing quantity
             $currentQuantity = isset($inventoryData['skuQtyId']) ? $inventoryData['skuQtyId'] : 0;
+            $newQuantity = $currentQuantity - $quantity;
+            $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['skuQtyId' => $newQuantity]);
 
-            if ($currentQuantity >= $quantity) {
-                $newQuantity = $currentQuantity - $quantity;
+            $currentTotalPrice = isset($inventoryData['totalPrice']) ? $inventoryData['totalPrice'] : 0;
+            $newTotalPrice = $currentTotalPrice - $amount;
+            $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['totalPrice' => $newTotalPrice]);
 
-                $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['skuQtyId' => $newQuantity]);
+
+
+
+            $stockCardRef = $database->getReference('stockcard')
+            ->getChild($key);
+                $action = "OUT";
+    
+            $stockCardPushRef = $stockCardRef->push();
+               $stockCardData = $stockCardPushRef->set([
+                'currentDate' => date('Y-m-d'),
+                'currentTime' => date('H:i:s'),
+                'action' => $action,
+                'skuQtyId' => $quantity,
+                'amount' => $amount,
+                'inventoryQuantity' => $inventoryQuantity,
+                'inventoryAmount' => $newTotalPrice,
+
+            ]);
+    
 
                 $_SESSION['status'] = "Successfully Stocked Out!";
                 header('location: index.php');
@@ -363,11 +417,7 @@ if (isset($_POST['stockAction']) && isset($_POST['quantity']) && isset($_POST['k
         header('location: index.php');
         exit();
     }
-} else {
-    $_SESSION['status'] = "Form fields are not set";
-    header('location: index.php');
-    exit();
-}
+} 
 
 
 
