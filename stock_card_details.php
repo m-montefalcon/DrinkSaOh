@@ -172,6 +172,11 @@ function formatDate($date) {
             <td><strong>Stock on-hand:</strong></td>
             <td><?=$matchingData['skuQtyId']?></td>
           </tr>
+          <br>
+          <tr>
+            <td><strong>Inventory Amount:</strong></td>
+            <td>₱<?=$matchingData['totalPrice']?></td>
+          </tr>
           
           <?php
         
@@ -192,8 +197,8 @@ function formatDate($date) {
                   <th>Date</th>
                   <th>Action</th>
                   <th>Quantity</th>
-                  <th>AMOUNT</th>
                   <th>INVENTORY QUANTITY</th>
+                  <th>AMOUNT</th>
 
                 </tr>
               </thead>
@@ -216,8 +221,8 @@ function formatDate($date) {
                             </td>
                             <td><?= $data['action']; ?></td>
                             <td><?= $data['skuQtyId']; ?></td>
-                            <td><?= $matchingData['totalPrice']; ?></td>
-                            <td><?= $matchingData['skuQtyId']; ?></td>
+                            <td><?= $data['InventoryQuantity']; ?></td>
+                            <td>₱<?= $data['InventoryAmount']; ?></td>
 
                             <!-- // wa ko kibaw unsa data kwaon // -->
                           </tr>

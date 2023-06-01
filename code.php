@@ -300,11 +300,38 @@ if (isset($_POST['stockAction']) && isset($_POST['quantity']) && isset($_POST['k
         $inventoryData = $inventoryRef[$inventoryKey]; // Get the data of the inventory entry
 
         if ($stockAction === 'in') {
+
+            $fetchInventoryData = $database->getReference('inventory') -> getValue();
+            $matchingData = null;
+            foreach ($fetchInventoryData as $item) {
+                if ($item['skuId'] == $key) {
+                    $matchingData = $item;
+                    break;
+                }
+            }
             // Handle stock in action by adding the quantity to the existing quantity
             $currentQuantity = isset($inventoryData['skuQtyId']) ? $inventoryData['skuQtyId'] : 0;
             $newQuantity = $currentQuantity + $quantity;
 
             $inventoryRef = $database->getReference('inventory/' . $inventoryKey)->update(['skuQtyId' => $newQuantity]);
+            
+            $stockCardRef = $database->getReference('stockcard')
+            ->getChild($key);
+            $action = "IN";
+
+            $stockCardPushRef = $stockCardRef->push();
+            $inventoryAmount = $matchingData['priceQuantity'] * $quantity;
+            $inventoryQuantity = $quantity + $matchingData['skuQtyId'];
+            $stockCardData = $stockCardPushRef->set([
+                'skuQtyId' => $quantity,
+                'currentDate' => date('Y-m-d'),
+                'currentTime' => date('H:i:s'),
+                'action' => $action,
+                'InventoryAmount' => $inventoryAmount,
+                'InventoryQuantity' => $inventoryQuantity,
+            ]);
+
+
             $_SESSION['status'] = "Successfully Stocked In!";
             header('location: index.php');
             exit();
