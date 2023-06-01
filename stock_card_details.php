@@ -177,6 +177,10 @@ function formatDate($date) {
             <td><strong>Inventory Amount:</strong></td>
             <td>₱<?=$matchingData['totalPrice']?></td>
           </tr>
+          <br>
+          <tr>
+          <td><button onclick="printAsPDF()">Print as PDF</button></td>
+          </tr>
           
           <?php
         
@@ -249,25 +253,32 @@ function formatDate($date) {
       <!-- </div>
     </div>  -->
   </div> 
-  <script>
-    // Function to filter the table rows based on the selected category
-    function filterTableRows(category) {
-      const rows = document.querySelectorAll('tbody tr');
+  
+<script>
+function printAsPDF() {
+  // Fetch the container element that holds the card
+  const cardContainer = document.querySelector('.card');
 
-      rows.forEach(row => {
-        const categoryCell = row.querySelector('td:nth-child(8)');
-        const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
-        row.style.display = display;
-      });
-    }
+  // Create a new window to open the printable document
+  const printWindow = window.open('', '_blank');
+  
+  // Write the card's HTML content to the new window
+  printWindow.document.write('<html><head><title>Stock Card</title></head><body>');
+  printWindow.document.write('<style>.stock-card-table tr th, .stock-card-table td {border: 1px solid #ddd; padding: 8px;}</style>');
+  
+  // Remove the print button from the card content
+  const cardContent = cardContainer.innerHTML;
+  const modifiedContent = cardContent.replace('<button onclick="printAsPDF()">Print as PDF</button>', '');
+  printWindow.document.write(modifiedContent);
+  
+  printWindow.document.write('</body></html>');
+  
+  // Call the print function of the new window
+  printWindow.print();
+}
+</script>
 
-    // Event listener for the filter button click
-    document.getElementById('filter-button').addEventListener('click', function() {
-      const selectElement = document.getElementById('category-select');
-      const selectedCategory = selectElement.value;
-      filterTableRows(selectedCategory);
-    });
-  </script>
+
 
 </body>
 </html>
