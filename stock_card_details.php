@@ -191,9 +191,10 @@ function formatDate($date) {
                 <tr>
                   <th>Date</th>
                   <th>Action</th>
-                  <th>Supplier Name</th>
-                  <th>Quantity Added</th>
-                  <th>New Quantity</th>
+                  <th>Quantity</th>
+                  <th>AMOUNT</th>
+                  <th>INVENTORY QUANTITY</th>
+
                 </tr>
               </thead>
                 <?php
@@ -214,9 +215,10 @@ function formatDate($date) {
                               <br> <?= formatTime($data['currentTime']) ?> 
                             </td>
                             <td><?= $data['action']; ?></td>
-                            <td><?= $data['supplier_name']; ?></td>
                             <td><?= $data['skuQtyId']; ?></td>
-                            <td><?= $data['skuQtyId']; ?></td>
+                            <td><?= $matchingData['totalPrice']; ?></td>
+                            <td><?= $matchingData['skuQtyId']; ?></td>
+
                             <!-- // wa ko kibaw unsa data kwaon // -->
                           </tr>
                           <?php
