@@ -113,6 +113,13 @@ function formatDate($date) {
 </head>
 
 <body>
+<button id="refresh-button" type="button">REFRESH</button> 
+            <script>
+            // Event listener for the refresh button click
+            document.getElementById('refresh-button').addEventListener('click', function() {
+              location.reload(); // Refresh the page
+            });
+          </script>
   <div class="container">
     <!-- <div class="row">
       <div class="col-md-12"> -->
@@ -122,11 +129,14 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
+
         <div class="card">
           <div class="card-header">
             <h2>
               STOCK CARD
             </h2>
+          
+
           </div>
           <div class="card-body">
           <?php
@@ -181,6 +191,76 @@ function formatDate($date) {
           <tr>
           <td><button onclick="printAsPDF()">Print as PDF</button></td>
           </tr>
+          <br>
+
+              <tr>
+              <label for="from-month">From:</label>
+
+              <select id="from-month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              
+              <label for="to-month">To:</label>
+
+              <select id="to-month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+
+      <button id="fetch-button" type="button">Fetch Data</button>
+      <button id="reset-button" type="button">Reset</button>
+
+              </tr>
+              <script>
+              document.getElementById('fetch-button').addEventListener('click', function() {
+  const fromMonth = parseInt(document.getElementById('from-month').value);
+  const toMonth = parseInt(document.getElementById('to-month').value);
+  
+  const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
+  tableRows.forEach(function(row) {
+    const dateCell = row.querySelector('td:first-child');
+    const date = dateCell.innerText;
+    const month = parseInt(date.split('/')[0]);
+    
+    if (month >= fromMonth && month <= toMonth) {
+      row.style.display = 'table-row';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+  document.getElementById('reset-button').addEventListener('click', function() {
+    const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
+    tableRows.forEach(function(row) {
+      row.style.display = 'table-row';
+    });
+  });
+  
+});
+              </script>
+            
+
+              
           
           <?php
         
@@ -222,7 +302,6 @@ function formatDate($date) {
                           ?>
                           <tr>
                             <td><?= formatDate($data['currentDate']) ?> 
-                              <br> <?= formatTime($data['currentTime']) ?> 
                             </td>
                             <td><?= $data['action']; ?></td>
                             <td><?= $data['skuQtyId']; ?></td>

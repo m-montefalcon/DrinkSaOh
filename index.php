@@ -298,15 +298,108 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
-  <div>
+          <div>
           <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
             <option value="All">All</option>
             <option value="Canned">Canned</option>
             <option value="Bottled">Bottled</option>
           </select>
           <button id="filter-button" type="button">FILTER</button>
+          <button id="refresh-button" type="button">REFRESH</button> 
+          <input id="search-input" type="text" placeholder="Search by name or SKU">
+          <button id="search-button" type="button">SEARCH</button>
+          <select id="filtercritical" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+  <option value="critical_point">Critical Point</option>
+  <option value="all">All</option>
+</select>
+
+<button onclick="filterInventory()">Filter</button>
+
         </div>
+        <script>
+  function filterInventory() {
+    const categorySelect = document.getElementById('filtercritical');
+    const selectedCategory = categorySelect.value.toLowerCase();
+    const tableRows = document.getElementsByTagName('tr');
+
+    for (let i = 1; i < tableRows.length; i++) {
+      const cells = tableRows[i].getElementsByTagName('td');
+      let hasLowQuantity = false;
+
+      // Check if any of the cells within the row has the class 'low-quantity'
+      for (let j = 0; j < cells.length; j++) {
+        if (cells[j].classList.contains('low-quantity')) {
+          hasLowQuantity = true;
+          break;
+        }
+      }
+
+      if (selectedCategory === 'critical_point' && hasLowQuantity) {
+        tableRows[i].style.display = '';
+      } else if (selectedCategory === 'all') {
+        tableRows[i].style.display = '';
+      } else {
+        tableRows[i].style.display = 'none';
+      }
+    }
+  }
+</script>
+        <script>
+        function searchInventory() {
+          const searchInput = document.getElementById('search-input').value.toLowerCase();
+          const tableRows = document.getElementsByTagName('tr');
+
+          for (let i = 1; i < tableRows.length; i++) {
+            const productName = tableRows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+            const skuId = tableRows[i].getElementsByTagName('td')[6].innerText.toLowerCase();
+
+            if (productName.includes(searchInput) || skuId.includes(searchInput)) {
+              tableRows[i].style.display = '';
+            } else {
+              tableRows[i].style.display = 'none';
+            }
+          }
+        }
+
+        const searchButton = document.getElementById('search-button');
+        searchButton.addEventListener('click', searchInventory);
+      </script>
+
           <br>
+          <span>
+          <?php 
+            $ref_table = "inventory";
+
+            $totalQtySnapshot = $database->getReference($ref_table)
+            ->orderByChild('skuId')
+            ->getSnapshot();
+
+            $totalQty = 0;
+            if ($totalQtySnapshot->hasChildren()) {
+              foreach ($totalQtySnapshot->getValue() as $inventory) {
+                  $totalQty += $inventory['skuQtyId'];
+              }
+            }
+            echo "Inventory stock on hand: " . $totalQty;
+          ?>
+          <br>
+          <span>
+          <?php
+            $inventoryRef = $database->getReference('inventory');
+            $inventoryValue = $inventoryRef->getValue();
+
+            $totalPriceSum = 0;
+            if ($inventoryValue) {
+              foreach ($inventoryValue as $inventoryValues) {
+                if (isset($inventoryValues['totalPrice'])) {
+                  $totalPriceSum += $inventoryValues['totalPrice'];
+                }
+              }
+            }
+            echo 'Inventory total amount value: ₱' . $totalPriceSum . '</p>';
+          ?>       
+          </span>
+        </span>
         <div class="card">
           <div class="card-header">
             <h2>
@@ -498,6 +591,13 @@ document.getElementById('filter-button').addEventListener('click', function() {
 });
 
 </script>
+
+<script>
+    // Event listener for the refresh button click
+    document.getElementById('refresh-button').addEventListener('click', function() {
+      location.reload(); // Refresh the page
+    });
+  </script>
 
 
 </body>

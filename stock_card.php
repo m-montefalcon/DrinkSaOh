@@ -250,6 +250,14 @@ function formatDate($date) {
             <h2>
               STOCK CARD LIST
             </h2>
+            <button id="refresh-button" type="button">REFRESH</button> 
+            <script>
+            // Event listener for the refresh button click
+            document.getElementById('refresh-button').addEventListener('click', function() {
+              location.reload(); // Refresh the page
+            });
+          </script>
+
           </div>
           <div class="card-body">
             <div class="table">
