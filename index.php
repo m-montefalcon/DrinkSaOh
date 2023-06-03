@@ -299,71 +299,151 @@ function formatDate($date) {
           }
         ?>
           <div>
-          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-            <option value="All">All</option>
-            <option value="Canned">Canned</option>
-            <option value="Bottled">Bottled</option>
-          </select>
-          <button id="filter-button" type="button">FILTER</button>
           <button id="refresh-button" type="button">REFRESH</button> 
-          <input id="search-input" type="text" placeholder="Search by name or SKU">
-          <button id="search-button" type="button">SEARCH</button>
-          <select id="filtercritical" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-  <option value="critical_point">Critical Point</option>
-  <option value="all">All</option>
-</select>
+          <br>
+          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+          <option value="Category" disabled selected>Category</option>
+          <option value="All">All</option>
+          <option value="Canned">Canned</option>
+          <option value="Bottled">Bottled</option>
+        </select>
+        <br>
 
-<button onclick="filterInventory()">Filter</button>
+          <input id="search-input" type="text" placeholder="Search by name or SKU">
+          <br>
+          <select id="filtercritical" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+          <option value="Status" disabled selected> Status</option>
+          <option value="critical_point">Overstock</option>
+          <option value="critical_point">Critical Point</option>
+  
+          </select>
+          <br>
+<button id="reset-button">Reset</button>
+
+
 
         </div>
+
         <script>
-  function filterInventory() {
+  // Function to reset the table rows and show all data
+  function resetTableRows() {
+    const tableRows = document.getElementsByTagName('tr');
+    const categorySelect = document.getElementById('category-select');
+    const statusSelect = document.getElementById('filtercritical');
+
+    for (let i = 1; i < tableRows.length; i++) {
+      tableRows[i].style.display = '';
+    }
+
+    // Reset the select elements to their default values
+    categorySelect.value = 'Category';
+    statusSelect.value = 'Status';
+
+  }
+  // Event listener for the reset button click
+  document.getElementById('reset-button').addEventListener('click', function() {
     const categorySelect = document.getElementById('filtercritical');
-    const selectedCategory = categorySelect.value.toLowerCase();
+    categorySelect.value = 'all'; // Set the value to 'all' to show all data
+    resetTableRows();
+  });
+</script>
+
+
+        <script>
+function filterInventory() {
+  const categorySelect = document.getElementById('filtercritical');
+  const selectedCategory = categorySelect.value.toLowerCase();
+  const tableRows = document.getElementsByTagName('tr');
+  const resetcategorySelect = document.getElementById('category-select');
+  const resetstatusSelect = document.getElementById('filtercritical');
+  
+
+  for (let i = 1; i < tableRows.length; i++) {
+    const cells = tableRows[i].getElementsByTagName('td');
+    let hasLowQuantity = false;
+
+    // Check if any of the cells within the row has the class 'low-quantity'
+    for (let j = 0; j < cells.length; j++) {
+      if (cells[j].classList.contains('low-quantity')) {
+        hasLowQuantity = true;
+        break;
+      }
+      resetcategorySelect.value = 'Category';
+    }
+  
+    if (selectedCategory === 'critical_point' && hasLowQuantity) {
+      tableRows[i].style.display = '';
+      resetcategorySelect.value = 'Category';
+
+    } else if (selectedCategory === 'all') {
+      tableRows[i].style.display = '';
+      resetcategorySelect.value = 'Category';
+
+    } else {
+      tableRows[i].style.display = 'none';
+      resetcategorySelect.value = 'Category';
+
+    }
+  }
+}
+    
+document.getElementById('filtercritical').addEventListener('change', filterInventory);
+
+</script>
+
+<script>
+  // Function to filter the table rows based on the selected category
+// Function to filter the table rows based on the selected category
+const resetstatusSelect = document.getElementById('filtercritical');
+
+function filterTableRows(category) {
+  const rows = document.querySelectorAll('tbody tr');
+  const resetcategorySelect = document.getElementById('category-select');
+ 
+  rows.forEach(row => {
+    const categoryCell = row.querySelector('td:nth-child(9)');
+    const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
+    row.style.display = display;
+
+    
+  });
+  resetstatusSelect.value = 'Status';
+
+
+}
+
+// Event listener for the category select change
+document.getElementById('category-select').addEventListener('change', function() {
+  const selectElement = document.getElementById('category-select');
+  const selectedCategory = selectElement.value;
+  filterTableRows(selectedCategory);
+  resetstatusSelect.value = 'Status';
+
+});
+
+
+</script>
+
+<script>
+  function searchInventory() {
+    const searchInput = document.getElementById('search-input').value.toLowerCase();
     const tableRows = document.getElementsByTagName('tr');
 
     for (let i = 1; i < tableRows.length; i++) {
-      const cells = tableRows[i].getElementsByTagName('td');
-      let hasLowQuantity = false;
+      const productName = tableRows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+      const skuId = tableRows[i].getElementsByTagName('td')[6].innerText.toLowerCase();
 
-      // Check if any of the cells within the row has the class 'low-quantity'
-      for (let j = 0; j < cells.length; j++) {
-        if (cells[j].classList.contains('low-quantity')) {
-          hasLowQuantity = true;
-          break;
-        }
-      }
-
-      if (selectedCategory === 'critical_point' && hasLowQuantity) {
-        tableRows[i].style.display = '';
-      } else if (selectedCategory === 'all') {
+      if (productName.includes(searchInput) || skuId.includes(searchInput)) {
         tableRows[i].style.display = '';
       } else {
         tableRows[i].style.display = 'none';
       }
     }
   }
+
+  const searchInput = document.getElementById('search-input');
+  searchInput.addEventListener('input', searchInventory);
 </script>
-        <script>
-        function searchInventory() {
-          const searchInput = document.getElementById('search-input').value.toLowerCase();
-          const tableRows = document.getElementsByTagName('tr');
-
-          for (let i = 1; i < tableRows.length; i++) {
-            const productName = tableRows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
-            const skuId = tableRows[i].getElementsByTagName('td')[6].innerText.toLowerCase();
-
-            if (productName.includes(searchInput) || skuId.includes(searchInput)) {
-              tableRows[i].style.display = '';
-            } else {
-              tableRows[i].style.display = 'none';
-            }
-          }
-        }
-
-        const searchButton = document.getElementById('search-button');
-        searchButton.addEventListener('click', searchInventory);
-      </script>
 
           <br>
           <span>
@@ -513,25 +593,6 @@ function formatDate($date) {
     </div>
 
 
-    <script>
-  // Function to filter the table rows based on the selected category
-  function filterTableRows(category) {
-    const rows = document.querySelectorAll('tbody tr');
-
-    rows.forEach(row => {
-      const categoryCell = row.querySelector('td:nth-child(9)');
-      const display = category === 'All' || categoryCell.textContent === category ? 'table-row' : 'none';
-      row.style.display = display;
-    });
-  }
-
-  // Event listener for the filter button click
-  document.getElementById('filter-button').addEventListener('click', function() {
-    const selectElement = document.getElementById('category-select');
-    const selectedCategory = selectElement.value;
-    filterTableRows(selectedCategory);
-  });
-</script>
 
 <script>
     // Function to filter the table rows based on the selected category
