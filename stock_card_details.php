@@ -19,7 +19,7 @@ function formatDate($date) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 <style>
-  * {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -37,7 +37,6 @@ function formatDate($date) {
     box-shadow: 0px 0px 10px #BDBDBD;
     position: relative;
     width: 100%;
-    overflow: auto;
   }
   tr {
     text-align: center;
@@ -67,59 +66,22 @@ function formatDate($date) {
   }
   .container {
     display: flex;
-    flex-direction: column;
     padding: 15px;
     overflow: auto; 
   }
-  .table {
+  .stock-card-table {
     width: 100%;
+    border-collapse: collapse;
   }
-  #table {
-    position: relative;
-    height: 300px;
-    width: 100%; 
-    overflow: scroll; 
-    width: 100%;
-    height: auto;
-    max-height: 300px;
+  .stock-card-table th,
+  .stock-card-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
   }
-  #table table {
-    width: fit-content; 
-    table-layout: fixed;
-    width: 100%;
-  }
-  .table:not(.table-sm) tbody th {
-    border-bottom: none;
-    background-color: #e9e9eb;
-    color: black;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
-    position: sticky;
-    top: 0px;
-  }
-  tr:hover {
-    background-color: #f5f5f5;
-  } 
-  table tr {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd!important;
-    margin-bottom: 10px;
-  }
-  table th,
-  table td {
-    padding: .5em;
+  .stock-card-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
     text-align: left;
-  }
-  table td {
-    font-size: .85em;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    text-align: center;
-  }
-  #table tbody {
-    white-space: nowrap; 
-    display: block;
   }
   #table::-webkit-scrollbar {
     width: 4px;
@@ -146,7 +108,7 @@ function formatDate($date) {
 	}
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	}
+	} 
   .print-btn {
     position: absolute;
     text-align: center;
@@ -341,10 +303,10 @@ function formatDate($date) {
         <?php
       }
       ?>
-            <table class="table table-bordered table-stripe">
+           <table class="stock-card-table">
             <br>
             <br>
-              <tbody> 
+              <thead> 
                 <tr>
                   <th>DATE</th>
                   <th>ACTION</th>
@@ -354,7 +316,7 @@ function formatDate($date) {
                   <th>INVENTORY AMOUNT</th>
 
                 </tr>
-              </tbody>
+              </thead>
                 <?php
                   include('dbcon.php');
 
@@ -411,7 +373,7 @@ function printAsPDF() {
   
   // Write the card's HTML content to the new window
   printWindow.document.write('<html><head><title>Stock Card</title></head><body>');
-  printWindow.document.write('<style>.table tr th, .table td {border: 1px solid #ddd; padding: 8px; text-align: center;}</style>');
+  printWindow.document.write('<style>.stock-card-table tr th, .stock-card-table td {border: 1px solid #ddd; padding: 8px; text-align: center;}</style>');
   
   // Remove the print button from the card content
   const cardContent = cardContainer.innerHTML;
