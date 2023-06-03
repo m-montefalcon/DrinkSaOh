@@ -119,18 +119,26 @@ include('includes/side-navbar.php');
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
-    overflow: auto; 
+    overflow: auto;
+  }
+  .table {
+    width: 100%;
   }
   #table {
     position: relative;
-    height: 430px;
+    height: 400px;
     width: 100%; 
     overflow: scroll; 
+    width: 100%;
+    height: auto;
+    max-height: 400px;
   }
-  #table table {
+  #table-res table {
     width: fit-content; 
     table-layout: fixed;
+    width: 100%;
   }
   .table:not(.table-sm) tbody th {
     border-bottom: none;
@@ -161,7 +169,7 @@ include('includes/side-navbar.php');
     text-transform: uppercase;
     text-align: center;
   }
-  #table tbody {
+  #table-res tbody {
     white-space: nowrap; 
     display: block;
   }
@@ -212,7 +220,7 @@ include('includes/side-navbar.php');
             <a class="add-btn" href="register.php" class="btn btn-primary float-end"> Add User </a>
           </div>
           <div class="card-body">
-            <div id="table">
+            <div class="table-res" id="table">
               <table class="table table-bordered table-stripe">
                 <tbody>
                   <tr>

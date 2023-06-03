@@ -37,6 +37,7 @@ function formatDate($date) {
     box-shadow: 0px 0px 10px #BDBDBD;
     position: relative;
     width: 100%;
+    overflow: auto;
   }
   tr {
     text-align: center;
@@ -66,22 +67,59 @@ function formatDate($date) {
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
     overflow: auto; 
   }
-  .stock-card-table {
+  .table {
     width: 100%;
-    border-collapse: collapse;
   }
-  .stock-card-table th,
-  .stock-card-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+  #table {
+    position: relative;
+    height: 300px;
+    width: 100%; 
+    overflow: scroll; 
+    width: 100%;
+    height: auto;
+    max-height: 300px;
   }
-  .stock-card-table th {
-    background-color: #f9f9f9;
-    font-weight: bold;
+  #table table {
+    width: fit-content; 
+    table-layout: fixed;
+    width: 100%;
+  }
+  .table:not(.table-sm) tbody th {
+    border-bottom: none;
+    background-color: #e9e9eb;
+    color: black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+    position: sticky;
+    top: 0px;
+  }
+  tr:hover {
+    background-color: #f5f5f5;
+  } 
+  table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd!important;
+    margin-bottom: 10px;
+  }
+  table th,
+  table td {
+    padding: .5em;
     text-align: left;
+  }
+  table td {
+    font-size: .85em;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  #table tbody {
+    white-space: nowrap; 
+    display: block;
   }
   #table::-webkit-scrollbar {
     width: 4px;
@@ -108,7 +146,37 @@ function formatDate($date) {
 	}
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	} 
+	}
+  .print-btn {
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: 130px;
+    height: 30px;
+    margin-left: 0%;
+    right: 30px;
+    justify-content: center;
+    align-items: center;
+    top: 30px;
+    display: flex;
+    padding: 0 10px;
+  }
+  .print-btn:hover {
+    background-color: maroon;
+    margin-left: 0%;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+  }
+  .left-section {
+    float: left;
+  }
+
+  .right-section {
+    float: right;
+  }
 </style>
 </head>
 
@@ -135,8 +203,7 @@ function formatDate($date) {
             <h2>
               STOCK CARD
             </h2>
-          
-
+            <a class="print-btn" onclick="printAsPDF()" class="btn btn-primary float-end"> Print as PDF </a>
           </div>
           <div class="card-body">
           <?php
@@ -163,19 +230,28 @@ function formatDate($date) {
             if ($matchingData) {
           ?>
           <br>
+          <div class="left-section">
+          <tr>
+            <td><strong>Product Name:</strong></td>
+            <td><?= $matchingData['productName'] ?> </td>, 
+            <td> <?= $matchingData['productCategory']; ?></td>
+          </tr>
+          <br>
+          <tr>
+            <td><strong>Supplier Name:</strong></td>
+            <td><?= $matchingData['supplier_name'] ?> </td> 
+          </tr>
+          </div>
+
+          <div class="right-section">
           <tr>
             <td><strong>Product Code:</strong></td>
             <td><?= $matchingData['skuId']; ?></td>
           </tr>
           <br>
           <tr>
-            <td><strong>Product Name:</strong></td>
-            <td><?= $matchingData['productName']; ?></td>
-          </tr>
-          <br>
-          <tr>
             <td><strong>Unit Price:</strong></td>
-            <td>₱<?= $matchingData['priceQuantity']; ?></td>
+            <td>₱<?= $matchingData['priceQuantity']; ?></td> 
           </tr>
           <br>
           <tr>
@@ -183,14 +259,7 @@ function formatDate($date) {
             <td><?=$matchingData['skuQtyId']?></td>
           </tr>
           <br>
-          <tr>
-            <td><strong>Inventory Amount:</strong></td>
-            <td>₱<?=$matchingData['totalPrice']?></td>
-          </tr>
-          <br>
-          <tr>
-          <td><button onclick="printAsPDF()">Print as PDF</button></td>
-          </tr>
+          </div>
           <br>
 
               <tr>
@@ -272,21 +341,20 @@ function formatDate($date) {
         <?php
       }
       ?>
-            <!-- <div id="table"> -->
-            <table class="stock-card-table">
+            <table class="table table-bordered table-stripe">
             <br>
             <br>
-              <thead>
+              <tbody> 
                 <tr>
-                  <th>Date</th>
-                  <th>Action</th>
-                  <th>Quantity</th>
+                  <th>DATE</th>
+                  <th>ACTION</th>
+                  <th>QUANTITY</th>
                   <th>AMOUNT</th>
                   <th>INVENTORY QUANTITY</th>
                   <th>INVENTORY AMOUNT</th>
 
                 </tr>
-              </thead>
+              </tbody>
                 <?php
                   include('dbcon.php');
 
@@ -317,7 +385,7 @@ function formatDate($date) {
                   } else {
                       ?>
                       <tr>
-                        <td colspan="9">No data found for the selected SKU ID.</td>
+                        <td colspan="6">No data found for the selected SKU ID.</td>
                       </tr>
                       <?php
                   }
@@ -343,7 +411,7 @@ function printAsPDF() {
   
   // Write the card's HTML content to the new window
   printWindow.document.write('<html><head><title>Stock Card</title></head><body>');
-  printWindow.document.write('<style>.stock-card-table tr th, .stock-card-table td {border: 1px solid #ddd; padding: 8px;}</style>');
+  printWindow.document.write('<style>.table tr th, .table td {border: 1px solid #ddd; padding: 8px; text-align: center;}</style>');
   
   // Remove the print button from the card content
   const cardContent = cardContainer.innerHTML;

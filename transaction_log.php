@@ -53,18 +53,26 @@ include('includes/side-navbar.php');
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
-    overflow: auto; 
+    overflow: auto;
+  }
+  .table {
+    width: 100%;
   }
   #table {
     position: relative;
-    height: 430px;
+    height: 400px;
     width: 100%; 
     overflow: scroll; 
+    width: 100%;
+    height: auto;
+    max-height: 400px;
   }
-  #table table {
+  #table-res table {
     width: fit-content; 
     table-layout: fixed;
+    width: 100%;
   }
   .table:not(.table-sm) tbody th {
     border-bottom: none;
@@ -95,7 +103,7 @@ include('includes/side-navbar.php');
     text-transform: uppercase;
     text-align: center;
   }
-  #table tbody {
+  #table-res tbody {
     white-space: nowrap; 
     display: block;
   }
@@ -125,6 +133,11 @@ include('includes/side-navbar.php');
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
 	}  
+  .colspan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }  
 </style>
 </head>
 
@@ -198,7 +211,7 @@ include('includes/side-navbar.php');
                   } else {
                     ?>
                     <tr>
-                      <td colspan="8"> No records found</td>
+                      <td colspan="13"> No records found </td>
                     </tr>
                     <?php
                     }

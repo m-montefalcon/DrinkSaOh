@@ -159,18 +159,26 @@ function formatDate($date) {
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
-    overflow: auto; 
+    overflow: auto;
+  }
+  .table {
+    width: 100%;
   }
   #table {
     position: relative;
-    height: 300px;
+    height: 400px;
     width: 100%; 
     overflow: scroll; 
+    width: 100%;
+    height: auto;
+    max-height: 400px;
   }
-  #table table {
+  #table-res table {
     width: fit-content; 
     table-layout: fixed;
+    width: 100%;
   }
   .table:not(.table-sm) tbody th {
     border-bottom: none;
@@ -201,7 +209,7 @@ function formatDate($date) {
     text-transform: uppercase;
     text-align: center;
   }
-  #table tbody {
+  #table-res tbody {
     white-space: nowrap; 
     display: block;
   }
@@ -230,7 +238,7 @@ function formatDate($date) {
 	}
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	}  
+	} 
 </style>
 </head>
 
@@ -243,9 +251,7 @@ function formatDate($date) {
             echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
             unset($_SESSION['status']);
           }
-        ?>
-        
-          <br>
+        ?>       
         <div class="card">
           <div class="card-header">
             <h2>
@@ -254,54 +260,54 @@ function formatDate($date) {
             <a class="add-btn" href="register_supplier.php" class="btn btn-primary float-end"> Add Supplier </a>
           </div>
           <div class="card-body">
-          <div id="table">
-            <table class="table table-bordered table-stripe">
-              <tbody>
-                <tr>
-                  <th>#</th>
-                  <th>SUPPLIER NAME</th>
-                  <th>SUPPLIER PHONE NUMBER</th>
-                  <th>SUPPLER EMAIL ADDRESS</th>
-                  <th>EDIT</th>
-                  <th>DELETE</th>
-                </tr>
-                <?php
-                  include ('dbcon.php');
-                  $ref_supplier = 'supplier';
-                  $fetchInventory = $database->getReference($ref_supplier) -> getValue();
-                  $users = $auth->listUsers();
+            <div class="table-res" id="table">
+              <table class="table table-bordered table-stripe">
+                <tbody>
+                  <tr>
+                    <th>#</th>
+                    <th>SUPPLIER NAME</th>
+                    <th>SUPPLIER PHONE NUMBER</th>
+                    <th>SUPPLER EMAIL ADDRESS</th>
+                    <th>EDIT</th>
+                    <th>DELETE</th>
+                  </tr>
+                  <?php
+                    include ('dbcon.php');
+                    $ref_supplier = 'supplier';
+                    $fetchInventory = $database->getReference($ref_supplier) -> getValue();
+                    $users = $auth->listUsers();
 
-                  if ($fetchInventory > 0) {
-                    $i = 1;
-                    foreach($fetchInventory as $key => $row) {    
-                ?>
-                <tr>
-                  <td><?=$i++;?></td>
-                  <td><?=$row['supplierFullName']?></td>
-                  <td>+63<?=$row['supplierPhoneNumber']?></td>
-                  <td><?=$row['supplierEmailAddress']?></td>
-                  <td>
-                    <a href="edit_supplier_cred.php?id=<?=$key?>" class="btn btn-primary btn-sm"> </a>
-                  </td>
-                  <td>
-                    <form action="userCred.php" method = "POST">
-                      <button type="submit" name = "delete_supplier_button" class = "btn btn-danger btn-sm" value = "<?=$key?>"></button>
-                    </form>
-                  </td>            
-                </tr>
-                <?php
+                    if ($fetchInventory > 0) {
+                      $i = 1;
+                      foreach($fetchInventory as $key => $row) {    
+                  ?>
+                  <tr>
+                    <td><?=$i++;?></td>
+                    <td><?=$row['supplierFullName']?></td>
+                    <td>+63<?=$row['supplierPhoneNumber']?></td>
+                    <td><?=$row['supplierEmailAddress']?></td>
+                    <td>
+                      <a href="edit_supplier_cred.php?id=<?=$key?>" class="btn btn-primary btn-sm"> </a>
+                    </td>
+                    <td>
+                      <form action="userCred.php" method = "POST">
+                        <button type="submit" name = "delete_supplier_button" class = "btn btn-danger btn-sm" value = "<?=$key?>"></button>
+                      </form>
+                    </td>            
+                  </tr>
+                  <?php
+                    }
+                  } else {
+                  ?>
+                  <tr>
+                    <td colspan="3"> No record Found </td>
+                  </tr>
+                  <?php 
                   }
-                } else {
-                ?>
-                <tr>
-                  <td colspan="3"> No record Found </td>
-                </tr>
-                <?php 
-                }
-                ?>
-              </tbody>
-            </table>
-          </div>
+                  ?>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

@@ -159,18 +159,26 @@ function formatDate($date) {
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
     overflow: auto; 
+  }
+  .table {
+    width: 100%;
   }
   #table {
     position: relative;
     height: 300px;
     width: 100%; 
     overflow: scroll; 
+    width: 100%;
+    height: auto;
+    max-height: 300px;
   }
-  #table table {
+  #table-res table {
     width: fit-content; 
     table-layout: fixed;
+    width: 100%;
   }
   .table:not(.table-sm) tbody th {
     border-bottom: none;
@@ -201,7 +209,7 @@ function formatDate($date) {
     text-transform: uppercase;
     text-align: center;
   }
-  #table tbody {
+  #table-res tbody {
     white-space: nowrap; 
     display: block;
   }
@@ -284,6 +292,15 @@ function formatDate($date) {
     cursor: pointer;
   }
 
+  td .actions-container {
+    display: flex;
+    gap: 5px;
+  }
+
+  td .actions-container button {
+    flex: 1;
+    width: 110px;
+  }
 </style>
 
 </head>
@@ -488,7 +505,7 @@ document.getElementById('category-select').addEventListener('change', function()
             <a class="add-btn" href="add-inventory.php" class="btn btn-primary float-end"> Add Item </a>
           </div>
           <div class="card-body">
-          <div id="table">
+          <div class="table-res" id="table">
             <table class="table table-bordered table-stripe">
               <tbody>
               <tr>
@@ -499,7 +516,7 @@ document.getElementById('category-select').addEventListener('change', function()
               <th>QUANTITY</th>
               <th>TOTAL</th>
               <th>PRODUCT CODE</th>
-              <th>CATEGORY</th> <!-- This line was missing -->
+              <th>CATEGORY</th>
               <th>BARCODE</th>
               <th>ACTIONS</th>
               <th>DATE</th>
@@ -538,10 +555,10 @@ document.getElementById('category-select').addEventListener('change', function()
                     ?>
                   </td>
                   <td>
-                  <button onclick="openModal('in', '<?php echo $row['skuId']; ?>', '<?php echo $row['skuQtyId']; ?>', '<?php echo $row['productName']; ?>')">Stock In</button>
-<button onclick="openModal('out', '<?php echo $row['skuId']; ?>', '<?php echo $row['skuQtyId']; ?>', '<?php echo $row['productName']; ?>')">Stock Out</button>
-</td>
-
+                  <div class="actions-container">
+                    <button onclick="openModal('in', '<?php echo $row['skuId']; ?>', '<?php echo $row['skuQtyId']; ?>', '<?php echo $row['productName']; ?>')">Stock In</button>
+                    <button onclick="openModal('out', '<?php echo $row['skuId']; ?>', '<?php echo $row['skuQtyId']; ?>', '<?php echo $row['productName']; ?>')">Stock Out</button>
+                  </td>
                   <td><?= formatDate($row['currentDate']) ?> 
                     <br> <?= formatTime($row['currentTime']) ?> 
                   </td>
@@ -560,7 +577,7 @@ document.getElementById('category-select').addEventListener('change', function()
                 } else {
                 ?>
                 <tr>
-                  <td colspan="3"> No record Found </td>
+                  <td colspan="13"> No record Found </td>
                 </tr>
                 <?php 
                 }

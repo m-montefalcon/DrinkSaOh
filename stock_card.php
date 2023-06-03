@@ -158,20 +158,26 @@ function formatDate($date) {
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
-    overflow: auto; 
+    overflow: auto;
+  }
+  .table {
+    width: 100%;
   }
   #table {
     position: relative;
-    height: 300px;
+    height: 400px;
     width: 100%; 
     overflow: scroll; 
-    
+    width: 100%;
+    height: auto;
+    max-height: 400px;
   }
-  #table table {
+  #table-res table {
     width: fit-content; 
     table-layout: fixed;
-    border-collapse: collapse;
+    width: 100%;
   }
   .table:not(.table-sm) tbody th {
     border-bottom: none;
@@ -202,7 +208,7 @@ function formatDate($date) {
     text-transform: uppercase;
     text-align: center;
   }
-  #table tbody {
+  #table-res tbody {
     white-space: nowrap; 
     display: block;
   }
@@ -260,7 +266,7 @@ function formatDate($date) {
 
           </div>
           <div class="card-body">
-            <div class="table">
+            <div class="table-res" id="table">
               <table class="table table-bordered table-stripe">
                 <tbody>
                   <tr>
