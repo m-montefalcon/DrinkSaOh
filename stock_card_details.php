@@ -228,6 +228,7 @@ function formatDate($date) {
               <label for="from-month">From:</label>
 
               <select id="from-month">
+                <option value="0" disabled selected>Month</option>
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -245,6 +246,7 @@ function formatDate($date) {
               <label for="to-month">To:</label>
 
               <select id="to-month">
+                <option value="0" disabled selected>Month</option>
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -281,6 +283,10 @@ function formatDate($date) {
     }
   });
   document.getElementById('reset-button').addEventListener('click', function() {
+    const ResetFromMonth = document.getElementById('from-month');
+    const ResetToMonth = document.getElementById('to-month');
+    ResetFromMonth.value = '0';
+    ResetToMonth.value = '0';
     const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
     tableRows.forEach(function(row) {
       row.style.display = 'table-row';
