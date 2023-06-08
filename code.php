@@ -37,13 +37,17 @@ if (isset($_POST['delete_button'])) {
         'skuId' => $inventoryItemData['skuId'],
         'skuQtyId' => $inventoryItemData['skuQtyId'],
         'barcode' => $inventoryItemData['barcode'],
+        'totalPrice' => $inventoryItemData['totalPrice'],
         'productCategory' => $inventoryItemData['productCategory'],
         'supplierPrice' => $inventoryItemData['supplierPrice'],
         'criticalPoint' => $inventoryItemData['criticalPoint'],
+        'overstockPoint' => $inventoryItemData['overstockPoint'],
         'currentDate' => date('Y-m-d'),
         'currentTime' => date('H:i:s')
     ];
-
+    $stockCardRef = $database->getReference('stockcard')->getChild($inventoryItemData['skuId']);
+    $stockCardRef->remove();
+    
     $transactionLogResult = $transactionLogRef->push($transactionData);
 
     if ($transactionLogResult) {
@@ -76,6 +80,9 @@ if(isset($_POST['edit_inventory']))
     $supplier_price = $_POST['supplier_price'];
     $critical_point = $_POST['critical_point'];
     $product_category = $_POST['select_category_user'];
+    $overstock_point = $_POST['overstock_point'];
+    
+
 
     $bd = $sku_number;
     $bg = new BG();
@@ -104,6 +111,7 @@ if(isset($_POST['edit_inventory']))
         'productCategory' => $product_category,
         'supplierPrice' => $supplier_price,
         'criticalPoint' => $critical_point,
+        'overstockPoint' => $overstock_point,
         'currentDate' => date('Y-m-d'),
         'currentTime' => date('H:i:s')
     ];
@@ -126,11 +134,27 @@ if(isset($_POST['edit_inventory']))
             'productCategory' => $product_category,
             'supplierPrice' => $supplier_price,
             'criticalPoint' => $critical_point,
+            'overstockPoint' => $overstock_point,
             'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
         ];
+        $stockCardRef = $database->getReference('stockcard')
+        ->getChild($sku_number);
+        $action = "EDITED";
 
+        $stockCardPushRef = $stockCardRef->push();
+
+        $stockCardData = $stockCardPushRef->set([
+            'currentDate' => date('Y-m-d'),
+            'currentTime' => date('H:i:s'),
+            'action' => $action,
+            'skuQtyId' => $sku_qty,
+            'amount' => $total_price,
+            'inventoryQuantity' => $sku_qty,
+            'inventoryAmount' => $total_price,
+
+        ]);
         $transactionLogRef->push($transactionData);
         $_SESSION['status'] = "Updated!";
         header('location: index.php');
@@ -155,7 +179,8 @@ if(isset($_POST['add_inventory']))
     $critical_point = $_POST['critical_point'];
     $product_category = $_POST['select_category_user'];
     $price_per_quantity = $_POST['price_qty'];
-    
+    $overstock_point = $_POST['overstock_point'];
+
 
     
     
@@ -194,6 +219,7 @@ if(isset($_POST['add_inventory']))
                 'supplierPrice' => $supplier_price,
                 'criticalPoint' => $critical_point,
                 'barcode' => $bi,
+                'overstockPoint' => $overstock_point,
                 'currentDate' => date('Y-m-d'),
                 'currentTime' => date('H:i:s')
             ];
@@ -216,7 +242,8 @@ if(isset($_POST['add_inventory']))
                 'productCategory' => $product_category,
                 'supplierPrice' => $supplier_price,
                 'criticalPoint' => $critical_point,
-                'barcode' => $barcode_img,
+                'barcode' => $bi,
+                'overstockPoint'=> $overstock_point,
                 'currentDate' => date('Y-m-d'),
                 'currentTime' => date('H:i:s')
             ];
@@ -246,6 +273,8 @@ if(isset($_POST['add_inventory']))
             'supplierPrice' => $supplier_price,
             'criticalPoint' => $critical_point,
             'criticalPoint' => $critical_point,
+            'overstockPoint'=> $overstock_point,
+
             'barcode' => $bi,
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
@@ -263,10 +292,28 @@ if(isset($_POST['add_inventory']))
             'supplierPrice' => $supplier_price,
             'criticalPoint' => $critical_point,
             'barcode' => $bi,
+            'overstockPoint'=> $overstock_point,
+
             'currentDate' => date('Y-m-d'),
             'currentTime' => date('H:i:s')
         ];
 
+        $stockCardRef = $database->getReference('stockcard')
+            ->getChild($sku_number);
+            $action = "REGISTERED IN";
+
+            $stockCardPushRef = $stockCardRef->push();
+  
+            $stockCardData = $stockCardPushRef->set([
+                'currentDate' => date('Y-m-d'),
+                'currentTime' => date('H:i:s'),
+                'action' => $action,
+                'skuQtyId' => $sku_qty,
+                'amount' => $total_price,
+                'inventoryQuantity' => $sku_qty,
+                'inventoryAmount' => $total_price,
+
+            ]);
         $postRef_result = $database->getReference($ref_table)->push($postData);
 
         if($postRef_result !== false && $postRef_result !== null)
@@ -282,7 +329,7 @@ if(isset($_POST['add_inventory']))
     }
 }
 
-
+//STOCK CARD
 if (isset($_POST['stockAction']) && isset($_POST['quantity']) && isset($_POST['key'])) {
     $stockAction = $_POST['stockAction'];
     $quantity = $_POST['quantity'];

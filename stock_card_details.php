@@ -221,6 +221,11 @@ function formatDate($date) {
             <td><?=$matchingData['skuQtyId']?></td>
           </tr>
           <br>
+          <tr>
+            <td><strong>Total Inventory</strong></td>
+            <td>₱<?=$matchingData['totalPrice']?></td>
+          </tr>
+          <br>
           </div>
           <br>
 
@@ -261,40 +266,11 @@ function formatDate($date) {
                 <option value="12">December</option>
               </select>
 
-      <button id="fetch-button" type="button">Fetch Data</button>
-      <button id="reset-button" type="button">Reset</button>
+              <button id="fetch-button" type="button">Fetch Data</button>
+              <button id="reset-button" type="button">Reset</button>
 
               </tr>
-              <script>
-              document.getElementById('fetch-button').addEventListener('click', function() {
-  const fromMonth = parseInt(document.getElementById('from-month').value);
-  const toMonth = parseInt(document.getElementById('to-month').value);
   
-  const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
-  tableRows.forEach(function(row) {
-    const dateCell = row.querySelector('td:first-child');
-    const date = dateCell.innerText;
-    const month = parseInt(date.split('/')[0]);
-    
-    if (month >= fromMonth && month <= toMonth) {
-      row.style.display = 'table-row';
-    } else {
-      row.style.display = 'none';
-    }
-  });
-  document.getElementById('reset-button').addEventListener('click', function() {
-    const ResetFromMonth = document.getElementById('from-month');
-    const ResetToMonth = document.getElementById('to-month');
-    ResetFromMonth.value = '0';
-    ResetToMonth.value = '0';
-    const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
-    tableRows.forEach(function(row) {
-      row.style.display = 'table-row';
-    });
-  });
-  
-});
-              </script>
             
 
               
@@ -365,6 +341,36 @@ function formatDate($date) {
             <!-- </div> -->
           </div>
         </div>
+        <script>
+              document.getElementById('fetch-button').addEventListener('click', function() {
+  const fromMonth = parseInt(document.getElementById('from-month').value);
+  const toMonth = parseInt(document.getElementById('to-month').value);
+  
+  const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
+  tableRows.forEach(function(row) {
+    const dateCell = row.querySelector('td:first-child');
+    const date = dateCell.innerText;
+    const month = parseInt(date.split('/')[0]);
+    
+    if (month >= fromMonth && month <= toMonth) {
+      row.style.display = 'table-row';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+  document.getElementById('reset-button').addEventListener('click', function() {
+    const ResetFromMonth = document.getElementById('from-month');
+    const ResetToMonth = document.getElementById('to-month');
+    ResetFromMonth.value = '0';
+    ResetToMonth.value = '0';
+    const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
+    tableRows.forEach(function(row) {
+      row.style.display = 'table-row';
+    });
+  });
+  
+});
+              </script>
       <!-- </div>
     </div>  -->
   </div> 

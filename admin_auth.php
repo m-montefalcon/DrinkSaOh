@@ -37,12 +37,12 @@ if(isset($_SESSION['verified_Superadmin'])){
         }
     }
 
-    else{
+    else {
         $_SESSION['status'] = "ACCESS DENIED";
-        header("location: {$_SERVER['HTTP_REFERER']}");
+        header('location: login.php');
         exit();
-    
     }
+    
 }
 
 else{

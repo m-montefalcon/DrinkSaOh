@@ -466,8 +466,38 @@
                 </a>
                   <span class="tooltip"> Logout </span>
               </li>
+              <!-- <li>
+              <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "user_profile.php") echo "active"; ?>" href="user_profile.php">
+                <span class="icon"> <ion-icon name="person-outline"></ion-icon> </span>
+                <span class="text">Profile</span>
+              </a>
+              <span class="tooltip">Profile</span>
+            </li> -->
+            <?php else: ?>
+              <li>
+              <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "home.php") echo "active"; ?>" href="home.php">
+                <span class="icon"> <ion-icon name="home-outline"></ion-icon> </span>
+                <span class="text">Home</span>
+              </a>
+                <span class="tooltip"> Home </span>
+            </li>
+            <li>
+              <a class="side-link" href="user_profile.php">
+                <span class="icon"> <ion-icon name="person-outline"></ion-icon> </span>
+                <span class="text">Profile</span>
+              </a>
+              <span class="tooltip">Profile</span>
+            </li>
+            <li class="logout">      
+                <a class="side-link" href="logout.php" aria-current="page">
+                  <i class='bx bx-log-out' id="log_out" ></i>
+                  <span class="links_name"> Logout </span>
+                </a>
+                  <span class="tooltip"> Logout </span>
+              </li>
+            <?php endif; ?>
+
         <?php endif; ?>
-      <?php endif; ?>
       </ul>
     </aside>
   </div>

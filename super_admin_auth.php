@@ -25,7 +25,6 @@ if(isset($_SESSION['verified_Superadmin'])){
         $_SESSION['status'] = "ACCESS DENIED ONLY SUPER ADMIN CAN ACCESS IT";
         header("location: home.php");
         exit();
-    
     }
 }
 

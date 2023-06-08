@@ -206,6 +206,10 @@ include('authentication.php');
             <input type="number" name="critical_point" class="form-control" required>
           </div>
           <div class="col-md-4 form-group mb-3">
+            <label for=""> Overstock Point</label>
+            <input type="number" name="overstock_point" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
             <label for=""> Supplier Price </label>
             <input type="number" name="supplier_price" class="form-control" step=".01" required>
           </div>
@@ -217,7 +221,8 @@ include('authentication.php');
             <label for=""> Category </label>
             <select name="select_category_user" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
               <option value="Bottled"> Bottled </option>
-              <option value="Canned"> Canned </option>				
+              <option value="Canned"> Canned </option>		
+              <option value="Plastic"> Plastic </option>				
             </select>
           </div>
         </div>

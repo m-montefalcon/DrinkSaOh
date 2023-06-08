@@ -215,6 +215,10 @@ include('authentication.php');
               <input type="number" name="critical_point" value = "<?=$getData['criticalPoint'];?>" class="form-control" required>
           </div>
           <div class="col-md-4 form-group mb-3">
+            <label for=""> Overstock Point</label>
+            <input type="number" name="overstock_point" value = "<?=$getData['overstockPoint'];?>" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group mb-3">
               <label for=""> Supplier Price </label>
               <input type="number" name="supplier_price" class="form-control" value = "<?=$getData['supplierPrice'];?>" step=".01" required>
           </div>

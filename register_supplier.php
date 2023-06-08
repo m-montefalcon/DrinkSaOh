@@ -1,5 +1,5 @@
 <?php
-session_start();
+include('super_admin_auth.php');
 include('includes/side-navbar.php');
 include("dbcon.php");
 ?>
