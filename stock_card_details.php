@@ -44,6 +44,7 @@ function formatDate($date) {
   .stock-card-table tr th {
     text-align: center;
     text-transform:uppercase;
+    background: #BDBDBD;
   }
   .card .card-header {
     border-bottom-color: #f9f9f9;
@@ -66,8 +67,14 @@ function formatDate($date) {
   }
   .container {
     display: flex;
+    flex-direction: column;
     padding: 15px;
+    padding-top: 2px;
     overflow: auto; 
+  }
+  .table .stock-card-table {
+    margin: 5px;
+    padding: 5px;
   }
   .stock-card-table {
     width: 100%;
@@ -135,31 +142,114 @@ function formatDate($date) {
   .left-section {
     float: left;
   }
-
   .right-section {
     float: right;
   }
+  select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+    width: 130px;
+  }
+  .query-form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    padding: 15px;
+    overflow: auto; 
+    padding-top: 2px;
+    position: sticky;
+  }
+  button {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #1A0046FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 8px;
+    /* flex: 1; */
+  }
+  button:hover {
+    background-color: #11101D;
+  }
+  .card {
+    overflow: auto;
+  }
+  .closed-container {
+		margin-left: auto;
+	}
+
+  .back-button {
+  	color: black;
+		font-size: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+}
 </style>
 </head>
 
 <body>
-<button id="refresh-button" type="button">REFRESH</button> 
-            <script>
-            // Event listener for the refresh button click
-            document.getElementById('refresh-button').addEventListener('click', function() {
-              location.reload(); // Refresh the page
-            });
-          </script>
+  <div class="query-form">
+    <tr>
+      <label for="from-month"> <strong> From: </strong> </label>
+      <select id="from-month">
+        <option value="0" disabled selected>Month</option>
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
+      
+      <label for="to-month"> <strong> To: </strong> </label>
+      <select id="to-month">
+        <option value="0" disabled selected>Month</option>
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
+
+      <button id="fetch-button" type="button">Fetch Data</button>
+      <button id="reset-button" type="button">Reset</button>
+    </tr>
+          
+    <button id="refresh-button" type="button"> <i class="fas fa-sync"> </i></button> 
+      
+    <div class="closed-container">
+      <a href="stock_card.php" class="back-button float-end" onclick="history.back()"><ion-icon name="close-circle"></ion-icon></a>
+    </div>
+  </div>
   <div class="container">
-    <!-- <div class="row">
-      <div class="col-md-12"> -->
+    <div class="row">
+      <div class="col-md-12">
         <?php
           if (isset($_SESSION['status'])) {
             echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
             unset($_SESSION['status']);
           }
         ?>
-
         <div class="card">
           <div class="card-header">
             <h2>
@@ -188,93 +278,44 @@ function formatDate($date) {
                     break;
                 }
             }
-
             if ($matchingData) {
           ?>
           <br>
           <div class="left-section">
-          <tr>
-            <td><strong>Product Name:</strong></td>
-            <td><?= $matchingData['productName'] ?> </td>, 
-            <td> <?= $matchingData['productCategory']; ?></td>
-          </tr>
-          <br>
-          <tr>
-            <td><strong>Supplier Name:</strong></td>
-            <td><?= $matchingData['supplier_name'] ?> </td> 
-          </tr>
+            <tr>
+              <td><strong>Product Code:</strong></td>
+              <td><?= $matchingData['skuId']; ?></td>
+            </tr>
+            <br>
+            <tr>
+              <td><strong>Product Name:</strong></td>
+              <td><?= $matchingData['productName'] ?> </td>, 
+              <td> <?= $matchingData['productCategory']; ?></td>
+            </tr>
+            <br>
+            <tr>
+              <td><strong>Supplier Name:</strong></td>
+              <td><?= $matchingData['supplier_name'] ?> </td> 
+            </tr>
           </div>
 
           <div class="right-section">
-          <tr>
-            <td><strong>Product Code:</strong></td>
-            <td><?= $matchingData['skuId']; ?></td>
-          </tr>
-          <br>
-          <tr>
-            <td><strong>Unit Price:</strong></td>
-            <td>₱<?= $matchingData['priceQuantity']; ?></td> 
-          </tr>
-          <br>
-          <tr>
-            <td><strong>Stock on-hand:</strong></td>
-            <td><?=$matchingData['skuQtyId']?></td>
-          </tr>
-          <br>
-          <tr>
-            <td><strong>Total Inventory</strong></td>
-            <td>₱<?=$matchingData['totalPrice']?></td>
-          </tr>
-          <br>
+            <tr>
+              <td><strong>Unit Price:</strong></td>
+              <td>₱<?= $matchingData['priceQuantity']; ?></td> 
+            </tr>
+            <br>
+            <tr>
+              <td><strong>Stock on-hand:</strong></td>
+              <td><?=$matchingData['skuQtyId']?></td>
+            </tr>
+            <br>
+            <tr>
+              <td><strong>Total Inventory</strong></td>
+              <td>₱<?=$matchingData['totalPrice']?></td>
+            </tr>
+            <br>
           </div>
-          <br>
-
-              <tr>
-              <label for="from-month">From:</label>
-
-              <select id="from-month">
-                <option value="0" disabled selected>Month</option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
-              
-              <label for="to-month">To:</label>
-
-              <select id="to-month">
-                <option value="0" disabled selected>Month</option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
-
-              <button id="fetch-button" type="button">Fetch Data</button>
-              <button id="reset-button" type="button">Reset</button>
-
-              </tr>
-  
-            
-
-              
-          
           <?php
         
       } else {
@@ -287,7 +328,6 @@ function formatDate($date) {
       ?>
            <table class="stock-card-table">
             <br>
-            <br>
               <thead> 
                 <tr>
                   <th>DATE</th>
@@ -296,7 +336,6 @@ function formatDate($date) {
                   <th>AMOUNT</th>
                   <th>INVENTORY QUANTITY</th>
                   <th>INVENTORY AMOUNT</th>
-
                 </tr>
               </thead>
                 <?php
@@ -320,9 +359,6 @@ function formatDate($date) {
                             <td>₱<?= $data['amount']; ?></td>
                             <td><?= $data['inventoryQuantity']; ?></td>
                             <td>₱<?= $data['inventoryAmount']; ?></td>
-
-
-                            <!-- // wa ko kibaw unsa data kwaon // -->
                           </tr>
                           <?php
                       }
@@ -338,69 +374,71 @@ function formatDate($date) {
                   ?>
                 </tbody>
               </table>
-            <!-- </div> -->
+            </div>
           </div>
         </div>
-        <script>
-              document.getElementById('fetch-button').addEventListener('click', function() {
-  const fromMonth = parseInt(document.getElementById('from-month').value);
-  const toMonth = parseInt(document.getElementById('to-month').value);
-  
-  const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
-  tableRows.forEach(function(row) {
-    const dateCell = row.querySelector('td:first-child');
-    const date = dateCell.innerText;
-    const month = parseInt(date.split('/')[0]);
+      </div>
+    </div>
+  <script>
+    document.getElementById('fetch-button').addEventListener('click', function() {
+    const fromMonth = parseInt(document.getElementById('from-month').value);
+    const toMonth = parseInt(document.getElementById('to-month').value);
     
-    if (month >= fromMonth && month <= toMonth) {
-      row.style.display = 'table-row';
-    } else {
-      row.style.display = 'none';
-    }
-  });
-  document.getElementById('reset-button').addEventListener('click', function() {
-    const ResetFromMonth = document.getElementById('from-month');
-    const ResetToMonth = document.getElementById('to-month');
-    ResetFromMonth.value = '0';
-    ResetToMonth.value = '0';
     const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
     tableRows.forEach(function(row) {
-      row.style.display = 'table-row';
+      const dateCell = row.querySelector('td:first-child');
+      const date = dateCell.innerText;
+      const month = parseInt(date.split('/')[0]);
+      
+      if (month >= fromMonth && month <= toMonth) {
+        row.style.display = 'table-row';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+    document.getElementById('reset-button').addEventListener('click', function() {
+      const ResetFromMonth = document.getElementById('from-month');
+      const ResetToMonth = document.getElementById('to-month');
+      ResetFromMonth.value = '0';
+      ResetToMonth.value = '0';
+      const tableRows = document.querySelectorAll('.stock-card-table tbody tr');
+      tableRows.forEach(function(row) {
+        row.style.display = 'table-row';
+      });
     });
   });
-  
-});
-              </script>
-      <!-- </div>
-    </div>  -->
-  </div> 
-  
-<script>
-function printAsPDF() {
-  // Fetch the container element that holds the card
-  const cardContainer = document.querySelector('.card');
+  </script>
 
-  // Create a new window to open the printable document
-  const printWindow = window.open('', '_blank');
-  
-  // Write the card's HTML content to the new window
-  printWindow.document.write('<html><head><title>Stock Card</title></head><body>');
-  printWindow.document.write('<style>.stock-card-table tr th, .stock-card-table td {border: 1px solid #ddd; padding: 8px; text-align: center;}</style>');
-  
-  // Remove the print button from the card content
-  const cardContent = cardContainer.innerHTML;
-  const modifiedContent = cardContent.replace('<button onclick="printAsPDF()">Print as PDF</button>', '');
-  printWindow.document.write(modifiedContent);
-  
-  printWindow.document.write('</body></html>');
-  
-  // Call the print function of the new window
-  printWindow.print();
-}
-</script>
+  <script>
+    // Event listener for the refresh button click
+    document.getElementById('refresh-button').addEventListener('click', function() {
+      location.reload(); // Refresh the page
+    });
+  </script>
 
+  <script>
+  function printAsPDF() {
+    // Fetch the container element that holds the card
+    const cardContainer = document.querySelector('.card');
 
-
+    // Create a new window to open the printable document
+    const printWindow = window.open('', '_blank');
+    
+    // Write the card's HTML content to the new window
+    printWindow.document.write('<html><head><title>Stock Card - DrinkSaOh</title></head><body>');
+    printWindow.document.write('<style>.stock-card-table tr th, .stock-card-table td {border: 1px solid #ddd; padding: 8px; text-align: center;}</style>');
+    
+    // Remove the print button from the card content
+    const cardContent = cardContainer.innerHTML;
+    const modifiedContent = cardContent.replace('<button onclick="printAsPDF()">Print as PDF</button>', '');
+    printWindow.document.write(modifiedContent);
+    
+    printWindow.document.write('</body></html>');
+    
+    // Call the print function of the new window
+    printWindow.print();
+  }
+  </script>
 </body>
 </html>
     

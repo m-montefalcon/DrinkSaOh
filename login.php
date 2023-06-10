@@ -20,7 +20,7 @@ include("dbcon.php");
 		padding: 0;
 	}
 	.card {
-		background: none;
+		background: #11101D;
 		border-radius: 10px;
 		border: none;
 		margin: 20px;
@@ -31,8 +31,9 @@ include("dbcon.php");
 		border-radius: 10px;
 		box-shadow: 0px 0px 10px #BDBDBD;
 		padding: 50px;
+		padding-top: 20px;
 		max-width: 600px;
-		margin: 50px auto;
+		margin: auto;
 		width: 100%;
 	}
 	h2 {
@@ -52,7 +53,7 @@ include("dbcon.php");
 		display: block;
 		font-size: 16px;
 		margin-bottom: 20px;
-		padding: 10px;
+		/* padding: 10px; */
 		width: 100%;
 	}
 	input[type="submit"] {
@@ -126,43 +127,85 @@ include("dbcon.php");
 		font-size: 14px;
 		margin-top: 5px;
 	}
+	.container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		/* height: 100vh; */
+	}
+
+	@media screen and (max-width: 767px) {
+    .container {
+		flex-direction: column;
+		align-items: center;
+		width: 100%; 
+		max-height: 100vh;
+    }
+  }
+
+  /* @media screen and (max-width: 767px) {
+    .card {
+		flex-direction: column;
+		align-items: center;
+    }
+  } */
+
+	/* .logo {
+		flex: 1;
+	}
+	.card {
+		flex: 1;
+	} */
+	
+	.logo-img {
+		width: 80%; 
+		margin-bottom: 20px;
+	}
+
 </style>
 </head>
 
 <body>
-	<div class="card">
-		<form action="loginCred.php" method="POST">
-			<?php
-				if (isset($_SESSION['status'])) {
-					echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
-					unset($_SESSION['status']);
-				}
-			?>
-			
-			<h2> Login </h2>
-
-			<!-- <label for="email_address"> Email Address: </label> -->
-			<div class="form-group input-group">
-				<div class="input-group-prepend">
-					<span class="input-group-text"> <i class="fa-solid fa-at"></i> </span>
+	<!-- <div class="container">
+		<div class="logo">
+			<img src="assets/logo_logo.png" class="logo-img">
+		</div> -->
+		<div class="card">
+			<form action="loginCred.php" method="POST">
+				<?php
+					if (isset($_SESSION['status'])) {
+						echo "<h5 class = 'alert alert-success'>".$_SESSION['status']."</h5>";
+						unset($_SESSION['status']);
+					}
+				?>
+				<div class="container">
+					<img src="assets/DrinkSaOh_logo.png" class="logo-img">
 				</div>
-				<input type="email" id="email" class="form-control" name="email" placeholder="Enter email address" required>
-			</div>
-			<!-- <label for="email_address"> Password: </label> -->
-			<div class="form-group input-group">
-				<div class="input-group-prepend">
-					<span class="input-group-text"> <i class="fa-solid fa-key"></i> </span>
+				<!-- <h2> Login </h2> -->
+						
+				<!-- <label for="email_address"> Email Address: </label> -->
+				<div class="form-group input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"> <i class="fa-solid fa-at"></i> </span>
+					</div>
+					<input type="email" id="email" class="form-control" name="email" placeholder="Enter email address" required>
 				</div>
-				<input type="password" id="password" class="form-control" name="password" minlength="8" placeholder="Must be atleast 8 characters" required>
-				<span class="input-group-text"> 
-					<i class="fa fa-eye-slash password-toggle" id="password-toggle"></i>
-				</span>
-			</div>
+				<!-- <label for="email_address"> Password: </label> -->
+				<div class="form-group input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"> <i class="fa-solid fa-key"></i> </span>
+					</div>
+					<input type="password" id="password" class="form-control" name="password" minlength="8" placeholder="Must be atleast 8 characters" required>
+					<span class="input-group-text"> 
+						<i class="fa fa-eye-slash password-toggle" id="password-toggle"></i>
+					</span>
+				</div>
 
-			<input type="submit" name = "login_user_button" value="Login">
+				<input type="submit" name = "login_user_button" value="Login">
 
-		</form>
-	</div>
+			</form>
+		</div>
+	<!-- </div> -->
 	<script>
 		const passwordInput = document.getElementById('password');
 		const passwordToggle = document.getElementById('password-toggle');

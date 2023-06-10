@@ -25,7 +25,7 @@ include('includes/side-navbar.php');
     border-radius: 10px;
     border: none;
     position: relative;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     box-shadow: 0px 0px 10px #BDBDBD;
     width: 100%;
   }
@@ -121,6 +121,8 @@ include('includes/side-navbar.php');
     display: flex;
     flex-direction: column;
     padding: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     overflow: auto;
   }
   .table {
@@ -128,12 +130,12 @@ include('includes/side-navbar.php');
   }
   #table {
     position: relative;
-    height: 400px;
+    height: 500px;
     width: 100%; 
     overflow: scroll; 
     width: 100%;
     height: auto;
-    max-height: 400px;
+    max-height: 470px;
   }
   #table-res table {
     width: fit-content; 

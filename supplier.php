@@ -313,7 +313,7 @@ function formatDate($date) {
       </div>
     </div> 
   </div>
-
+  
   <script>
     // Function to filter the table rows based on the selected category
     function filterTableRows(category) {

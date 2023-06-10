@@ -19,7 +19,7 @@ function formatDate($date) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 <style>
-  * {
+    * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -40,7 +40,7 @@ function formatDate($date) {
   tr {
     text-align: center;
   }
-  button.add-btn {
+  button.refresh-button {
     position: absolute;
     text-align: center;
     background-color: white;
@@ -55,7 +55,7 @@ function formatDate($date) {
     top: 10px;
     padding: 0 10px;
   }
-  button.add-btn:hover {
+  button.refresh-button:hover {
     background-color: maroon;
     margin-left: 0%;
     border-radius: 6px;
@@ -134,13 +134,13 @@ function formatDate($date) {
   button:hover {
     background-color: #11101D;
   }
-  .add-btn {
+  #refresh-button {
     position: absolute;
     text-align: center;
     background-color: white;
     color: black;
     border-radius: 6px;
-    width: 100px;
+    width: 50px;
     height: 30px;
     margin-left: 0%;
     right: 20px;
@@ -150,7 +150,7 @@ function formatDate($date) {
     display: flex;
     padding: 0 10px;
   }
-  .add-btn:hover {
+  #refresh-button:hover {
     background-color: maroon;
     margin-left: 0%;
     border-radius: 6px;
@@ -160,6 +160,7 @@ function formatDate($date) {
     display: flex;
     flex-direction: column;
     padding: 15px;
+    padding-top: 2px;
     overflow: auto;
   }
   .table {
@@ -237,7 +238,7 @@ function formatDate($date) {
 	}
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
-	}  
+	} 
 </style>
 </head>
 
@@ -256,14 +257,7 @@ function formatDate($date) {
             <h2>
               STOCK CARD LIST
             </h2>
-            <button id="refresh-button" type="button">REFRESH</button> 
-            <script>
-            // Event listener for the refresh button click
-            document.getElementById('refresh-button').addEventListener('click', function() {
-              location.reload(); // Refresh the page
-            });
-          </script>
-
+            <button id="refresh-button" type="button"> <i class="fas fa-sync"> </i></button>    
           </div>
           <div class="card-body">
             <div class="table-res" id="table">
@@ -271,11 +265,10 @@ function formatDate($date) {
                 <tbody>
                   <tr>
                     <th>#</th>
-                    <th>PRODUCT CODE</th>
+                    <th>PRODUCT</th>
                     <th>VIEW</th>
                   </tr>
                 <?php
-                  include('dbcon.php');
                   $stockcardref = 'stockcard';
                   $fetchInventory = $database->getReference($stockcardref)->getValue();
                   $users = $auth->listUsers();
@@ -285,14 +278,14 @@ function formatDate($date) {
                       foreach ($fetchInventory as $stockcardId => $row) {
                           ?>
                           <tr>
-                              <td><?= $i++; ?></td>
-                              <td><?= $stockcardId; ?></td>
-                              <td>
-                                  <form action="stock_card_details.php" method="GET">
-                                      <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>">
-                                      <button type="submit" class="btn btn-success btn-sm"></button>
-                                  </form>
-                              </td>
+                            <td><?= $i++; ?></td>
+                            <td><?= $stockcardId; ?></td>
+                            <td>
+                              <form action="stock_card_details.php" method="GET">
+                                <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>">
+                                <button type="submit" class="btn btn-success btn-sm"></button>
+                              </form>
+                            </td>
                           </tr>
                           <?php
                       }
@@ -312,6 +305,12 @@ function formatDate($date) {
       </div>
     </div> 
   </div>
+  <script>
+  // Event listener for the refresh button click
+    document.getElementById('refresh-button').addEventListener('click', function() {
+      location.reload(); // Refresh the page
+    });
+  </script>
 </body>
 </html>
     

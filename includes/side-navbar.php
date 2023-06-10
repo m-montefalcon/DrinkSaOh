@@ -351,6 +351,21 @@
       transition: all 0.5s ease;
     }
   }
+  .logo-img {
+		width: 100%; 
+    max-height: 100vh;
+		/* margin-top: 10px;
+		margin-bottom: 20px; */
+	}
+  .icons {
+    size: 100px;
+    display: flex;
+		align-items: center;
+		justify-content: center;
+    height: 60px;
+    min-width: 30px;
+    color: #C697F5;
+  }
 </style>
 </head>
 
@@ -360,8 +375,8 @@
       <ul class="nav-list">
         <li>
           <a>
-            <span class="icon"><ion-icon name="cube-outline"></ion-icon></i></span>
-            <span class="text"><h2> DrinkSaOh </h2></span>
+            <span class="icon"><ion-icon name="cube" class="icons"></ion-icon></i></span>
+            <span class="text"><img src="assets/DrinkSaOh.png" class="logo-img"></span>
           </a>
         </li>
         <?php if(!isset($_SESSION['verified_user_id'])) : ?>
@@ -466,13 +481,6 @@
                 </a>
                   <span class="tooltip"> Logout </span>
               </li>
-              <!-- <li>
-              <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "user_profile.php") echo "active"; ?>" href="user_profile.php">
-                <span class="icon"> <ion-icon name="person-outline"></ion-icon> </span>
-                <span class="text">Profile</span>
-              </a>
-              <span class="tooltip">Profile</span>
-            </li> -->
             <?php else: ?>
               <li>
               <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "home.php") echo "active"; ?>" href="home.php">

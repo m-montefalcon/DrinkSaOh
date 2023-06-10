@@ -9,6 +9,7 @@ include('includes/side-navbar.php');
 <head>
   <title> Transaction Log </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 <style>
   * {
     box-sizing: border-box;
@@ -24,7 +25,7 @@ include('includes/side-navbar.php');
     border-radius: 10px;
     border: none;
     position: relative;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     box-shadow: 0px 0px 10px #BDBDBD;
     width: 100%;
   }
@@ -55,6 +56,8 @@ include('includes/side-navbar.php');
     display: flex;
     flex-direction: column;
     padding: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     overflow: auto;
   }
   .table {
@@ -62,12 +65,12 @@ include('includes/side-navbar.php');
   }
   #table {
     position: relative;
-    height: 400px;
+    height: 500px;
     width: 100%; 
     overflow: scroll; 
     width: 100%;
     height: auto;
-    max-height: 400px;
+    max-height: 470px;
   }
   #table-res table {
     width: fit-content; 
@@ -138,6 +141,62 @@ include('includes/side-navbar.php');
     align-items: center;
     justify-content: center;
   }  
+  #refresh-button {
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: 50px;
+    height: 30px;
+    margin-left: 0%;
+    right: 20px;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    display: flex;
+    padding: 0 10px;
+  }
+  #refresh-button:hover {
+    background-color: maroon;
+    margin-left: 0%;
+    border-radius: 6px;
+    color: white;
+  }
+  button {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #1A0046FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #11101D;
+  }
+  #refresh-button {
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    width: 50px;
+    height: 30px;
+    margin-left: 0%;
+    right: 20px;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    display: flex;
+    padding: 0 10px;
+  }
+  #refresh-button:hover {
+    background-color: maroon;
+    margin-left: 0%;
+    border-radius: 6px;
+    color: white;
+  }
 </style>
 </head>
 
@@ -150,25 +209,26 @@ include('includes/side-navbar.php');
             <h2>
               TRANSACTION LOG
             </h2>
+            <button id="refresh-button" type="button"> <i class="fas fa-sync"> </i></button>    
           </div>
           <div class="card-body">
             <div id="table">
               <table class="table table-bordered table-stripe">
                 <tbody>
                   <tr>
-                  <th>EMPLOYEE</th>
-                  <th>PRODUCT NAME</th>
-                  <th>SUPPLIER NAME</th>
-                  <th>SUPPLIER PRICE</th>
-                  <th>CRITICAL POINT</th>
-                  <th>PRODUCT CATEGORY</th>
-                  <th>SKU</th>
-                  <th>QUANTITY</th>
-                  <th>ACTION</th>
-                  <th>BARCODE</th>
-                  <th>DATE</th>           
-                  <th>UNIT PRICE</th>
-                  <th>TOTAL AMOUNT</th>
+                    <th>EMPLOYEE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>SUPPLIER NAME</th>
+                    <th>SUPPLIER PRICE</th>
+                    <th>CRITICAL POINT</th>
+                    <th>PRODUCT CATEGORY</th>
+                    <th>SKU</th>
+                    <th>QUANTITY</th>
+                    <th>ACTION</th>
+                    <th>BARCODE</th>
+                    <th>DATE</th>           
+                    <th>UNIT PRICE</th>
+                    <th>TOTAL AMOUNT</th>
                   </tr>
                   <?php
                     include ('dbcon.php');

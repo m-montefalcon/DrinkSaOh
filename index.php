@@ -34,11 +34,19 @@ function formatDate($date) {
     border-radius: 10px;
     border: none;
     position: relative;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     box-shadow: 0px 0px 10px #BDBDBD;
     width: 100%;
   }
   tr {
+    text-align: center;
+  }
+  h3 {
+    font-weight: bold;
+    color: black;
+    font-size: 30px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
     text-align: center;
   }
   button.add-btn {
@@ -103,10 +111,13 @@ function formatDate($date) {
     border-radius: 6px;
     cursor: pointer;
   } 
-  .low-quantity {
-    background-color: red;
-  }
   .category-select {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+  }
+  .search-input {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -115,13 +126,29 @@ function formatDate($date) {
     right: 0;
     padding: 0 20px;
   }
+  .filtercritical {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 0 20px;
+  }
+  #search-input {
+    margin-right: 8px;
+    padding: 8px;
+  }
+  #reset-button {
+    margin-right: 8px;
+  }
   select {
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 8px;
-    width: 115px;
+    width: 125px;
   }
   button {
     padding: 8px 16px;
@@ -161,6 +188,7 @@ function formatDate($date) {
     display: flex;
     flex-direction: column;
     padding: 15px;
+    padding-top: 2px;
     overflow: auto; 
   }
   .table {
@@ -168,12 +196,12 @@ function formatDate($date) {
   }
   #table {
     position: relative;
-    height: 300px;
+    height: 400px;
     width: 100%; 
     overflow: scroll; 
     width: 100%;
     height: auto;
-    max-height: 300px;
+    max-height: 400px;
   }
   #table-res table {
     width: fit-content; 
@@ -239,7 +267,6 @@ function formatDate($date) {
 	body::-webkit-scrollbar-thumb:hover {
 		background-color: #aaa; 
 	}
-
   .modal {
     display: none;
     position: fixed;
@@ -251,63 +278,69 @@ function formatDate($date) {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
   }
-
   .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 3px solid #11101D;
     width: 50%;
   }
-
-  .modal-content {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(2, auto);
-    grid-gap: 20px;
-  }
-  @media screen and (min-width: 768px) {
-    .modal-content {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  @media screen and (max-width: 767px) {
-    .modal-content {
-      grid-template-columns: repeat(1, 1fr);
-    }
-  }
-
+  input[type="submit"] {
+		background-color: #11101D;
+		border: none;
+		border-radius: 5px;
+		color: #FFFFFF;
+		cursor: pointer;
+		margin-top: 20px;
+		padding: 3px;
+		width: 100px;
+	}
   .close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    margin-left: auto;
   }
-
   .close:hover,
   .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
   }
-
   td .actions-container {
     display: flex;
     gap: 5px;
   }
-
   td .actions-container button {
     flex: 1;
     width: 110px;
   }
-  .overstock {
-      background-color: blue;
+  .low-quantity {
+    background-color: lightcoral;
+    font-weight: bold;
+    /* color: red; */
+    /* border: 2px solid red; */
   }
-
-
+  .overstock {
+    background-color: lightblue;
+    /* font-weight: bold; */
+    /* color: yellow; */
+    /* border: 2px solid blue; */
+  }
+  .container-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .query-form {
+    display: flex;
+    flex-direction: row;
+    
+  }
 </style>
-
 </head>
 
 <body>
@@ -320,64 +353,65 @@ function formatDate($date) {
             unset($_SESSION['status']);
           }
         ?>
-          <div>
-          <button id="refresh-button" type="button">REFRESH</button> 
-          <br>
-          <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-          <option value="Category" disabled selected>Category</option>
-          <option value="All">All</option>
-          <option value="Canned">Canned</option>
-          <option value="Bottled">Bottled</option>
-          <option value="Plastic">Plastic</option>
-          </select>
-          <br>
-
-          <input id="search-input" type="text" placeholder="Search by name or SKU">
-          <br>
-          <select id="filtercritical" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
-          <option value="Status" disabled selected> Status</option>
-          <option value="overstock">Overstock</option>
-          <option value="critical_point">Critical Point</option>
-  
-          </select>
-          <br>
-          <button id="reset-button">Reset</button>
-        </div>
-          <br>
+        <div class="container-form">
           <span>
-          <?php 
-            $ref_table = "inventory";
+            <?php 
+              $ref_table = "inventory";
 
-            $totalQtySnapshot = $database->getReference($ref_table)
-            ->orderByChild('skuId')
-            ->getSnapshot();
+              $totalQtySnapshot = $database->getReference($ref_table)
+              ->orderByChild('skuId')
+              ->getSnapshot();
 
-            $totalQty = 0;
-            if ($totalQtySnapshot->hasChildren()) {
-              foreach ($totalQtySnapshot->getValue() as $inventory) {
-                  $totalQty += $inventory['skuQtyId'];
-              }
-            }
-            echo "Inventory stock on hand: " . $totalQty;
-          ?>
-          <br>
-          <span>
-          <?php
-            $inventoryRef = $database->getReference('inventory');
-            $inventoryValue = $inventoryRef->getValue();
-
-            $totalPriceSum = 0;
-            if ($inventoryValue) {
-              foreach ($inventoryValue as $inventoryValues) {
-                if (isset($inventoryValues['totalPrice'])) {
-                  $totalPriceSum += $inventoryValues['totalPrice'];
+              $totalQty = 0;
+              if ($totalQtySnapshot->hasChildren()) {
+                foreach ($totalQtySnapshot->getValue() as $inventory) {
+                    $totalQty += $inventory['skuQtyId'];
                 }
               }
-            }
-            echo 'Inventory total amount value: ₱' . $totalPriceSum . '</p>';
-          ?>       
+              echo "<strong> Inventory stock on hand: </strong>" . $totalQty;
+            ?>
+            <br>
+            <span>
+              <?php
+                $inventoryRef = $database->getReference('inventory');
+                $inventoryValue = $inventoryRef->getValue();
+
+                $totalPriceSum = 0;
+                if ($inventoryValue) {
+                  foreach ($inventoryValue as $inventoryValues) {
+                    if (isset($inventoryValues['totalPrice'])) {
+                      $totalPriceSum += $inventoryValues['totalPrice'];
+                    }
+                  }
+                }
+                echo '<strong> Inventory total amount value: </strong> ₱' . $totalPriceSum . '</p>';
+              ?>       
+            </span>
           </span>
-        </span>
+          <div class="query-form">
+            <select id="category-select" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+              <option value="Category" disabled selected>Category</option>
+              <option value="All">All</option>
+              <option value="Canned">Canned</option>
+              <option value="Bottled">Bottled</option>
+              <option value="Plastic">Plastic</option>
+            </select>
+          <br>
+
+            <input id="search-input" type="text" placeholder="Search by name or SKU">
+            <br>
+
+            <select id="filtercritical" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+              <option value="Status" disabled selected> Status</option>
+              <option value="critical_point">Overstock</option>
+              <option value="critical_point">Critical Point</option>
+            </select>
+            <br>
+            <button id="reset-button">Reset</button>
+            <br>
+            <button id="refresh-button" type="button"> <i class="fas fa-sync"> </i></button> 
+          </div>
+        </div>
         <div class="card">
           <div class="card-header">
             <h2>
@@ -474,11 +508,11 @@ function formatDate($date) {
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modal-title"></h2>
+      <h3 id="modal-title"></h3>
+      <p><strong><span id="modal-title"></span></strong></p>
       <p><strong>SKU ID: </strong><span id="modal-skuid"></span></strong></p>
       <p><strong>Quantity: </strong><span id="modal-skuqty"></span></p>
       <p><strong>Product Name: </strong><span id="modal-productname"></span></p>
-      
     <form id="modal-form" action="code.php" method="POST">
       <label for="quantity">Quantity:</label>
       <input type="number" id="quantity" name="quantity" required>
@@ -486,9 +520,8 @@ function formatDate($date) {
       <input type="hidden" id="modal-stockaction" name="stockAction"> 
       <input type="submit" value="Submit">
     </form>
-
-      </div>
     </div>
+  </div>
 
 
 
