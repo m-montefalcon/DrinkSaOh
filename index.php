@@ -148,7 +148,6 @@ function formatDate($date) {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 8px;
-    width: 125px;
   }
   button {
     padding: 8px 16px;
