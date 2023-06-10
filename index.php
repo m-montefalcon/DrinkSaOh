@@ -403,7 +403,7 @@ function formatDate($date) {
 
             <select id="filtercritical" name="select_category_name" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
               <option value="Status" disabled selected> Status</option>
-              <option value="critical_point">Overstock</option>
+              <option value="overstock">Overstock</option>
               <option value="critical_point">Critical Point</option>
             </select>
             <br>
