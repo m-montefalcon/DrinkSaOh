@@ -274,22 +274,32 @@ function formatDate($date) {
                   $users = $auth->listUsers();
                   
                   if ($fetchInventory) {
-                      $i = 1;
-                      foreach ($fetchInventory as $stockcardId => $row) {
-                          ?>
-                          <tr>
+                    $i = 1;
+                    foreach ($fetchInventory as $stockcardId => $row) {
+                      $ref_inventory = 'inventory';
+                      $fetchInventoryData = $database->getReference($ref_inventory) -> getValue();
+                      $matchingData = null;
+                      foreach ($fetchInventoryData as $item) {
+                          if ($item['skuId'] == $stockcardId) {
+                            $matchingData = $item;
+                            break;
+                          }
+                      }
+                      ?>
+                        <tr>
                             <td><?= $i++; ?></td>
-                            <td><?= $stockcardId; ?></td>
+                            <td><?= $matchingData['productName']?><br><?= $stockcardId; ?></td>
                             <td>
                               <form action="stock_card_details.php" method="GET">
-                                <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>">
-                                <button type="submit" class="btn btn-success btn-sm"></button>
+                                  <input type="hidden" name="stockcard_id" value="<?= $stockcardId; ?>">
+                                  <button type="submit" class="btn btn-success btn-sm"></button>
                               </form>
                             </td>
-                          </tr>
-                          <?php
-                      }
-                    } else {
+                        </tr>
+                        <?php
+                    }
+                }
+                 else {
                       ?>
                       <tr>
                         <td colspan="3"> No Record Found </td>
