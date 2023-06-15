@@ -245,8 +245,8 @@ if(isset($_POST['change_password_button_user'])){
 
         if($updatedUser){
             $_SESSION['status'] = "Password changed successfully!";
-            header('location: user_profile_screen.php');
-            exit();
+            header('locatio
+            exit();n: user_profile.php');
 
         }
 
@@ -254,7 +254,7 @@ if(isset($_POST['change_password_button_user'])){
     }
     else{ 
             $_SESSION['status'] = "Unable to change password";
-            header("Location: user_profile_screen.php?uid=$uid");
+            header("Location: user_profile.php?uid=$uid");
             exit();
         
     }
