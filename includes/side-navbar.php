@@ -461,6 +461,20 @@
                   <span class="tooltip"> Inventory </span>
               </li>
               <li>
+              <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "transaction_log.php") echo "active"; ?>" href="transaction_log.php">
+                <span class="icon"> <ion-icon name="checkmark-done-outline"></ion-icon> </span>
+                <span class="text">Transactions</span>
+              </a>
+                <span class="tooltip"> Transactions </span>
+              </li>
+              <li>
+                <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "supplier.php") echo "active"; ?>" href="supplier.php">
+                  <span class="icon"> <ion-icon name="storefront-outline"></ion-icon> </span>
+                  <span class="text">Supplier</span>
+                </a>
+                  <span class="tooltip"> Supplier </span>
+              </li>
+              <li>
                 <a class="side-link <?php if(basename($_SERVER['PHP_SELF']) == "stock_card.php") echo "active"; ?>" href="stock_card.php">
                   <span class="icon"> <ion-icon name="bag-check-outline"></ion-icon></ion-icon> </span>
                   <span class="text">Stock Card</span>
