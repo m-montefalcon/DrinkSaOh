@@ -39,7 +39,7 @@ if(isset($_SESSION['verified_Superadmin'])){
 
     else {
         $_SESSION['status'] = "ACCESS DENIED";
-        header('location: login.php');
+        header('location: home.php');
         exit();
     }
     
